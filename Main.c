@@ -1,11 +1,6 @@
-#include "raylib.h"
+#include <stdio.h>
+#include <stdbool.h>
 #include <stdlib.h>
-
-#define SCREEN_WIDTH 800
-#define SCREEN_HEIGHT 600
-
-#define CARD_WIDTH 72
-#define CARD_HEIGHT 96
 
 #define DECK_SIZE 52
 #define FOUNDATION_SIZE 4
@@ -19,8 +14,7 @@ typedef struct {
     Rank rank;
     Suit suit;
     bool isFaceUp;
-    Rectangle rect;
-    Color color;
+    char symbol;
 } Card;
 
 typedef struct {
@@ -28,53 +22,60 @@ typedef struct {
     int size;
 } Stack;
 
-int main() {
-    // Initialization
-    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Yukon Solitaire");
-
-    // Initialize game
-    Stack tableau[TABLEAU_SIZE];
-    Stack foundation[FOUNDATION_SIZE];
-    Stack stock;
-
+void initialize(Stack tableau[], Stack foundation[], Stack *stock) {
     // Initialize cards
     int cardIndex = 0;
     for (int i = 0; i < TABLEAU_SIZE; ++i) {
         for (int j = 0; j < i + 1; ++j) {
             Card card = { .rank = j + 1, .suit = i % 4, .isFaceUp = false };
-            card.rect = (Rectangle){ (SCREEN_WIDTH - CARD_WIDTH) / 2, (SCREEN_HEIGHT - CARD_HEIGHT) / 2, CARD_WIDTH, CARD_HEIGHT };
-            card.color = (card.suit == HEARTS || card.suit == DIAMONDS) ? RED : BLACK;
+            card.symbol = (char)('0' + card.rank); // using numbers for ranks
             tableau[i].cards[j] = card;
         }
         tableau[i].size = i + 1;
         cardIndex += i + 1;
     }
+}
 
-    SetTargetFPS(60);
+void displayTableau(Stack tableau[]) {
+    for (int i = 0; i < TABLEAU_SIZE; ++i) {
+        printf("Tableau %d: ", i + 1);
+        for (int j = 0; j < tableau[i].size; ++j) {
+            Card card = tableau[i].cards[j];
+            if (card.isFaceUp) {
+                printf("%c ", card.symbol);
+            } else {
+                printf("* ");
+            }
+        }
+        printf("\n");
+    }
+}
+
+int main() {
+    // Initialize game
+    Stack tableau[TABLEAU_SIZE];
+    Stack foundation[FOUNDATION_SIZE];
+    Stack stock;
+
+    initialize(tableau, foundation, &stock);
 
     // Main game loop
-    while (!WindowShouldClose()) {
+    while (true) {
         // Update
 
         // Draw
-        BeginDrawing();
-        ClearBackground(RAYWHITE);
+        system("clear"); // Clear the screen (works on UNIX-like systems)
 
         // Draw cards
-        for (int i = 0; i < TABLEAU_SIZE; ++i) {
-            for (int j = 0; j < tableau[i].size; ++j) {
-                Card card = tableau[i].cards[j];
-                DrawRectangleRec(card.rect, card.color);
-            }
-        }
+        displayTableau(tableau);
 
         // Draw foundation, stock, etc.
 
-        EndDrawing();
-    }
+        // Input handling and game logic here
 
-    // Cleanup
-    CloseWindow();
+        // Exit condition
+        break; // For now, just break the loop to exit
+    }
 
     return 0;
 }
