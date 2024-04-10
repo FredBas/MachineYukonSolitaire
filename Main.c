@@ -25,13 +25,14 @@ void initialize(Stack tableau[], Stack foundation[], Stack *stock) {
     // Initialize cards
     int cardIndex = 0;
     for (int i = 0; i < NUMBER_OF_TABLEAUS; ++i) {
-        for (int j = 0; j < i + 1; ++j) {
+        int cardsInTableau = (i == 0) ? 1 : (6 + i - 1); // Adjusting cards for each tableau
+        for (int j = 0; j < cardsInTableau; ++j) {
             Card card = { .rank = j + 1, .suit = i % 4, .isFaceUp = false };
             card.symbol = (char)('0' + card.rank); // using numbers for ranks
             tableau[i].cards[j] = card;
         }
-        tableau[i].size = i + 1;
-        cardIndex += i + 1;
+        tableau[i].size = cardsInTableau;
+        cardIndex += cardsInTableau;
     }
 }
 
