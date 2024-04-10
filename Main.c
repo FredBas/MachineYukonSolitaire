@@ -118,31 +118,66 @@ int checkDuplicate(Card *deck, int numCards) {
     return 0;
 }
 
-int readCardsFromFile(char *filename, Card *deck) {
+Card *readCardsFromFile(char *filename) {
     FILE *file = fopen(filename, "r");
-    if(file == NULL) {
+    if (file == NULL) {
         printf("Error: File '%s' not found\n", filename);
-        return 0;
+        return NULL;
     }
 
+    Card *head = NULL;
+    Card *prev = NULL;
     char card[CARD_SIZE];
     int i = 0;
-    while(fscanf(file, "%s", card) == 1 && i < DECK_SIZE) {
-        if(strlen(card) != DECK_SIZE - 1) {
+    while (fscanf(file, "%s", card) == 1) {
+        if (strlen(card) != CARD_SIZE - 1) {
             printf("Error: Invalid card format on line %d.\n", i + 1);
             fclose(file);
-            return 0;
+            return NULL;
         }
-        deck[i].rank = atoi(card);
-        deck[i].suit = card[strlen(card) - 1];
+        Card *newCard = (Card *)malloc(sizeof(Card));
+        if (newCard == NULL) {
+            printf("Error: Memory allocation failed.\n");
+            fclose(file);
+            return NULL;
+        }
+        newCard->rank = atoi(card);
+        newCard->suit = card[strlen(card) - 1];
+        newCard->next = NULL;
+        if (head == NULL) {
+            head = newCard;
+        } else {
+            prev->next = newCard;
+        }
+        prev = newCard;
         i++;
     }
     fclose(file);
-    if(i != DECK_SIZE) {
-        printf("Error: Not enough cards in file.\n");
-        return 0;
+
+    // Check if the file contains the expected number of cards
+    if (i != 52) {
+        printf("Error: File does not contain 52 cards.\n");
+        return NULL;
     }
-    return 1;
+
+    return head;
+}
+
+void printCardList(Card *head) {
+    while (head != NULL) {
+        printf("%d%c ", head->rank, head->suit);
+        head = head->next;
+    }
+    printf("\n");
+}
+
+void freeCardList(Card *head) {
+    Card *temp;
+    while (head != NULL) {
+        temp = head;
+        head = head->next;
+        free(temp);
+    }
 }
 
 void initialize(Stack tableau[], Stack foundation[], Stack* stock) {
