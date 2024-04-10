@@ -141,7 +141,7 @@ Card *readCardsFromFile(char *filename) {
             fclose(file);
             return NULL;
         }
-        newCard->rank = atoi(card);
+        newCard->rank = card[0];
         newCard->suit = card[strlen(card) - 1];
         newCard->next = NULL;
         if (head == NULL) {
@@ -165,7 +165,7 @@ Card *readCardsFromFile(char *filename) {
 
 void printCardList(Card *head) {
     while (head != NULL) {
-        printf("%d%c ", head->rank, head->suit);
+        printf("%c%c ", head->rank, head->suit);
         head = head->next;
     }
     printf("\n");
