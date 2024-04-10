@@ -171,6 +171,14 @@ void printCardList(Card *head) {
     printf("\n");
 }
 
+void printCard(Card *card) {
+    if (card->isFaceUp) {
+        printf("%c%c\t", card->rank, card->suit);
+    } else {
+        printf("[]\t");
+   }
+}
+
 void freeCardList(Card *head) {
     Card *temp;
     while (head != NULL) {
@@ -180,11 +188,35 @@ void freeCardList(Card *head) {
     }
 }
 
+void loadDeck(Card *head, Stack tableau[], Stack foundation[], Stack *stock) {
+    printf("C1\tC2\tC3\tC4\tC5\tC6\tC7\n\n");
+    int row = 0;
+    for (int i = 0; i < DECK_SIZE; i++) {
+        head->isFaceUp = false;
+        Card *card = head;
+        head = head->next;
+        push(&tableau[i % 7], card);
+        printCard(card);
+        if (i % 7 == 6) {
+            if (row % 2 == 0) {
+                printf("\t\t[]\tF%d\n", row / 2 + 1);
+            } else {
+                printf("\n");
+            }
+            row++;
+        }
+    }
+    
+    printf("\n\n");
+    printf("LAST Command: \n");
+    printf("Message: \n");
+    printf("INPUT > ");
+}
+
 void initialize(Stack tableau[], Stack foundation[], Stack* stock) {
     // Read cards from file
     Card* deck = readCardsFromFile("../unshuffledDeck.txt");
     // this below call is added to check if the read cards are correct
-    printCardList(deck);
     if (deck == NULL) {
         printf("Error: Failed to read cards from file.\n");
         return;
@@ -203,6 +235,8 @@ void initialize(Stack tableau[], Stack foundation[], Stack* stock) {
         foundation[i].top = NULL;
         foundation[i].size = 0;
     }
+
+    loadDeck(deck, tableau, foundation, stock);
 }
 
 void displayTableau(Stack tableau[]) {
@@ -251,7 +285,7 @@ int main() {
         system("clear"); // Clear the screen (works on UNIX-like systems)
 
         // Draw cards
-        displayTableau(tableau);
+        //displayTableau(tableau);
 
         // Draw foundation, stock, etc.
 
