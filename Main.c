@@ -34,18 +34,11 @@ bool isSameSuit(Card card1, Card card2) {
     return card1.suit == card2.suit;
 }
 
-bool foundationIsEmpty(Stack foundation) {
-    return foundation.size == 0;
-}
-
 bool canBePlacedBottom(Card card1, Card card2) {
     return !isSameSuit(card1, card2) && isInSequence(card2, card1);
 }
 
-bool canBePlacedFoundation(Card card1, Card card2, Stack foundation) {
-    if (foundationIsEmpty(foundation)) {
-        return card1.rank == ACE;
-    }
+bool canBePlacedFoundation(Card card1, Card card2) {
     return isSameSuit(card1, card2) && isInSequence(card1, card2);
 }
 
@@ -111,6 +104,18 @@ void shuffleDeck(Stack* stock, int split) {
     // Update the stock with the shuffled cards
     stock->top = shuffled.top;
     stock->size = DECK_SIZE;
+}
+
+int checkDuplicate(Card *deck, int numCards) {
+    for (int i = 0; i < numCards - 1; i++) {
+        for (int j = i + 1; j < numCards; j++) {
+            if (deck[i].rank == deck[j].rank && deck[i].suit == deck[j].suit) {
+                printf("Error: Duplicate card found (%d%c) on line %d.\n", deck[i].rank, deck[i].suit, j + 1);
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 int readCardsFromFile(char *filename, Card *deck) {
