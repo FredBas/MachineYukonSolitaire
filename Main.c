@@ -34,11 +34,18 @@ bool isSameSuit(Card card1, Card card2) {
     return card1.suit == card2.suit;
 }
 
+bool foundationIsEmpty(Stack foundation) {
+    return foundation.size == 0;
+}
+
 bool canBePlacedBottom(Card card1, Card card2) {
     return !isSameSuit(card1, card2) && isInSequence(card2, card1);
 }
 
-bool canBePlacedFoundation(Card card1, Card card2) {
+bool canBePlacedFoundation(Card card1, Card card2, Stack foundation) {
+    if (foundationIsEmpty(foundation)) {
+        return card1.rank == ACE;
+    }
     return isSameSuit(card1, card2) && isInSequence(card1, card2);
 }
 
