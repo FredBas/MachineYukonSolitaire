@@ -55,6 +55,54 @@ Card* pop(Stack* stack) {
     return card;
 }
 
+void shuffleDeck(Stack* stock, int split) {
+    // Split the deck into two piles
+    Card* pile1 = stock->top;
+    Card* current = pile1;
+    for (int i = 0; i < split - 1; ++i) {
+        current = current->next;
+    }
+    Card* pile2 = current->next;
+    current->next = NULL;
+
+    // Shuffle the piles
+    Stack shuffled;
+    shuffled.top = NULL;
+    shuffled.size = 0;
+    srand(time(NULL)); // Seed for random number generation
+
+    while (pile1 != NULL && pile2 != NULL) {
+        if (rand() % 2 == 0) { // Randomly select from pile1
+            Card* temp = pile1;
+            pile1 = pile1->next;
+            temp->next = shuffled.top;
+            shuffled.top = temp;
+        } else { // Randomly select from pile2
+            Card* temp = pile2;
+            pile2 = pile2->next;
+            temp->next = shuffled.top;
+            shuffled.top = temp;
+        }
+    }
+
+    // Add remaining cards from the non-empty pile to the shuffled pile
+    if (pile1 != NULL) {
+        current = pile1;
+    } else {
+        current = pile2;
+    }
+    while (current != NULL) {
+        Card* temp = current;
+        current = current->next;
+        temp->next = shuffled.top;
+        shuffled.top = temp;
+    }
+
+    // Update the stock with the shuffled cards
+    stock->top = shuffled.top;
+    stock->size = DECK_SIZE;
+}
+
 void initialize(Stack tableau[], Stack foundation[], Stack* stock) {
     // Initialize cards as a linked list
     Card* deck = NULL;
@@ -70,7 +118,9 @@ void initialize(Stack tableau[], Stack foundation[], Stack* stock) {
         }
     }
 
-    // Shuffle the deck (if needed)
+    //This shuffles the deck, needs to be changed so this only happens when called
+    shuffleDeck(stock, DECK_SIZE / 2);
+
 
     // Deal cards to tableau
 
