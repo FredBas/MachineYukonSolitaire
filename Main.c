@@ -2,8 +2,10 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
+#define DECK_SIZE 52
 #define NUMBER_OF_FOUNDATIONS 4
 #define NUMBER_OF_TABLEAUS 7
+
 
 typedef enum { HEARTS, DIAMONDS, CLUBS, SPADES } Suit;
 typedef enum { ACE = 1, T = 10, JACK = 11, QUEEN = 12, KING = 13 } Rank;
@@ -40,8 +42,8 @@ Card* pop(Stack* stack) {
 void initialize(Stack tableau[], Stack foundation[], Stack* stock) {
     // Initialize cards as a linked list
     Card* deck = NULL;
-    for (int i = 0; i < 4; ++i) {
-        for (int j = 0; j < 13; ++j) {
+    for (int i = 0; i < NUMBER_OF_FOUNDATIONS; ++i) {
+        for (int j = 0; j < DECK_SIZE/4; ++j) {
             Card* card = malloc(sizeof(Card));
             card->rank = j + 1;
             card->suit = i;
@@ -59,11 +61,11 @@ void initialize(Stack tableau[], Stack foundation[], Stack* stock) {
     // Deal remaining cards to stock
 
     // Initialize tableau and foundation as empty stacks
-    for (int i = 0; i < 7; ++i) {
+    for (int i = 0; i < NUMBER_OF_TABLEAUS; ++i) {
         tableau[i].top = NULL;
         tableau[i].size = 0;
     }
-    for (int i = 0; i < 4; ++i) {
+    for (int i = 0; i < NUMBER_OF_FOUNDATIONS; ++i) {
         foundation[i].top = NULL;
         foundation[i].size = 0;
     }
@@ -75,7 +77,7 @@ void initialize(Stack tableau[], Stack foundation[], Stack* stock) {
 
 void displayTableau(Stack tableau[]) {
     // Display tableau
-    for (int i = 0; i < 7; ++i) {
+    for (int i = 0; i < NUMBER_OF_TABLEAUS; ++i) {
         printf("Tableau %d: ", i + 1);
         Card* current = tableau[i].top;
         while (current != NULL) {
@@ -102,8 +104,8 @@ void cleanup(Stack* stock) {
 
 int main() {
     // Initialize game
-    Stack tableau[7];
-    Stack foundation[4];
+    Stack tableau[NUMBER_OF_TABLEAUS];
+    Stack foundation[NUMBER_OF_FOUNDATIONS];
     Stack stock;
 
     initialize(tableau, foundation, &stock);
