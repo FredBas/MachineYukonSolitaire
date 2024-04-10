@@ -200,6 +200,9 @@ void displayTableau(Stack tableau[]) {
     }
 }
 
+void startupPopulateTableau(Stack tableau[], Stack* stock) {
+
+}
 void cleanup(Stack* stock) {
     // Free the memory allocated for the cards
     Card* current = stock->top;
