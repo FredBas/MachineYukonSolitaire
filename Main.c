@@ -13,7 +13,7 @@
 #define STOCK_SIZE 24
 
 typedef enum { HEARTS, DIAMONDS, CLUBS, SPADES } Suit;
-typedef enum { ACE = 1, JACK = 11, QUEEN = 12, KING = 13 } Rank;
+typedef enum { ACE = 1, T = 10, JACK = 11, QUEEN = 12, KING = 13 } Rank;
 
 typedef struct {
     Rank rank;
