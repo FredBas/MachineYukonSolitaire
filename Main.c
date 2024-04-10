@@ -39,12 +39,12 @@ int isInSequence(Card card1, Card card2) {
     return card1.rank == card2.rank + 1;
 }
 
-int canBePlacedBottom(Card card1, Card card2) {
-    return isOppositeColor(card1, card2) && isInSequence(card1, card2);
-}
-
 int isSameSuit(Card card1, Card card2) {
     return card1.suit == card2.suit;
+}
+
+int canBePlacedBottom(Card card1, Card card2) {
+    return !isSameSuit(card1, card2) && isInSequence(card2, card1);
 }
 
 int canBePlacedFoundation(Card card1, Card card2) {
