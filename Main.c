@@ -3,9 +3,8 @@
 #include <stdlib.h>
 
 #define DECK_SIZE 52
-#define FOUNDATION_SIZE 4
-#define TABLEAU_SIZE 7
-#define STOCK_SIZE 24
+#define NUMBER_OF_FOUNDATIONS 4
+#define NUMBER_OF_TABLEAUS 7
 
 typedef enum { HEARTS, DIAMONDS, CLUBS, SPADES } Suit;
 typedef enum { ACE = 1, T = 10, JACK = 11, QUEEN = 12, KING = 13 } Rank;
@@ -25,7 +24,7 @@ typedef struct {
 void initialize(Stack tableau[], Stack foundation[], Stack *stock) {
     // Initialize cards
     int cardIndex = 0;
-    for (int i = 0; i < TABLEAU_SIZE; ++i) {
+    for (int i = 0; i < NUMBER_OF_TABLEAUS; ++i) {
         for (int j = 0; j < i + 1; ++j) {
             Card card = { .rank = j + 1, .suit = i % 4, .isFaceUp = false };
             card.symbol = (char)('0' + card.rank); // using numbers for ranks
@@ -37,7 +36,7 @@ void initialize(Stack tableau[], Stack foundation[], Stack *stock) {
 }
 
 void displayTableau(Stack tableau[]) {
-    for (int i = 0; i < TABLEAU_SIZE; ++i) {
+    for (int i = 0; i < NUMBER_OF_TABLEAUS; ++i) {
         printf("Tableau %d: ", i + 1);
         for (int j = 0; j < tableau[i].size; ++j) {
             Card card = tableau[i].cards[j];
@@ -53,8 +52,8 @@ void displayTableau(Stack tableau[]) {
 
 int main() {
     // Initialize game
-    Stack tableau[TABLEAU_SIZE];
-    Stack foundation[FOUNDATION_SIZE];
+    Stack tableau[NUMBER_OF_TABLEAUS];
+    Stack foundation[NUMBER_OF_FOUNDATIONS];
     Stack stock;
 
     initialize(tableau, foundation, &stock);
