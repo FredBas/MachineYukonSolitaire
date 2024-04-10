@@ -181,27 +181,16 @@ void freeCardList(Card *head) {
 }
 
 void initialize(Stack tableau[], Stack foundation[], Stack* stock) {
-    // Initialize cards as a linked list
-    Card* deck = NULL;
-    for (int i = 0; i < NUMBER_OF_FOUNDATIONS; ++i) {
-        for (int j = 0; j < DECK_SIZE/4; ++j) {
-            Card* card = malloc(sizeof(Card));
-            card->rank = j + 1;
-            card->suit = i;
-            card->isFaceUp = false;
-            card->symbol = (char)('0' + card->rank);
-            card->next = deck;
-            deck = card;
-        }
+    // Read cards from file
+    Card* deck = readCardsFromFile("unShuffledDeck.txt");
+    if (deck == NULL) {
+        printf("Error: Failed to read cards from file.\n");
+        return;
     }
 
-    //This shuffles the deck, needs to be changed so this only happens when called
-    //shuffleDeck(stock, DECK_SIZE / 2);
-
-
-    // Deal cards to tableau
-
-    // Deal remaining cards to stock
+    // Set the stock pointer to the top of the deck
+    stock->top = deck;
+    stock->size = DECK_SIZE; // Update this if the number of cards in the file is not 52
 
     // Initialize tableau and foundation as empty stacks
     for (int i = 0; i < NUMBER_OF_TABLEAUS; ++i) {
@@ -212,10 +201,6 @@ void initialize(Stack tableau[], Stack foundation[], Stack* stock) {
         foundation[i].top = NULL;
         foundation[i].size = 0;
     }
-
-    // Set the stock pointer to the top of the deck
-    stock->top = deck;
-    stock->size = DECK_SIZE;
 }
 
 void displayTableau(Stack tableau[]) {
