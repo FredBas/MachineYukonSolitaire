@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 
 #define DECK_SIZE 52
+#define CARD_SIZE 3
 #define NUMBER_OF_FOUNDATIONS 4
 #define NUMBER_OF_TABLEAUS 7
 
@@ -102,6 +104,33 @@ void shuffleDeck(Stack* stock, int split) {
     // Update the stock with the shuffled cards
     stock->top = shuffled.top;
     stock->size = DECK_SIZE;
+}
+
+int readCardsFromFile(char *filename, Card *deck) {
+    FILE *file = fopen(filename, "r");
+    if(file == NULL) {
+        printf("Error: File '%s' not found\n", filename);
+        return 0;
+    }
+
+    char card[CARD_SIZE];
+    int i = 0;
+    while(fscanf(file, "%s", card) == 1 && i < DECK_SIZE) {
+        if(strlen(card) != DECK_SIZE - 1) {
+            printf("Error: Invalid card format on line %d.\n", i + 1);
+            fclose(file);
+            return 0;
+        }
+        deck[i].rank = atoi(card);
+        deck[i].suit = card[strlen(card) - 1];
+        i++;
+    }
+    fclose(file);
+    if(i != DECK_SIZE) {
+        printf("Error: Not enough cards in file.\n");
+        return 0;
+    }
+    return 1;
 }
 
 void initialize(Stack tableau[], Stack foundation[], Stack* stock) {
