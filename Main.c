@@ -199,7 +199,13 @@ void loadDeck(Card *head, Stack tableau[], Stack foundation[], Stack *stock) {
         printCard(card);
         if (i % 7 == 6) {
             if (row % 2 == 0) {
-                printf("\t\t[]\tF%d\n", row / 2 + 1);
+                if (foundation[row / 2].size == 0) {
+                    printf("\t\t[]\tF%d\n", row / 2 + 1);
+                } else {
+                    foundation[row / 2].top->isFaceUp = true;
+                    printCard(foundation[row / 2].top);
+                    printf("\tF%d\n", row / 2 + 1);
+                }
             } else {
                 printf("\n");
             }
