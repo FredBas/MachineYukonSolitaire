@@ -182,7 +182,9 @@ void freeCardList(Card *head) {
 
 void initialize(Stack tableau[], Stack foundation[], Stack* stock) {
     // Read cards from file
-    Card* deck = readCardsFromFile("..\\unshuffledDeck.txt");
+    Card* deck = readCardsFromFile("../unshuffledDeck.txt");
+    // this below call is added to check if the read cards are correct
+    printCardList(deck);
     if (deck == NULL) {
         printf("Error: Failed to read cards from file.\n");
         return;
