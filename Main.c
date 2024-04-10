@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <time.h>
 
 #define DECK_SIZE 52
 #define NUMBER_OF_FOUNDATIONS 4
