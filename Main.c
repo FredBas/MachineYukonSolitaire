@@ -108,55 +108,60 @@ void initialize(Stack tableau[], Stack foundation[], Stack* stock) {
     // Initialize cards as a linked list
     Card* deck = NULL;
     for (int i = 0; i < NUMBER_OF_FOUNDATIONS; ++i) {
-        for (int j = 0; j < DECK_SIZE/4; ++j) {
+        for (int j = 0; j < DECK_SIZE / 4; ++j) {
             Card* card = malloc(sizeof(Card));
             card->rank = j + 1;
             card->suit = i;
-            card->isFaceUp = false;
+            card->isFaceUp = false; // Set all cards face down initially
             card->symbol = (char)('0' + card->rank);
             card->next = deck;
             deck = card;
         }
     }
 
+    // Set the stock pointer to the top of the deck
+    stock->top = deck;
+    stock->size = DECK_SIZE;
+
     //This shuffles the deck, needs to be changed so this only happens when called
     shuffleDeck(stock, DECK_SIZE / 2);
 
-
     // Deal cards to tableau
-
-    // Deal remaining cards to stock
-
-    // Initialize tableau and foundation as empty stacks
     for (int i = 0; i < NUMBER_OF_TABLEAUS; ++i) {
         tableau[i].top = NULL;
         tableau[i].size = 0;
+        // Add face-down cards to tableau
+        for (int j = 0; j < i + 1; ++j) {
+            push(&tableau[i], pop(stock)); // Pop from stock and push to tableau
+        }
     }
+
+    // Initialize foundation as empty stacks
     for (int i = 0; i < NUMBER_OF_FOUNDATIONS; ++i) {
         foundation[i].top = NULL;
         foundation[i].size = 0;
     }
-
-    // Set the stock pointer to the top of the deck
-    stock->top = deck;
-    stock->size = DECK_SIZE;
 }
 
 void displayTableau(Stack tableau[], Stack foundation[]) {
     // Display tableau
+    printf("C1\tC2\tC3\tC4\tC5\tC6\tC7\n");
+    int totalCards = 0;
     for (int i = 0; i < NUMBER_OF_TABLEAUS; ++i) {
-        printf("C%d\t", i + 1);
         Card* current = tableau[i].top;
+        int cardsInColumn = 0;
         while (current != NULL) {
-            if (current->isFaceUp) {
-                printf("%c%c\t", current->symbol, current->suit == HEARTS ? 'H' : current->suit == DIAMONDS ? 'D' : current->suit == CLUBS ? 'C' : 'S');
-            } else {
-                printf("**\t");
-            }
+            printf("%s\t", current->isFaceUp ? (current->rank == ACE ? "A" : (current->rank == 10 ? "T" : (current->rank == JACK ? "J" : (current->rank == QUEEN ? "Q" : (current->rank == KING ? "K" : (char)('0' + current->rank)))))) : "[]");
             current = current->next;
+            cardsInColumn++;
         }
+        totalCards += cardsInColumn;
         // Print foundation or empty slot
-        printf("[] F%d\n", i + 1);
+        if (i < NUMBER_OF_FOUNDATIONS) {
+            printf("\t[] F%d\n", i + 1);
+        } else {
+            printf("\n");
+        }
     }
 }
 
