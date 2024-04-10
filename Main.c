@@ -196,7 +196,7 @@ void initialize(Stack tableau[], Stack foundation[], Stack* stock) {
     }
 
     //This shuffles the deck, needs to be changed so this only happens when called
-    shuffleDeck(stock, DECK_SIZE / 2);
+    //shuffleDeck(stock, DECK_SIZE / 2);
 
 
     // Deal cards to tableau
