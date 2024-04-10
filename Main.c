@@ -142,22 +142,24 @@ void initialize(Stack tableau[], Stack foundation[], Stack* stock) {
     stock->size = DECK_SIZE;
 }
 
-void displayTableau(Stack tableau[]) {
+void displayTableau(Stack tableau[], Stack foundation[]) {
     // Display tableau
     for (int i = 0; i < NUMBER_OF_TABLEAUS; ++i) {
-        printf("Tableau %d: ", i + 1);
+        printf("C%d\t", i + 1);
         Card* current = tableau[i].top;
         while (current != NULL) {
             if (current->isFaceUp) {
-                printf("%c ", current->symbol);
+                printf("%c%c\t", current->symbol, current->suit == HEARTS ? 'H' : current->suit == DIAMONDS ? 'D' : current->suit == CLUBS ? 'C' : 'S');
             } else {
-                printf("* ");
+                printf("**\t");
             }
             current = current->next;
         }
-        printf("\n");
+        // Print foundation or empty slot
+        printf("[] F%d\n", i + 1);
     }
 }
+
 
 void cleanup(Stack* stock) {
     // Free the memory allocated for the cards
@@ -185,7 +187,7 @@ int main() {
         system("clear"); // Clear the screen (works on UNIX-like systems)
 
         // Draw cards
-        displayTableau(tableau);
+        displayTableau(tableau, foundation);
 
         // Draw foundation, stock, etc.
 
