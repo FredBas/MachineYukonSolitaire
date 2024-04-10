@@ -23,6 +23,34 @@ typedef struct {
     int size;
 } Stack;
 
+int isBlack(Card card) {
+    return card.suit == CLUBS || card.suit == SPADES;
+}
+
+int isRed(Card card) {
+    return card.suit == HEARTS || card.suit == DIAMONDS;
+}
+
+int isOppositeColor(Card card1, Card card2) {
+    return isBlack(card1) != isBlack(card2);
+}
+
+int isInSequence(Card card1, Card card2) {
+    return card1.rank == card2.rank + 1;
+}
+
+int canBePlacedBottom(Card card1, Card card2) {
+    return isOppositeColor(card1, card2) && isInSequence(card1, card2);
+}
+
+int isSameSuit(Card card1, Card card2) {
+    return card1.suit == card2.suit;
+}
+
+int canBePlacedFoundation(Card card1, Card card2) {
+    return isSameSuit(card1, card2) && isInSequence(card1, card2);
+}
+
 void push(Stack* stack, Card* card) {
     card->next = stack->top;
     stack->top = card;
