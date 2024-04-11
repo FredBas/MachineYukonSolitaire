@@ -10,8 +10,8 @@
 #define NUMBER_OF_TABLEAUS 7
 
 
-typedef enum { HEARTS, DIAMONDS, CLUBS, SPADES } Suit;
-typedef enum { ACE = 1, T = 10, JACK = 11, QUEEN = 12, KING = 13 } Rank;
+typedef enum { H, D, C, S } Suit;
+typedef enum { A = 1, T = 10, J = 11, Q = 12, K = 13 } Rank;
 
 typedef struct Card {
     Rank rank;
@@ -21,10 +21,11 @@ typedef struct Card {
     struct Card* next;
 } Card;
 
-typedef struct {
+typedef struct Cardpile {
     Card* top;
     int size;
-} Stack;
+} Cardpile;
+
 
 bool isInSequence(Card card1, Card card2) {
     return card1.rank == card2.rank + 1;
@@ -42,25 +43,10 @@ bool canBePlacedFoundation(Card card1, Card card2) {
     return isSameSuit(card1, card2) && isInSequence(card1, card2);
 }
 
-void push(Stack* stack, Card* card) {
-    card->next = stack->top;
-    stack->top = card;
-    stack->size++;
-}
 
-Card* pop(Stack* stack) {
-    if (stack->size == 0) {
-        return NULL;
-    }
-    Card* card = stack->top;
-    stack->top = card->next;
-    stack->size--;
-    return card;
-}
-
-void shuffleDeck(Stack* stock, int split) {
+void shuffleDeck(Cardpile* deck, int split) {
     // Split the deck into two piles
-    Card* pile1 = stock->top;
+    Card* pile1 = deck->top;
     Card* current = pile1;
     for (int i = 0; i < split - 1; ++i) {
         current = current->next;
@@ -69,7 +55,7 @@ void shuffleDeck(Stack* stock, int split) {
     current->next = NULL;
 
     // Shuffle the piles
-    Stack shuffled;
+    Cardpile shuffled;
     shuffled.top = NULL;
     shuffled.size = 0;
     srand(time(NULL)); // Seed for random number generation
@@ -102,8 +88,8 @@ void shuffleDeck(Stack* stock, int split) {
     }
 
     // Update the stock with the shuffled cards
-    stock->top = shuffled.top;
-    stock->size = DECK_SIZE;
+    deck->top = shuffled.top;
+    deck->size = DECK_SIZE;
 }
 
 int checkDuplicate(Card *deck, int numCards) {
@@ -188,14 +174,14 @@ void freeCardList(Card *head) {
     }
 }
 
-void loadDeck(Card *head, Stack tableau[], Stack foundation[], Stack *stock) {
+void loadDeck(Card *head, Cardpile tableau[], Cardpile foundation[]) {
     printf("C1\tC2\tC3\tC4\tC5\tC6\tC7\n\n");
     int row = 0;
     for (int i = 0; i < DECK_SIZE; i++) {
         head->isFaceUp = false;
         Card *card = head;
         head = head->next;
-        push(&tableau[i % 7], card);
+        //push(&tableau[i % 7], card);
         printCard(card);
         if (i % 7 == 6) {
             if (row % 2 == 0) {
@@ -219,18 +205,14 @@ void loadDeck(Card *head, Stack tableau[], Stack foundation[], Stack *stock) {
     printf("INPUT > ");
 }
 
-void initialize(Stack tableau[], Stack foundation[], Stack* stock) {
+void initialize(Cardpile tableau[], Cardpile foundation[]) {
     // Read cards from file
     Card* deck = readCardsFromFile("../unshuffledDeck.txt");
-    // this below call is added to check if the read cards are correct
+
     if (deck == NULL) {
         printf("Error: Failed to read cards from file.\n");
         return;
     }
-
-    // Set the stock pointer to the top of the deck
-    stock->top = deck;
-    stock->size = DECK_SIZE; // Update this if the number of cards in the file is not 52
 
     // Initialize tableau and foundation as empty stacks
     for (int i = 0; i < NUMBER_OF_TABLEAUS; ++i) {
@@ -242,10 +224,10 @@ void initialize(Stack tableau[], Stack foundation[], Stack* stock) {
         foundation[i].size = 0;
     }
 
-    loadDeck(deck, tableau, foundation, stock);
+    loadDeck(deck, tableau, foundation);
 }
 
-void displayTableau(Stack tableau[]) {
+void displayTableau(Cardpile tableau[]) {
     // Display tableau
     for (int i = 0; i < NUMBER_OF_TABLEAUS; ++i) {
         printf("Tableau %d: ", i + 1);
@@ -262,12 +244,12 @@ void displayTableau(Stack tableau[]) {
     }
 }
 
-void startupPopulateTableau(Stack tableau[], Stack* stock) {
+void startupPopulateTableau(Cardpile tableau[], Card* head) {
 
 }
-void cleanup(Stack* stock) {
+void cleanup(Cardpile* deck) {
     // Free the memory allocated for the cards
-    Card* current = stock->top;
+    Card* current = deck->top;
     while (current != NULL) {
         Card* next = current->next;
         free(current);
@@ -277,11 +259,11 @@ void cleanup(Stack* stock) {
 
 int main() {
     // Initialize game
-    Stack tableau[NUMBER_OF_TABLEAUS];
-    Stack foundation[NUMBER_OF_FOUNDATIONS];
-    Stack stock;
+    Cardpile tableau[NUMBER_OF_TABLEAUS];
+    Cardpile foundation[NUMBER_OF_FOUNDATIONS];
+    Cardpile deck;
 
-    initialize(tableau, foundation, &stock);
+    initialize(tableau, foundation);
 
     // Main game loop
     while (true) {
@@ -302,7 +284,7 @@ int main() {
     }
 
     // Cleanup
-    cleanup(&stock);
+    cleanup(&deck);
 
     return 0;
 }
