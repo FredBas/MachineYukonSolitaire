@@ -178,15 +178,13 @@ void loadDeck(Cardpile tableau[], Cardpile foundation[]) {
     printf("C1\tC2\tC3\tC4\tC5\tC6\tC7\n\n");
     int row = 0;
     for (int i = 0; i < DECK_SIZE; i++) {
-
         Card *card = tableau[i % 7].top;
+        if (card == NULL) {
+            printf("Error: Not enough cards in the tableau.\n");
+            return;
+        }
         printCard(card);
         tableau[i % 7].top = card->next;
-        //head->isFaceUp = false;
-        //Card *card = head;
-        //head = head->next;
-        //push(&tableau[i % 7], card);
-        //printCard(card);
         if (i % 7 == 6) {
             if (row % 2 == 0) {
                 if (foundation[row / 2].size == 0) {
@@ -202,6 +200,7 @@ void loadDeck(Cardpile tableau[], Cardpile foundation[]) {
             row++;
         }
     }
+
     
     printf("\n\n");
     printf("LAST Command: \n");
@@ -215,7 +214,7 @@ void startUpPopulateTableau(Cardpile tableau[], Card *head) {
         head = head->next;
         tableau[i % 7].top = card;
         tableau[i % 7].size++;
-        //printf("%c%c ", tableau[i % 7].top->rank, tableau[i % 7].top->suit);
+        printf("%c%c ", tableau[i % 7].top->rank, tableau[i % 7].top->suit);
     }
 }
 
