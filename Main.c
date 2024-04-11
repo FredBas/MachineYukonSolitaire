@@ -219,12 +219,12 @@ void startUpPopulateTableau(Cardpile tableau[], Card *head) {
     }
 }
 
-void initialize(Cardpile tableau[], Cardpile foundation[], Cardpile deck) {
+void initialize(Cardpile tableau[], Cardpile foundation[], Cardpile* deck) {
     // Read cards from file
 
-    deck.top = readCardsFromFile("../unshuffledDeck.txt");
+    deck->top = readCardsFromFile("../unshuffledDeck.txt");
 
-    if (deck.top == NULL) {
+    if (deck->top == NULL) {
         printf("Error: Failed to read cards from file.\n");
         return;
     }
@@ -239,7 +239,7 @@ void initialize(Cardpile tableau[], Cardpile foundation[], Cardpile deck) {
         foundation[i].size = 0;
     }
 
-    startUpPopulateTableau(tableau, deck.top);
+    startUpPopulateTableau(tableau, deck->top);
     loadDeck(tableau, foundation);
 
 }
@@ -277,7 +277,7 @@ int main() {
     Cardpile foundation[NUMBER_OF_FOUNDATIONS];
     Cardpile deck;
 
-    initialize(tableau, foundation, deck);
+    initialize(tableau, foundation, &deck);
 
     // Main game loop
     while (true) {
