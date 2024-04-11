@@ -174,7 +174,7 @@ void freeCardList(Card *head) {
     }
 }
 
-void loadDeck(Cardpile* tableau, Cardpile* foundation) {
+void printUI(Cardpile* tableau, Cardpile* foundation) {
     printf("C1\tC2\tC3\tC4\tC5\tC6\tC7\n\n");
     int row = 0;
     for (int i = 0; i < DECK_SIZE; i++) {
@@ -240,8 +240,8 @@ void initialize(Cardpile* tableau, Cardpile *foundation, Cardpile* deck) {
     printf("cards read, tableaus initialized, foundations initialized\n");
     startUpPopulateTableau(tableau, deck->top);
     printf("startUpPopulateTableau has occured\n");
-    loadDeck(tableau, foundation);
-    printf("loaddeck successful\n");
+    printUI(tableau, foundation);
+    printf("printUI successful\n");
 
 }
 
