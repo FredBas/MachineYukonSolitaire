@@ -27,6 +27,17 @@ endif ()
 # Our Project
 # dean phar
 add_executable(${PROJECT_NAME} Main.c
+        Cardpile.h
+        Card.c
+        Card.h
+        Cardpile.c
+        MemoryManagement.c
+        MemoryManagement.h
+        Definitions.h
+        GameUI.h
+        GameUI.c
+        GameInitialization.h
+        GameInitialization.c
 
 )
 #set(raylib_VERBOSE 1)
