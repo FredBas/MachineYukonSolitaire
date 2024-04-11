@@ -113,13 +113,16 @@ Card *readCardsFromFile(char *filename) {
 
     Card *head = NULL;
     Card *prev = NULL;
-    char card[CARD_SIZE];
+    char card[CARD_SIZE + 1];
     int i = 0;
-    while (fscanf(file, "%s", card) == 1) {
-        if (strlen(card) != CARD_SIZE - 1) {
+    while (fgets(card, sizeof(card), file)) {
+        if (strlen(card) != CARD_SIZE) {
             printf("Error: Invalid card format on line %d.\n", i + 1);
             fclose(file);
             return NULL;
+        }
+        if(card[strlen(card) - 1] == '\n') {
+            card[strlen(card) - 1] = '\0';
         }
         Card *newCard = (Card *)malloc(sizeof(Card));
         if (newCard == NULL) {
