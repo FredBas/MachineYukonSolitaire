@@ -174,7 +174,7 @@ void freeCardList(Card *head) {
     }
 }
 
-void loadDeck(Cardpile tableau[], Cardpile foundation[]) {
+void loadDeck(Cardpile* tableau, Cardpile* foundation) {
     printf("C1\tC2\tC3\tC4\tC5\tC6\tC7\n\n");
     int row = 0;
     for (int i = 0; i < DECK_SIZE; i++) {
@@ -208,7 +208,7 @@ void loadDeck(Cardpile tableau[], Cardpile foundation[]) {
     printf("INPUT > ");
 }
 
-void startUpPopulateTableau(Cardpile tableau[], Card *head) {
+void startUpPopulateTableau(Cardpile* tableau, Card *head) {
     for (int i = 0; i < DECK_SIZE; i++) {
         Card *card = head;
         head = head->next;
@@ -218,7 +218,7 @@ void startUpPopulateTableau(Cardpile tableau[], Card *head) {
     }
 }
 
-void initialize(Cardpile tableau[], Cardpile foundation[], Cardpile* deck) {
+void initialize(Cardpile* tableau, Cardpile *foundation, Cardpile* deck) {
     // Read cards from file
 
     deck->top = readCardsFromFile("../unshuffledDeck.txt");
@@ -274,9 +274,15 @@ void cleanup(Cardpile* deck) {
 
 int main() {
     // Initialize game
-    Cardpile tableau[NUMBER_OF_TABLEAUS];
-    Cardpile foundation[NUMBER_OF_FOUNDATIONS];
-    Cardpile deck;
+    Cardpile* tableau[NUMBER_OF_TABLEAUS];
+    for (int i = 0; i < NUMBER_OF_TABLEAUS; ++i) {
+        tableau[i] = malloc(sizeof(Cardpile));
+    }
+    Cardpile* foundation[NUMBER_OF_FOUNDATIONS];
+    for (int i = 0; i < NUMBER_OF_FOUNDATIONS; ++i) {
+        foundation[i] = malloc(sizeof(Cardpile));
+    }
+    Cardpile* deck;
 
     initialize(tableau, foundation, &deck);
 
