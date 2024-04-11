@@ -115,7 +115,7 @@ Card *readCardsFromFile(char *filename) {
     Card *prev = NULL;
     char card[CARD_SIZE + 1];
     int i = 0;
-    while (fgets(card, sizeof(card), file)) {
+    while (fgets(card, sizeof(card), file) && i < DECK_SIZE) {
         if (strlen(card) != CARD_SIZE) {
             printf("Error: Invalid card format on line %d.\n", i + 1);
             fclose(file);
