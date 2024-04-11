@@ -238,9 +238,11 @@ void initialize(Cardpile tableau[], Cardpile foundation[], Cardpile* deck) {
         foundation[i].top = NULL;
         foundation[i].size = 0;
     }
-
+    printf("cards read, tableaus initialized, foundations initialized\n");
     startUpPopulateTableau(tableau, deck->top);
+    printf("startUpPopulateTableau has occured\n");
     loadDeck(tableau, foundation);
+    printf("loaddeck successful\n");
 
 }
 
