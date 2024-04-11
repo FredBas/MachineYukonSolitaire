@@ -174,15 +174,19 @@ void freeCardList(Card *head) {
     }
 }
 
-void loadDeck(Card *head, Cardpile tableau[], Cardpile foundation[]) {
+void loadDeck(Cardpile tableau[], Cardpile foundation[]) {
     printf("C1\tC2\tC3\tC4\tC5\tC6\tC7\n\n");
     int row = 0;
     for (int i = 0; i < DECK_SIZE; i++) {
-        head->isFaceUp = false;
-        Card *card = head;
-        head = head->next;
-        //push(&tableau[i % 7], card);
+
+        Card *card = tableau[i % 7].top;
         printCard(card);
+        tableau[i % 7].top = card->next;
+        //head->isFaceUp = false;
+        //Card *card = head;
+        //head = head->next;
+        //push(&tableau[i % 7], card);
+        //printCard(card);
         if (i % 7 == 6) {
             if (row % 2 == 0) {
                 if (foundation[row / 2].size == 0) {
@@ -205,6 +209,16 @@ void loadDeck(Card *head, Cardpile tableau[], Cardpile foundation[]) {
     printf("INPUT > ");
 }
 
+void startUpPopulateTableau(Cardpile tableau[], Card *head) {
+    for (int i = 0; i < DECK_SIZE; i++) {
+        Card *card = head;
+        head = head->next;
+        tableau[i % 7].top = card;
+        tableau[i % 7].size++;
+        //printf("%c%c ", tableau[i % 7].top->rank, tableau[i % 7].top->suit);
+    }
+}
+
 void initialize(Cardpile tableau[], Cardpile foundation[], Cardpile deck) {
     // Read cards from file
 
@@ -225,7 +239,9 @@ void initialize(Cardpile tableau[], Cardpile foundation[], Cardpile deck) {
         foundation[i].size = 0;
     }
 
-    loadDeck(deck.top, tableau, foundation);
+    startUpPopulateTableau(tableau, deck.top);
+    loadDeck(tableau, foundation);
+
 }
 
 void displayTableau(Cardpile tableau[]) {
@@ -245,9 +261,6 @@ void displayTableau(Cardpile tableau[]) {
     }
 }
 
-void startupPopulateTableau(Cardpile tableau[], Card* head) {
-
-}
 void cleanup(Cardpile* deck) {
     // Free the memory allocated for the cards
     Card* current = deck->top;
