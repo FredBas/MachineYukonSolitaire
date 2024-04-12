@@ -1,15 +1,25 @@
 #include "GameInitialization.h"
+#include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 void startupPopulateTableau(Cardpile *tableau, Card *head) {
     for (int i = 0; i < DECK_SIZE; i++) {
         Card *card = head;
         head = head->next;
-        tableau[i % 7].top = card;
-        tableau[i % 7].size++;
-        printf("%c%c ", tableau[i % 7].top->rank, tableau[i % 7].top->suit);
+        card->next = NULL;
+        card->prev = NULL;
+
+        int tableauIndex = i % NUMBER_OF_TABLEAUS;
+        if (tableau[tableauIndex].top == NULL) {
+            tableau[tableauIndex].top = card;
+            tableau[tableauIndex].bottom = card;
+        } else {
+            card->prev = tableau[tableauIndex].top;
+            tableau[tableauIndex].top->next = card;
+            tableau[tableauIndex].top = card;
+        }
     }
-    printf("\n");
 }
 
 void initializeStartup(Cardpile **tableau, Cardpile **foundation, Cardpile *deck) {
@@ -24,6 +34,8 @@ void initializeStartup(Cardpile **tableau, Cardpile **foundation, Cardpile *deck
 
     // Initialize tableau and foundation as empty stacks
     for (int i = 0; i < NUMBER_OF_TABLEAUS; ++i) {
+        tableau[i] = malloc(sizeof(Cardpile));
+        tableau[i]->bottom = NULL;
         tableau[i]->top = NULL;
         tableau[i]->size = 0;
     }
@@ -31,8 +43,18 @@ void initializeStartup(Cardpile **tableau, Cardpile **foundation, Cardpile *deck
         foundation[i]->top = NULL;
         foundation[i]->size = 0;
     }
-    startupPopulateTableau(tableau, deck->top);
-    printUI(tableau, foundation);
+
+    startupPopulateTableau(*tableau, deck->top);
+    printUI(*tableau, *foundation);
+    for (int i = 0; i < NUMBER_OF_TABLEAUS; i++) {
+        printf("\nTableau %d: ", i);
+        Card *card = tableau[i]->bottom;
+        while (card != NULL) {
+            printf("%c%c ", card->rank, card->suit);
+            card = card->next;
+        }
+    }
+
 }
 
 

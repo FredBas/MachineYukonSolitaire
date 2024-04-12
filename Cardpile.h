@@ -6,6 +6,7 @@
 
 typedef struct Cardpile {
     Card *top;
+    Card *bottom;
     int size;
 } Cardpile;
 

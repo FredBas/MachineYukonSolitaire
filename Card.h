@@ -16,6 +16,7 @@ typedef struct Card {
     bool isFaceUp;
     char symbol;
     struct Card *next;
+    struct Card *prev;
 } Card;
 
 bool isInSequence(Card card1, Card card2);
