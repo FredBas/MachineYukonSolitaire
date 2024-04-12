@@ -11,7 +11,7 @@ void printUI(Cardpile *tableau, Cardpile *foundation) {
             printf("Error: Not enough cards in the tableau.\n");
             return;
         }
-        card->isFaceUp = true;
+        card->isFaceUp = false;
         printCard(card);
         tableau[i % 7].bottom = card->next;
         if (i % 7 == 6) {

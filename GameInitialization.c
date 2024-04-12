@@ -22,6 +22,43 @@ void startupPopulateTableau(Cardpile *tableau, Card *head) {
     }
 }
 
+Cardpile* copyTableau(Cardpile *originalTableau) {
+    Cardpile *copyTableau = malloc(NUMBER_OF_TABLEAUS * sizeof(Cardpile));
+
+    for (int i = 0; i < NUMBER_OF_TABLEAUS; i++) {
+        Cardpile *original = &originalTableau[i];
+        Cardpile *copy = &copyTableau[i];
+
+        copy->top = NULL;
+        copy->bottom = NULL;
+        copy->size = original->size;
+
+        Card *currentOriginalCard = original->bottom;
+        while (currentOriginalCard != NULL) {
+            Card *newCard = malloc(sizeof(Card));
+            newCard->rank = currentOriginalCard->rank;
+            newCard->suit = currentOriginalCard->suit;
+            newCard->isFaceUp = currentOriginalCard->isFaceUp;
+            newCard->next = NULL;
+            newCard->prev = copy->top;
+
+            if (copy->top != NULL) {
+                copy->top->next = newCard;
+            }
+            copy->top = newCard;
+
+            if (copy->bottom == NULL) {
+                copy->bottom = newCard;
+            }
+
+            currentOriginalCard = currentOriginalCard->next;
+        }
+    }
+
+    return copyTableau;
+}
+
+
 void initializeStartup(Cardpile **tableau, Cardpile **foundation, Cardpile *deck) {
 
     // Read cards from file
@@ -45,15 +82,7 @@ void initializeStartup(Cardpile **tableau, Cardpile **foundation, Cardpile *deck
     }
 
     startupPopulateTableau(*tableau, deck->top);
-    printUI(*tableau, *foundation);
-    for (int i = 0; i < NUMBER_OF_TABLEAUS; i++) {
-        printf("\nTableau %d: ", i);
-        Card *card = tableau[i]->bottom;
-        while (card != NULL) {
-            printf("%c%c ", card->rank, card->suit);
-            card = card->next;
-        }
-    }
+    printUI(copyTableau(*tableau), *foundation);
 
 }
 
