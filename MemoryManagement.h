@@ -4,6 +4,6 @@
 #include "Card.h"
 #include "Cardpile.h"
 
-void cleanup(Cardpile *deck);
+void cleanup(Cardpile **deck);
 
 #endif // MEMORY_MANAGEMENT_H
