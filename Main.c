@@ -15,7 +15,7 @@ int main() {
     for (int i = 0; i < NUMBER_OF_FOUNDATIONS; ++i) {
         foundation[i] = malloc(sizeof(Cardpile));
     }
-    Cardpile *deck;
+    Cardpile *deck = malloc(sizeof(Cardpile));
 
     initializeStartup(tableau, foundation, deck);
 
