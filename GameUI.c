@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-void printUI(Cardpile *tableau, Cardpile *foundation) {
+void printUI(Cardpile *tableau, Cardpile *foundation, bool isFaceUp) {
     printf("C1\tC2\tC3\tC4\tC5\tC6\tC7\n\n");
     int row = 0;
     for (int i = 0; i < DECK_SIZE; i++) {
@@ -11,7 +11,7 @@ void printUI(Cardpile *tableau, Cardpile *foundation) {
             printf("Error: Not enough cards in the tableau.\n");
             return;
         }
-        card->isFaceUp = false;
+        card->isFaceUp = isFaceUp;
         printCard(card);
         tableau[i % 7].bottom = card->next;
         if (i % 7 == 6) {
