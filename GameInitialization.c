@@ -9,6 +9,7 @@ void startupPopulateTableau(Cardpile *tableau, Card *head) {
         tableau[i % 7].size++;
         printf("%c%c ", tableau[i % 7].top->rank, tableau[i % 7].top->suit);
     }
+    printf("\n");
 }
 
 void initializeStartup(Cardpile **tableau, Cardpile **foundation, Cardpile *deck) {
