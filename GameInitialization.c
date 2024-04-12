@@ -11,7 +11,7 @@ void startupPopulateTableau(Cardpile *tableau, Card *head) {
     }
 }
 
-void initializeStartup(Cardpile *tableau, Cardpile *foundation, Cardpile *deck) {
+void initializeStartup(Cardpile **tableau, Cardpile **foundation, Cardpile *deck) {
 
     // Read cards from file
     deck->top = createDeckFromFile("../unshuffledDeck.txt");
@@ -23,12 +23,12 @@ void initializeStartup(Cardpile *tableau, Cardpile *foundation, Cardpile *deck) 
 
     // Initialize tableau and foundation as empty stacks
     for (int i = 0; i < NUMBER_OF_TABLEAUS; ++i) {
-        tableau[i].top = NULL;
-        tableau[i].size = 0;
+        tableau[i]->top = NULL;
+        tableau[i]->size = 0;
     }
     for (int i = 0; i < NUMBER_OF_FOUNDATIONS; ++i) {
-        foundation[i].top = NULL;
-        foundation[i].size = 0;
+        foundation[i]->top = NULL;
+        foundation[i]->size = 0;
     }
     startupPopulateTableau(tableau, deck->top);
     printUI(tableau, foundation);

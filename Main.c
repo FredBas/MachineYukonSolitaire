@@ -1,11 +1,8 @@
-#include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include "Definitions.h"
-#include "Card.h"
 #include "Cardpile.h"
 #include "MemoryManagement.h"
-#include "GameUI.h"
 #include "GameInitialization.h"
 
 int main() {
@@ -20,14 +17,14 @@ int main() {
     }
     Cardpile *deck;
 
-    initializeStartup(tableau, foundation, &deck);
+    initializeStartup(tableau, foundation, deck);
 
     // Main game loop
     while (true) {
         // Update
 
         // Draw
-        system("clear"); // Clear the screen (works on UNIX-like systems)
+        system("cls");
 
         // Draw cards
         //displayTableau(tableau);

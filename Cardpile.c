@@ -91,34 +91,28 @@ Card *createDeckFromFile(char *filename) {
 
     Card *head = NULL;
     Card *prev = NULL;
-    char card[CARD_SIZE + 1];
+    char line[CARD_SIZE];
     int i = 0;
-    while (fgets(card, sizeof(card), file) && i < DECK_SIZE) {
-        if (strlen(card) != CARD_SIZE) {
-            printf("Error: Invalid card format on line %d.\n", i + 1);
-            fclose(file);
-            return NULL;
+
+    while(fgets(line,sizeof(line),file)){
+        if (strlen(line) >=2){
+            char rank = line[0];
+            char suit = line[1];
+
+            Card *newCard = (Card *) malloc(sizeof(Card));
+            newCard->rank = rank;
+            newCard->suit = suit;
+            newCard->next = NULL;
+            if (head == NULL){
+                head = newCard;
+            } else {
+                prev->next = newCard;
+            }
+            prev = newCard;
+            i++;
         }
-        if (card[strlen(card) - 1] == '\n') {
-            card[strlen(card) - 1] = '\0';
-        }
-        Card *newCard = (Card *) malloc(sizeof(Card));
-        if (newCard == NULL) {
-            printf("Error: Memory allocation failed.\n");
-            fclose(file);
-            return NULL;
-        }
-        newCard->rank = card[0];
-        newCard->suit = card[strlen(card) - 1];
-        newCard->next = NULL;
-        if (head == NULL) {
-            head = newCard;
-        } else {
-            prev->next = newCard;
-        }
-        prev = newCard;
-        i++;
     }
+
     fclose(file);
 
     // Check if the file contains the expected number of cards
