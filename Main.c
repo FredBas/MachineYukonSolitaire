@@ -5,10 +5,17 @@
 #include "MemoryManagement.h"
 #include "GameInitialization.h"
 #include <stdio.h>
+#include "Commands.h"
 
 int main() {
     // Initialize game
     Cardpile *tableau[NUMBER_OF_TABLEAUS];
+    char* command = malloc(20 * sizeof(char));
+    if (command == NULL) {
+        printf("Memory allocation failed for command\n");
+        return 1; // Return an error code
+    }
+
     for (int i = 0; i < NUMBER_OF_TABLEAUS; ++i) {
         tableau[i] = malloc(sizeof(Cardpile));
         if (tableau[i] == NULL) {
@@ -32,14 +39,13 @@ int main() {
 
     printf("\nWelcome to Yukon Solitaire!\nTo begin the startup phase, load a deck using the 'LD' command.\n\n(For a list of commands, type 'HELP')\n\n");
 
-    initializeStartup(tableau, foundation, deck);
 
     // Main game loop
     while (true) {
-        // Update
+        scanf("%s", command);
+        commandHandler(command, tableau, foundation, deck);
 
         // Draw
-        system("cls");
 
         // Draw cards
         //displayTableau(tableau);
