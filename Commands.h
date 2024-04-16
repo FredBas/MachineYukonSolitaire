@@ -1,4 +1,8 @@
 #ifndef COMMANDS_H
 #define COMMANDS_H
 
-switch
+#include <stdbool.h>
+
+void commandHandler(const char *command);
+
+#endif // COMMANDS_H

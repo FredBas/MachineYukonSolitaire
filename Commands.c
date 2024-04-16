@@ -1,8 +1,10 @@
 #include <string.h>
 #include <stdlib.h>
-#import <stdio.h>
+#include <stdio.h>
 
 void commandHandler(const char *command) {
+    char* currentPhase;
+
     // Create a copy of the command string because strtok modifies the original string
     char *commandCopy = strdup(command);
     // Get the first token (the command)
@@ -47,7 +49,7 @@ void commandHandler(const char *command) {
         again after Q, we basically restart the last game. */
 
     } else if (strcmp(cmd, "HELP") == 0) {
-        if (currentPhase == startupPhase) {
+        if (currentPhase == "startupPhase") {
             printf("LD <filename> - Load deck from file specified by filename during startup phase\n"
                    "SW - Show cards during startup phase\n"
                    "SI <split> - Shuffle deck of cards using a deck-split at the number specified in split during startup phase\n"
@@ -57,7 +59,7 @@ void commandHandler(const char *command) {
                    "P - Transition into PLAY phase. Commands specific to startup phase are no longer available\n"
                    "HELP - Display this help message\n");
 
-        } else if (currentPhase == playPhase) {
+        } else if (currentPhase == "playPhase") {
             printf("M <source> <destination> - Move card(s) from source to destination\n"
                    "H <source> - Move card(s) from source to foundation\n"
                    "R <source> - Move card(s) from source to tableau\n"
