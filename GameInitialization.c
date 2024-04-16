@@ -74,16 +74,7 @@ void initializeStartup(Cardpile **tableau, Cardpile **foundation, Cardpile *deck
     }
 
     // Initialize tableau and foundation as empty stacks
-    for (int i = 0; i < NUMBER_OF_TABLEAUS; ++i) {
-        tableau[i] = malloc(sizeof(Cardpile));
-        tableau[i]->bottom = NULL;
-        tableau[i]->top = NULL;
-        tableau[i]->size = 0;
-    }
-    for (int i = 0; i < NUMBER_OF_FOUNDATIONS; ++i) {
-        foundation[i]->top = NULL;
-        foundation[i]->size = 0;
-    }
+
 
     startupPopulateTableau(*tableau, deck->top);
     printUI(copyTableau(*tableau), *foundation, false);
