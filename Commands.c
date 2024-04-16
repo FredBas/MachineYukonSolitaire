@@ -1,9 +1,10 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include "GameInitialization.h"
 
-void commandHandler(const char *command) {
-    char *currentPhase;
+void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundation, Cardpile *deck) {
+    char *currentPhase = "startupPhase";
 
     // Create a copy of the command string because strtok modifies the original string
     char *commandCopy = strdup(command);
@@ -15,7 +16,8 @@ void commandHandler(const char *command) {
         if (filename != NULL) {
             // Load deck from file specified by filename during startup phase
         } else {
-            // Load default unshuffled deck from unshuffledDeck.txt during startup phase
+            // Load deck from "unshuffledDeck.txt" during startup phase
+            initializeStartup(tableau, foundation, deck);
         }
     } else if (strcmp(cmd, "SW") == 0) {
         // Show cards during startup phase
