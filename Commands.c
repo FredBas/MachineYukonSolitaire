@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 void commandHandler(const char *command) {
-    char* currentPhase;
+    char *currentPhase;
 
     // Create a copy of the command string because strtok modifies the original string
     char *commandCopy = strdup(command);
@@ -77,3 +77,4 @@ void commandHandler(const char *command) {
 
         free(commandCopy); // Free the command copy
     }
+}
