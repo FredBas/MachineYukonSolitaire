@@ -1,11 +1,13 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include "Definitions.h"
-#include "Cardpile.h"
-#include "MemoryManagement.h"
-#include "GameInitialization.h"
+#include "GameUI.c"
+#include "Cardpile.c"
+#include "Card.c"
+#include "MemoryManagement.c"
+#include "GameInitialization.c"
 #include <stdio.h>
-#include "Commands.h"
+#include "Commands.c"
 
 int main() {
     // Initialize game
