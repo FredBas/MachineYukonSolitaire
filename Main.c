@@ -19,6 +19,7 @@ int main() {
     Cardpile *deck = malloc(sizeof(Cardpile));
 
     printf("\nWelcome to Yukon Solitaire!\nTo begin the startup phase, load a deck using the 'LD' command.\n\n(For a list of commands, type 'HELP')\n\n");
+
     initializeStartup(tableau, foundation, deck);
 
     // Main game loop

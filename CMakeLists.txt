@@ -38,6 +38,8 @@ add_executable(${PROJECT_NAME} Main.c
         GameUI.c
         GameInitialization.h
         GameInitialization.c
+        Commands.h
+        Commands.c
 
 )
 #set(raylib_VERBOSE 1)
