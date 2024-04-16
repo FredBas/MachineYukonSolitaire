@@ -55,7 +55,7 @@ int main() {
         // Input handling and game logic here
 
         // Exit condition
-        break; // For now, just break the loop to exit
+        //break; // For now, just break the loop to exit
     }
 
     // Cleanup
