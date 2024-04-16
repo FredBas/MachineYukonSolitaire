@@ -1,4 +1,5 @@
 #include "GameInitialization.h"
+#include "Cardpile.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -76,7 +77,7 @@ void initializeStartup(Cardpile **tableau, Cardpile **foundation, Cardpile *deck
     // Initialize tableau and foundation as empty stacks
 
 
-    startupPopulateTableau(*tableau, deck->top);
+    startupPopulateTableau(tableau, deck->top);
     printUI(copyTableau(*tableau), *foundation, false);
     printUI(copyTableau(*tableau), *foundation, true);
 

@@ -8,6 +8,7 @@
 void shuffleDeck(Cardpile *deck, int split) {
     // Split the deck into two piles
     Card *pile1 = deck->top;
+    deck->top = NULL;
     Card *current = pile1;
     for (int i = 0; i < split - 1; ++i) {
         current = current->next;
@@ -100,6 +101,11 @@ Card *createDeckFromFile(char *filename) {
             char suit = line[1];
 
             Card *newCard = (Card *) malloc(sizeof(Card));
+            if (newCard == NULL) {
+                printf("Memory allocation failed for card %d\n", i);
+                freeCardList(head);
+                return NULL;
+            }
             newCard->rank = rank;
             newCard->suit = suit;
             newCard->next = NULL;
