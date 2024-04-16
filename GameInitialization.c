@@ -5,6 +5,10 @@
 
 void startupPopulateTableau(Cardpile *tableau, Card *head) {
     for (int i = 0; i < DECK_SIZE; i++) {
+        if (head == NULL || head->next == NULL) {
+            printf("Error: head or next is NULL\n");
+            return;
+        }
         Card *card = head;
         head = head->next;
         card->next = NULL;
