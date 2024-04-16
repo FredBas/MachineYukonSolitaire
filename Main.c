@@ -11,12 +11,24 @@ int main() {
     Cardpile *tableau[NUMBER_OF_TABLEAUS];
     for (int i = 0; i < NUMBER_OF_TABLEAUS; ++i) {
         tableau[i] = malloc(sizeof(Cardpile));
+        if (tableau[i] == NULL) {
+            printf("Memory allocation failed for tableau[%d]\n", i);
+            return 1; // Return an error code
+        }
     }
     Cardpile *foundation[NUMBER_OF_FOUNDATIONS];
     for (int i = 0; i < NUMBER_OF_FOUNDATIONS; ++i) {
         foundation[i] = malloc(sizeof(Cardpile));
+        if (foundation[i] == NULL) {
+            printf("Memory allocation failed for foundation[%d]\n", i);
+            return 1; // Return an error code
+        }
     }
     Cardpile *deck = malloc(sizeof(Cardpile));
+    if (deck == NULL) {
+        printf("Memory allocation failed for deck\n");
+        return 1; // Return an error code
+    }
 
     printf("\nWelcome to Yukon Solitaire!\nTo begin the startup phase, load a deck using the 'LD' command.\n\n(For a list of commands, type 'HELP')\n\n");
 
