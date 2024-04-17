@@ -5,8 +5,8 @@
 #include "Card.h"
 #include "GameUI.h"
 
-void startupPopulateTableau(Cardpile *tableau, Card *head);
-void initializeStartup(Cardpile **tableau, Cardpile **foundation, Cardpile *deck);
+void startupPopulateTableau(Cardpile *tableau[], Card *head);
+void initializeStartup(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck);
 Cardpile* copyTableau(Cardpile *originalTableau);
 
 #endif // GAME_INITIALIZATION_H

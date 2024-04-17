@@ -4,25 +4,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void startupPopulateTableau(Cardpile *tableau, Card *head) {
+void startupPopulateTableau(Cardpile *tableau[], Card *head) {
+    Card *card = head;
     for (int i = 0; i < DECK_SIZE; i++) {
-        if (head == NULL || head->next == NULL) {
+        if (card == NULL || card->next == NULL) {
             printf("Error: head or next is NULL\n");
             return;
         }
-        Card *card = head;
-        head = head->next;
-        card->next = NULL;
-        card->prev = NULL;
 
         int tableauIndex = i % NUMBER_OF_TABLEAUS;
-        if (tableau[tableauIndex].top == NULL) {
-            tableau[tableauIndex].top = card;
-            tableau[tableauIndex].bottom = card;
+        if (tableau[tableauIndex]->top == NULL) {
+            tableau[tableauIndex]->top = card;
+            tableau[tableauIndex]->bottom = card;
         } else {
-            card->prev = tableau[tableauIndex].top;
-            tableau[tableauIndex].top->next = card;
-            tableau[tableauIndex].top = card;
+            card->prev = tableau[tableauIndex]->top;
+            tableau[tableauIndex]->top->next = card;
+            tableau[tableauIndex]->top = card;
         }
     }
 }
@@ -64,7 +61,7 @@ Cardpile* copyTableau(Cardpile *originalTableau) {
 }
 
 
-void initializeStartup(Cardpile **tableau, Cardpile **foundation, Cardpile *deck) {
+void initializeStartup(Cardpile *tableau[], Cardpile **foundation, Cardpile *deck) {
 
     // Read cards from file
     deck->top = createDeckFromFile("../unshuffledDeck.txt");
@@ -78,8 +75,8 @@ void initializeStartup(Cardpile **tableau, Cardpile **foundation, Cardpile *deck
 
 
     startupPopulateTableau(tableau, deck->top);
-    printUI(copyTableau(*tableau), *foundation, false);
-    printUI(copyTableau(*tableau), *foundation, true);
+    printUI(tableau, *foundation, false);
+    printUI(tableau, *foundation, true);
 
 }
 

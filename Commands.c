@@ -71,9 +71,8 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
                    "HELP - Display this help message\n");
         }
 
-        {
             // Handle unknown command
-        }
+
 
         //TODO: Add gamemove commands here
 

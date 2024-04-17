@@ -3,6 +3,6 @@
 
 #include "Cardpile.h"
 
-void printUI(Cardpile *tableau, Cardpile *foundation, bool isFaceUp);
+void printUI(Cardpile *tableau[], Cardpile *foundation[], bool isFaceUp);
 
 #endif // GAME_UI_H
