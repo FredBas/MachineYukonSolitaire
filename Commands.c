@@ -24,6 +24,10 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
             printUI(tableau, foundation, false);
         }
     } else if (strcmp(cmd, "SW") == 0) {
+        if (deck->top == NULL) {
+            printf("Error: No deck loaded.\n");
+            return;
+        }
         printUI(tableau, foundation, true);
         // Show cards during startup phase
     } else if (strcmp(cmd, "SI") == 0) {
