@@ -5,6 +5,7 @@
 
 void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundation, Cardpile *deck) {
     char *currentPhase = "startupPhase";
+    char *lastCommand = "";
 
     // Create a copy of the command string because strtok modifies the original string
     char *commandCopy = strdup(command);
@@ -16,10 +17,18 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         if (filename != NULL) {
             initializeStartup(tableau, foundation, deck, filename);
             printUI(tableau, foundation, false);
+            lastCommand = "LD";
+            printf("LAST Command: %s\n",lastCommand);
+            printf("Message: \n");
+            printf("INPUT > ");
 
         } else {
             initializeStartup(tableau, foundation, deck, "unshuffledDeck.txt");
             printUI(tableau, foundation, false);
+            lastCommand = "LD";
+            printf("LAST Command: %s\n", lastCommand);
+            printf("Message: \n");
+            printf("INPUT > ");
         }
     } else if (strcmp(cmd, "SW") == 0) {
         if (deck->top == NULL) {
@@ -27,6 +36,10 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
             return;
         }
         printUI(tableau, foundation, true);
+        lastCommand = "SW";
+        printf("LAST Command: %s\n", lastCommand);
+        printf("Message: \n");
+        printf("INPUT > ");
         // Show cards during startup phase
     } else if (strcmp(cmd, "SI") == 0) {
         char *splitStr = strtok(NULL, " ");
