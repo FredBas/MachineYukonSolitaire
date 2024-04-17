@@ -5,4 +5,6 @@
 
 void printUI(Cardpile *tableau[], Cardpile *foundation[], bool isFaceUp);
 
+Card* getCardAt(Cardpile *pile, int rowOfTableau);
+
 #endif // GAME_UI_H
