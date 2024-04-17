@@ -7,7 +7,7 @@
 void startupPopulateTableau(Cardpile *tableau[], Card *head) {
     Card *card = head;
     for (int i = 0; i < DECK_SIZE; i++) {
-        if (card == NULL || card->next == NULL) {
+        if (card == NULL) {
             printf("Error: head or next is NULL\n");
             return;
         }
@@ -76,8 +76,8 @@ void initializeStartup(Cardpile *tableau[], Cardpile **foundation, Cardpile *dec
 
 
     startupPopulateTableau(tableau, deck->top);
-    printUI(tableau, foundation, false);
     printUI(tableau, foundation, true);
+    printUI(tableau, foundation, false);
 
 }
 
