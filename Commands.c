@@ -16,11 +16,15 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         if (filename != NULL) {
             // Load deck from file specified by filename during startup phase
             initializeStartup(tableau, foundation, deck, filename);
+            printUI(tableau, foundation, false);
+
         } else {
             // Load deck from "unshuffledDeck.txt" during startup phase
             initializeStartup(tableau, foundation, deck, "unshuffledDeck.txt");
+            printUI(tableau, foundation, false);
         }
     } else if (strcmp(cmd, "SW") == 0) {
+        printUI(tableau, foundation, true);
         // Show cards during startup phase
     } else if (strcmp(cmd, "SI") == 0) {
         char *splitStr = strtok(NULL, " "); // Get the second token (the split)
