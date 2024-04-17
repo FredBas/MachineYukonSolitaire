@@ -76,8 +76,8 @@ void initializeStartup(Cardpile *tableau[], Cardpile **foundation, Cardpile *dec
 
 
     startupPopulateTableau(tableau, deck->top);
-    printUI(tableau, foundation, true);
     printUI(tableau, foundation, false);
+    printUI(tableau, foundation, true);
 
 }
 
