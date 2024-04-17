@@ -6,42 +6,53 @@
 #include <string.h>
 
 void shuffleDeck(Cardpile *deck, int split) {
+    // If split is not provided (i.e., split is 0), generate a random split
+    if (split == 0) {
+        srand(time(NULL)); // Seed for random number generation
+        split = rand() % (DECK_SIZE - 1) + 1; // Generate a random number between 1 and DECK_SIZE - 1
+    }
+
     // Split the deck into two piles
     Card *pile1 = deck->top;
     deck->top = NULL;
     Card *current = pile1;
     for (int i = 0; i < split - 1; ++i) {
-        current = current->next;
+        if (current != NULL) {
+            current = current->next;
+        } else {
+            break;
+        }
     }
-    Card *pile2 = current->next;
-    current->next = NULL;
+    Card *pile2 = NULL;
+    if (current != NULL) {
+        pile2 = current->next;
+        current->next = NULL;
+    } else {
+        printf("Error: Split value is too large.\n");
+        return;
+    }
 
     // Shuffle the piles
     Cardpile shuffled;
     shuffled.top = NULL;
     shuffled.size = 0;
-    srand(time(NULL)); // Seed for random number generation
 
+    // Alternately take the top card from each pile
     while (pile1 != NULL && pile2 != NULL) {
-        if (rand() % 2 == 0) { // Randomly select from pile1
-            Card *temp = pile1;
-            pile1 = pile1->next;
-            temp->next = shuffled.top;
-            shuffled.top = temp;
-        } else { // Randomly select from pile2
-            Card *temp = pile2;
-            pile2 = pile2->next;
-            temp->next = shuffled.top;
-            shuffled.top = temp;
-        }
+        Card *temp;
+        temp = pile1;
+        pile1 = pile1->next;
+        temp->next = shuffled.top;
+        shuffled.top = temp;
+
+        temp = pile2;
+        pile2 = pile2->next;
+        temp->next = shuffled.top;
+        shuffled.top = temp;
     }
 
     // Add remaining cards from the non-empty pile to the shuffled pile
-    if (pile1 != NULL) {
-        current = pile1;
-    } else {
-        current = pile2;
-    }
+    current = pile1 != NULL ? pile1 : pile2;
     while (current != NULL) {
         Card *temp = current;
         current = current->next;
@@ -53,6 +64,7 @@ void shuffleDeck(Cardpile *deck, int split) {
     deck->top = shuffled.top;
     deck->size = DECK_SIZE;
 }
+
 
 int checkDuplicate(Card *deck, int numCards) {
     for (int i = 0; i < numCards - 1; i++) {

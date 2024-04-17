@@ -32,9 +32,9 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         char *splitStr = strtok(NULL, " ");
         if (splitStr != NULL) {
             int split = atoi(splitStr); // Convert the split string to an integer
-            // Shuffle deck of cards using a deck-split at the number specified in split during startup phase
+            shuffleDeck(deck, split);
         } else {
-            // Shuffle deck of cards using a deck-split at 26 during startup phase
+            shuffleDeck(deck, 0);
         }
     } else if (strcmp(cmd, "SR") == 0) {
         /* Do a random shuffle. Take the top card from the unshuffled pile and insert it at a random position
