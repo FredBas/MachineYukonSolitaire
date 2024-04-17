@@ -62,10 +62,13 @@ Cardpile* copyTableau(Cardpile *originalTableau) {
 }
 
 
-void initializeStartup(Cardpile *tableau[], Cardpile **foundation, Cardpile *deck) {
+void initializeStartup(Cardpile *tableau[], Cardpile **foundation, Cardpile *deck, char* filename) {
+
+    char filepath[sizeof(char)*50];
+    snprintf(filepath, sizeof(filepath), "../%s", filename);
 
     // Read cards from file
-    deck->top = createDeckFromFile("../unshuffledDeck.txt");
+    deck->top = createDeckFromFile(filepath);
 
     if (deck->top == NULL) {
         printf("Error: Failed to read cards from file.\n");

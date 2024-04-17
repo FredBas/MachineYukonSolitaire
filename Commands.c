@@ -15,9 +15,10 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         char *filename = strtok(NULL, " "); // Get the second token (the filename)
         if (filename != NULL) {
             // Load deck from file specified by filename during startup phase
+            initializeStartup(tableau, foundation, deck, filename);
         } else {
             // Load deck from "unshuffledDeck.txt" during startup phase
-            initializeStartup(tableau, foundation, deck);
+            initializeStartup(tableau, foundation, deck, "unshuffledDeck.txt");
         }
     } else if (strcmp(cmd, "SW") == 0) {
         // Show cards during startup phase
