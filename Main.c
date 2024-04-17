@@ -12,7 +12,7 @@
 int main() {
     // Initialize game
     Cardpile *tableau[NUMBER_OF_TABLEAUS];
-    char* command = malloc(20 * sizeof(char));
+    char* command = (char*)malloc(20 * sizeof(char));
     if (command == NULL) {
         printf("Memory allocation failed for command\n");
         return 1; // Return an error code
@@ -20,6 +20,9 @@ int main() {
 
     for (int i = 0; i < NUMBER_OF_TABLEAUS; ++i) {
         tableau[i] = malloc(sizeof(Cardpile));
+        tableau[i]->bottom = NULL;
+        tableau[i]->top = NULL;
+        tableau[i]->size = 0;
         if (tableau[i] == NULL) {
             printf("Memory allocation failed for tableau[%d]\n", i);
             return 1; // Return an error code
@@ -28,12 +31,19 @@ int main() {
     Cardpile *foundation[NUMBER_OF_FOUNDATIONS];
     for (int i = 0; i < NUMBER_OF_FOUNDATIONS; ++i) {
         foundation[i] = malloc(sizeof(Cardpile));
+        foundation[i]->bottom = NULL;
+        foundation[i]->top = NULL;
+        foundation[i]->size = 0;
         if (foundation[i] == NULL) {
             printf("Memory allocation failed for foundation[%d]\n", i);
             return 1; // Return an error code
         }
     }
     Cardpile *deck = malloc(sizeof(Cardpile));
+    deck->bottom = NULL;
+    deck->top = NULL;
+    deck->size = 0;
+
     if (deck == NULL) {
         printf("Memory allocation failed for deck\n");
         return 1; // Return an error code
