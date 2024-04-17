@@ -1,9 +1,9 @@
 #include "GameUI.h"
 #include <stdbool.h>
 #include <stdio.h>
-Card* getCardAt(Cardpile *pile, int rowOfTableau) {
+Card* getCardAt(Cardpile *pile, int cardPosition) {
     Card *card = pile->bottom;
-    for (int i = 0; i < rowOfTableau; i++) {
+    for (int i = 0; i < cardPosition; i++) {
         if (card == NULL) {
             return NULL;
         }
