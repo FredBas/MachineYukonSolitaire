@@ -14,7 +14,7 @@ void cleanup(Cardpile **deck) {
 }
 
 // Wrapper function for malloc
-void* safe_malloc(size_t size, char* errMsg) {
+void* safeMalloc(size_t size, char* errMsg) {
     void* ptr = malloc(size);
     if (ptr == NULL) {
         printf("%s\n", errMsg);

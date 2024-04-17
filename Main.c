@@ -16,19 +16,19 @@ int main() {
     Cardpile *tableau[NUMBER_OF_TABLEAUS];
 
     for (int i = 0; i < NUMBER_OF_TABLEAUS; ++i) {
-        tableau[i] = safe_malloc(sizeof(Cardpile), "Memory allocation failed for tableau");
+        tableau[i] = safeMalloc(sizeof(Cardpile), "Memory allocation failed for tableau");
         tableau[i]->bottom = NULL;
         tableau[i]->top = NULL;
         tableau[i]->size = 0;
     }
     Cardpile *foundation[NUMBER_OF_FOUNDATIONS];
     for (int i = 0; i < NUMBER_OF_FOUNDATIONS; ++i) {
-        foundation[i] = safe_malloc(sizeof(Cardpile), "Memory allocation failed for foundation");
+        foundation[i] = safeMalloc(sizeof(Cardpile), "Memory allocation failed for foundation");
         foundation[i]->bottom = NULL;
         foundation[i]->top = NULL;
         foundation[i]->size = 0;
     }
-    Cardpile *deck = safe_malloc(sizeof(Cardpile), "Memory allocation failed for deck");
+    Cardpile *deck = safeMalloc(sizeof(Cardpile), "Memory allocation failed for deck");
     deck->bottom = NULL;
     deck->top = NULL;
     deck->size = 0;

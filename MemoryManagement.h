@@ -6,5 +6,5 @@
 
 void cleanup(Cardpile **deck);
 
-void* safe_malloc(size_t size, char* errMsg);
+void* safeMalloc(size_t size, char* errMsg);
 #endif // MEMORY_MANAGEMENT_H
