@@ -21,6 +21,7 @@ void startupPopulateTableau(Cardpile *tableau[], Card *head) {
             tableau[tableauIndex]->top->next = card;
             tableau[tableauIndex]->top = card;
         }
+        card = card->next;
     }
 }
 
