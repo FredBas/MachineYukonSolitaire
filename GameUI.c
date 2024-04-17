@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 void printUI(Cardpile *tableau[], Cardpile *foundation[], bool isFaceUp) {
-    printf("C1\tC2\tC3\tC4\tC5\tC6\tC7\n\n");
+    printf("\nC1\tC2\tC3\tC4\tC5\tC6\tC7\n\n");
     int row = 0;
     for (int i = 0; i < DECK_SIZE; i++) {
         Card *card = tableau[i % 7]->bottom;
