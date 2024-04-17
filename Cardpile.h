@@ -10,7 +10,7 @@ typedef struct Cardpile {
     int size;
 } Cardpile;
 
-void shuffleDeck(Cardpile *deck, int split);
+void shuffleDeckSplit(Cardpile *deck, int split);
 
 int checkDuplicate(Card *deck, int numCards);
 

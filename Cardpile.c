@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 
-void shuffleDeck(Cardpile *deck, int split) {
+void shuffleDeckSplit(Cardpile *deck, int split) {
     // If split is not provided (i.e., split is 0), generate a random split
     if (split == 0) {
         srand(time(NULL)); // Seed for random number generation
