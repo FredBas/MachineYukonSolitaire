@@ -12,14 +12,12 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
     char *cmd = strtok(commandCopy, " ");
 
     if (strcmp(cmd, "LD") == 0) {
-        char *filename = strtok(NULL, " "); // Get the second token (the filename)
+        char *filename = strtok(NULL, " ");
         if (filename != NULL) {
-            // Load deck from file specified by filename during startup phase
             initializeStartup(tableau, foundation, deck, filename);
             printUI(tableau, foundation, false);
 
         } else {
-            // Load deck from "unshuffledDeck.txt" during startup phase
             initializeStartup(tableau, foundation, deck, "unshuffledDeck.txt");
             printUI(tableau, foundation, false);
         }
@@ -31,7 +29,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         printUI(tableau, foundation, true);
         // Show cards during startup phase
     } else if (strcmp(cmd, "SI") == 0) {
-        char *splitStr = strtok(NULL, " "); // Get the second token (the split)
+        char *splitStr = strtok(NULL, " ");
         if (splitStr != NULL) {
             int split = atoi(splitStr); // Convert the split string to an integer
             // Shuffle deck of cards using a deck-split at the number specified in split during startup phase
@@ -42,7 +40,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         /* Do a random shuffle. Take the top card from the unshuffled pile and insert it at a random position
            within a new pile, do this until all cards have been randomly inserted into the new pile */
     } else if (strcmp(cmd, "SD") == 0) {
-        char *filename = strtok(NULL, " "); // Get the second token (the filename)
+        char *filename = strtok(NULL, " ");
         if (filename != NULL) {
             // Save current carddeck to file specified by filename
         } else {
