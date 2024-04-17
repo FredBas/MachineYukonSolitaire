@@ -1,5 +1,5 @@
 #include "MemoryManagement.h"
-
+#include <stdio.h>
 void cleanup(Cardpile **deck) {
     // Free the memory allocated for the cards
     Card *current = (*deck)->top;
@@ -11,4 +11,14 @@ void cleanup(Cardpile **deck) {
     // Free the memory allocated for the deck
     free(*deck);
     *deck = NULL;
+}
+
+// Wrapper function for malloc
+void* safe_malloc(size_t size, char* errMsg) {
+    void* ptr = malloc(size);
+    if (ptr == NULL) {
+        printf("%s\n", errMsg);
+        exit(1); // Exit the program
+    }
+    return ptr;
 }
