@@ -73,7 +73,6 @@ void shuffleDeckSplit(Cardpile *deck, int split) {
     // Update the stock with the shuffled cards
     deck->top = shuffled.top;
     deck->size = DECK_SIZE;
-    printCardList(deck->top);
 }
 
 void shuffleRandom(Cardpile *deck) {
