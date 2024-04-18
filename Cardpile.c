@@ -112,11 +112,15 @@ void shuffleRandom(Cardpile *deck) {
     deck->top = cards[0];
     current = deck->top;
     for (int i = 1; i < DECK_SIZE; ++i) {
-        current->next = cards[i];
-        current = current->next;
+        if(current == NULL) {
+            current->next = cards[i];
+            current = current->next;
+        }
     }
-    current->next = NULL; // Make sure the last card points to NULL
-    deck->bottom = current;
+    if(current != NULL) {
+        current->next = NULL; // Make sure the last card points to NULL
+        deck->bottom = current;
+    }
 }
 
 
