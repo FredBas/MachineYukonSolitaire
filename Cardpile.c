@@ -141,3 +141,24 @@ Card *createDeckFromFile(char *filename) {
 
     return head;
 }
+
+Card *copyDeck(Card *head) {
+    Card *copyHead = NULL;
+    Card **nextPtr = &copyHead;
+    Card *current = head;
+    while (current != NULL) {
+        Card *newCard = (Card *) malloc(sizeof(Card));
+        if (newCard == NULL) {
+            printf("Memory allocation failed for card\n");
+            freeCardList(copyHead);
+            return NULL;
+        }
+        newCard->rank = current->rank;
+        newCard->suit = current->suit;
+        newCard->next = NULL;
+        *nextPtr = newCard;
+        nextPtr = &(newCard->next);
+        current = current->next;
+    }
+    return copyHead;
+}

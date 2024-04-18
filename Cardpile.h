@@ -20,4 +20,6 @@ void freeCardList(Card *head);
 
 Card *createDeckFromFile(char *filename);
 
+Card *copyDeck(Card *head);
+
 #endif // CARDPILE_H

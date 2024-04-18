@@ -78,7 +78,7 @@ void initializeStartup(Cardpile *tableau[], Cardpile **foundation, Cardpile *dec
     // Initialize tableau and foundation as empty stacks
 
 
-    startupPopulateTableau(tableau, deck->top);
+    startupPopulateTableau(tableau, copyDeck(deck->top));
 
 
 }
