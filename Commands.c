@@ -53,7 +53,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         }
         startupPopulateTableau(tableau, copyDeck(deck->top));
         printUI(tableau, foundation, false);
-        lastCommand = "LD";
+        lastCommand = "SI";
         printf("LAST Command: %s\n", lastCommand);
         printf("Message: \n");
         printf("INPUT > ");
