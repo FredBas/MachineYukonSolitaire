@@ -73,7 +73,6 @@ void shuffleDeckSplit(Cardpile *deck, int split) {
     // Update the stock with the shuffled cards
     deck->top = shuffled.top;
     deck->size = DECK_SIZE;
-    printCardList(deck->top);
 }
 
 void shuffleRandom(Cardpile *deck) {
@@ -216,4 +215,12 @@ Card *copyDeck(Card *head) {
         current = current->next;
     }
     return copyHead;
+}
+
+void clearTableau(Cardpile *tableau[]) {
+    for (int i = 0; i < NUMBER_OF_TABLEAUS; ++i) {
+        tableau[i]->top = NULL;
+        tableau[i]->bottom = NULL;
+        tableau[i]->size = 0;
+    }
 }
