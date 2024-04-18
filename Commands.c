@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "GameInitialization.h"
+#include "Cardpile.h"
 
 void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundation, Cardpile *deck) {
     char *currentPhase = "startupPhase";
@@ -56,8 +57,11 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         printf("Message: \n");
         printf("INPUT > ");
     } else if (strcmp(cmd, "SR") == 0) {
-        /* Do a random shuffle. Take the top card from the unshuffled pile and insert it at a random position
-           within a new pile, do this until all cards have been randomly inserted into the new pile */
+        shuffleRandom(deck);
+        lastCommand = "SR";
+        printf("LAST Command: %s\n", lastCommand);
+        printf("Message: \n");
+        printf("INPUT > ");
     } else if (strcmp(cmd, "SD") == 0) {
         char *filename = strtok(NULL, " ");
         if (filename != NULL) {
