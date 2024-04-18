@@ -12,6 +12,8 @@ typedef struct Cardpile {
 
 void shuffleDeckSplit(Cardpile *deck, int split);
 
+void shuffleRandom(Cardpile *deck);
+
 int checkDuplicate(Card *deck, int numCards);
 
 void printCardList(Card *head);

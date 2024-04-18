@@ -65,6 +65,36 @@ void shuffleDeckSplit(Cardpile *deck, int split) {
     deck->size = DECK_SIZE;
 }
 
+void shuffleRandom(Cardpile *deck) {
+    srand(time(NULL)); // Seed for random number generation
+
+    // Create an array to hold the cards for easy random access
+    Card *cards[DECK_SIZE];
+    Card *current = deck->top;
+    for (int i = 0; i < DECK_SIZE; ++i) {
+        cards[i] = current;
+        current = current->next;
+    }
+    // Fisher-Yates shuffle
+    for (int i = DECK_SIZE - 1; i > 0; --i) {
+        int j = rand() % (i + 1); // Generate a random index
+
+        // Swap cards[i] and cards[j]
+        Card *temp = cards[i];
+        cards[i] = cards[j];
+        cards[j] = temp;
+    }
+
+    // Reconstruct the deck from the shuffled array
+    deck->top = cards[0];
+    current = deck->top;
+    for (int i = 1; i < DECK_SIZE; ++i) {
+        current->next = cards[i];
+        current = current->next;
+    }
+    current->next = NULL; // Make sure the last card points to NULL
+    deck->bottom = current;
+}
 
 int checkDuplicate(Card *deck, int numCards) {
     for (int i = 0; i < numCards - 1; i++) {
