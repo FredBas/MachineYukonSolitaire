@@ -75,6 +75,9 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         }
     } else if (strcmp(cmd, "QQ") == 0) {
         // Quit the game
+        printf("Goodbye! DEAN Phar Gaming Done\n");
+        exit(0);
+
     } else if (strcmp(cmd, "P") == 0) {
         // Transition into PLAY phase. Commands specific to startup phase are no longer available
         //If such a command is attempted, the user will receive an error message stating,
