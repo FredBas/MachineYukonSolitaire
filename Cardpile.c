@@ -37,7 +37,7 @@ void shuffleDeckSplit(Cardpile *deck, int split) {
     shuffled.top = NULL;
     shuffled.size = 0;
 
-    // Alternately take the top card from each pile
+    // Alternately take the top card from each pile until one pile is exhausted
     while (pile1 != NULL && pile2 != NULL) {
         Card *temp;
         temp = pile1;
@@ -60,10 +60,22 @@ void shuffleDeckSplit(Cardpile *deck, int split) {
         shuffled.top = temp;
     }
 
+    // Reverse the shuffled pile to place remaining cards at the bottom
+    Card *prev = NULL, *curr = shuffled.top, *next;
+    while (curr != NULL) {
+        next = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = next;
+    }
+    shuffled.top = prev;
+
     // Update the stock with the shuffled cards
     deck->top = shuffled.top;
     deck->size = DECK_SIZE;
+    printCardList(deck->top);
 }
+
 
 
 int checkDuplicate(Card *deck, int numCards) {
