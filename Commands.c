@@ -51,9 +51,15 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
             shuffleDeckSplit(deck, 0);
         }
     } else if (strcmp(cmd, "SR") == 0) {
-        /* Do a random shuffle. Take the top card from the unshuffled pile and insert it at a random position
-           within a new pile, do this until all cards have been randomly inserted into the new pile */
+        if (deck->top == NULL) {
+            printf("Error: No deck loaded.\n");
+            return;
+        }
         shuffleRandom(deck);
+        lastCommand = "SR";
+        printf("LAST Command: %s\n", lastCommand);
+        printf("Message: \n");
+        printf("INPUT > ");
     } else if (strcmp(cmd, "SD") == 0) {
         char *filename = strtok(NULL, " ");
         if (filename != NULL) {

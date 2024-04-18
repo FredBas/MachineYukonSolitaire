@@ -66,6 +66,18 @@ void shuffleDeckSplit(Cardpile *deck, int split) {
 }
 
 void shuffleRandom(Cardpile *deck) {
+    if (deck == NULL) {
+        printf("Error: Deck is NULL.\n");
+        return;
+    }
+    if(deck->top == NULL) {
+        printf("Error: deck->top is NULL.\n");
+        return;
+    }
+    if(deck->bottom == NULL) {
+        printf("Error: deck->bottom is NULL.\n");
+        return;
+    }
     srand(time(NULL)); // Seed for random number generation
 
     // Create an array to hold the cards for easy random access
