@@ -50,6 +50,12 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         } else {
             shuffleDeckSplit(deck, 0);
         }
+        startupPopulateTableau(tableau, deck->top);
+        printUI(tableau, foundation, false);
+        lastCommand = "LD";
+        printf("LAST Command: %s\n", lastCommand);
+        printf("Message: \n");
+        printf("INPUT > ");
     } else if (strcmp(cmd, "SR") == 0) {
         shuffleRandom(deck);
         lastCommand = "SR";
