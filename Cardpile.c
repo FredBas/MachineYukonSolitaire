@@ -103,20 +103,14 @@ void shuffleRandom(Cardpile *deck) {
         cards[j] = cards[i];
         cards[i] = temp;
     }
-
     // Reconstruct the deck from the shuffled array
     deck->top = cards[0];
     current = deck->top;
     for (int i = 1; i < DECK_SIZE; ++i) {
-        if(current == NULL) {
-            current->next = cards[i];
-            current = current->next;
-        }
+        current->next = cards[i];
+        current = current->next;
     }
-    if(current != NULL) {
-        current->next = NULL; // Make sure the last card points to NULL
-        deck->top = current;
-    }
+    current->next = NULL; // Make sure the last card points to NULL
 }
 
 

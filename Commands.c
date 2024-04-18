@@ -19,7 +19,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
             initializeStartup(tableau, foundation, deck, filename);
             printUI(tableau, foundation, false);
             lastCommand = "LD";
-            printf("LAST Command: %s\n",lastCommand);
+            printf("LAST Command: %s\n", lastCommand);
             printf("Message: \n");
             printf("INPUT > ");
 
@@ -58,7 +58,10 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         printf("Message: \n");
         printf("INPUT > ");
     } else if (strcmp(cmd, "SR") == 0) {
+        clearTableau(tableau);
         shuffleRandom(deck);
+        startupPopulateTableau(tableau, copyDeck(deck->top));
+        printUI(tableau, foundation, false);
         lastCommand = "SR";
         printf("LAST Command: %s\n", lastCommand);
         printf("Message: \n");
@@ -102,7 +105,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
                    "HELP - Display this help message\n");
         }
 
-            // Handle unknown command
+        // Handle unknown command
 
 
         //TODO: Add gamemove commands here
