@@ -51,7 +51,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         } else {
             shuffleDeckSplit(deck, 0);
         }
-        startupPopulateTableau(tableau, deck->top);
+        startupPopulateTableau(tableau, copyDeck(deck->top));
         printUI(tableau, foundation, false);
         lastCommand = "LD";
         printf("LAST Command: %s\n", lastCommand);
