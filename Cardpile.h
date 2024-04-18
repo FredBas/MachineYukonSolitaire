@@ -24,4 +24,6 @@ Card *createDeckFromFile(char *filename);
 
 Card *copyDeck(Card *head);
 
+void clearTableau(Cardpile *tableau[]);
+
 #endif // CARDPILE_H

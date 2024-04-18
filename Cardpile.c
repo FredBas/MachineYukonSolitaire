@@ -216,3 +216,11 @@ Card *copyDeck(Card *head) {
     }
     return copyHead;
 }
+
+void clearTableau(Cardpile *tableau[]) {
+    for (int i = 0; i < NUMBER_OF_TABLEAUS; ++i) {
+        tableau[i]->top = NULL;
+        tableau[i]->bottom = NULL;
+        tableau[i]->size = 0;
+    }
+}

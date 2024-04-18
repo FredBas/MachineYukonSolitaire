@@ -44,6 +44,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         // Show cards during startup phase
     } else if (strcmp(cmd, "SI") == 0) {
         char *splitStr = strtok(NULL, " ");
+        clearTableau(tableau);
         if (splitStr != NULL) {
             int split = atoi(splitStr); // Convert the split string to an integer
             shuffleDeckSplit(deck, split);
