@@ -51,10 +51,6 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
             shuffleDeckSplit(deck, 0);
         }
     } else if (strcmp(cmd, "SR") == 0) {
-        if (deck->top == NULL) {
-            printf("Error: No deck loaded.\n");
-            return;
-        }
         shuffleRandom(deck);
         lastCommand = "SR";
         printf("LAST Command: %s\n", lastCommand);
