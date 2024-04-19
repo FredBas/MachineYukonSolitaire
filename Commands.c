@@ -108,10 +108,14 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         char *filename = strtok(NULL, " ");
         if (filename != NULL) {
             // Save current carddeck to file specified by filename
-            saveDeckToFile(deck->top, filename);
+            char filepath[sizeof(char)*50];
+            snprintf(filepath, sizeof(filepath), "../%s", filename);
+            saveDeckToFile(deck->top, filepath);
         } else {
             // Save current carddeck to "cards.txt"
-            saveDeckToFile(deck->top, "cards.txt");
+            char filepath[sizeof(char)*50];
+            snprintf(filepath, sizeof(filepath), "../cards.txt");
+            saveDeckToFile(deck->top, filepath);
         }
     } else if (strcmp(cmd, "QQ") == 0) {
         // Quit the game
