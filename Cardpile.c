@@ -169,6 +169,7 @@ Card *createDeckFromFile(char *filename) {
             newCard->rank = rank;
             newCard->suit = suit;
             newCard->next = NULL;
+            newCard->isFaceUp = false;
             if (head == NULL) {
                 head = newCard;
             } else {
@@ -204,6 +205,7 @@ Card *copyDeck(Card *head) {
         newCard->rank = current->rank;
         newCard->suit = current->suit;
         newCard->next = NULL;
+        newCard->isFaceUp = current->isFaceUp;
         *nextPtr = newCard;
         nextPtr = &(newCard->next);
         current = current->next;
@@ -222,7 +224,7 @@ void clearTableau(Cardpile *tableau[]) {
 void showTableauCardsStartup(Cardpile *tableau[]) {
     Card *currentCard;
     for (int i = 0; i < NUMBER_OF_TABLEAUS; ++i) {
-        currentCard = tableau[i]->top;
+        currentCard = tableau[i]->bottom;
         while (currentCard != NULL) {
             currentCard->isFaceUp = true;
             currentCard = currentCard->next;

@@ -125,13 +125,7 @@ void initializeStartup(Cardpile *tableau[], Cardpile **foundation, Cardpile *dec
         printf("Error: Failed to read cards from file.\n");
         return;
     }
-
-    // Initialize tableau and foundation as empty stacks
-
-
     startupPopulateTableau(tableau, copyDeck(deck->top));
-
-
 }
 
 
