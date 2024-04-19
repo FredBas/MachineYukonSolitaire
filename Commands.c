@@ -121,6 +121,13 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
             return;
         }
         *currentPhase = play;
+        clearTableau(tableau);
+        playPopulateTableau(tableau, copyDeck(deck->top));
+        printUI(tableau, foundation);
+        lastCommand = "P";
+        printf("LAST Command: %s\n", lastCommand);
+        printf("Message: \n");
+        printf("INPUT > ");
         // Transition into PLAY phase. Commands specific to startup phase are no longer available
         //If such a command is attempted, the user will receive an error message stating,
         //“Command not available in the PLAY phase.”
