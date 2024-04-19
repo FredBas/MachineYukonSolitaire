@@ -204,6 +204,7 @@ void saveDeckToFile(Card *head, char *filename) {
         current = current->next;
     }
     fclose(file);
+    printf("Deck saved to file '%s'.\n", filename);
 }
 
 Card *copyDeck(Card *head) {
