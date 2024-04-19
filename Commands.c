@@ -121,6 +121,9 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
             return;
         }
         *currentPhase = play;
+        // Transition into PLAY phase. Commands specific to startup phase are no longer available
+        //If such a command is attempted, the user will receive an error message stating,
+        //“Command not available in the PLAY phase.”
         clearTableau(tableau);
         playPopulateTableau(tableau, copyDeck(deck->top));
         printUI(tableau, foundation);
@@ -128,9 +131,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         printf("LAST Command: %s\n", lastCommand);
         printf("Message: \n");
         printf("INPUT > ");
-        // Transition into PLAY phase. Commands specific to startup phase are no longer available
-        //If such a command is attempted, the user will receive an error message stating,
-        //“Command not available in the PLAY phase.”
+
     } else if (strcmp(cmd, "Q") == 0) {
         if(*currentPhase == welcome) {
             printf("Command not available in welcome phase. For a list of available commands, type HELP\n\n");
