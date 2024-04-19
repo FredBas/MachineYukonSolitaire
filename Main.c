@@ -33,13 +33,15 @@ int main() {
     deck->top = NULL;
     deck->size = 0;
 
-    printf("\nWelcome to Yukon Solitaire!\nTo begin the startup phase, load a deck using the 'LD' command.\n\n(For a list of commands, type 'HELP')\n\n");
+    gamePhase currentPhase = welcome;
+
+    printf("\nWelcome to Yukon Solitaire!\n\n(For a list of commands, type 'HELP')\n\n");
 
     // Main game loop
     while (true) {
         fgets(command, 20, stdin);
         command[strcspn(command, "\n")] = 0; // Remove the newline character
-        commandHandler(command, tableau, foundation, deck);
+        commandHandler(command, tableau, foundation, deck, &currentPhase);
     }
 
     // Cleanup
