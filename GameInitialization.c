@@ -52,19 +52,12 @@ void playPopulateTableau(Cardpile *tableau[], Card *head) {
         }
         i++;
         if (i == NUMBER_OF_TABLEAUS) {
-            if (row < 5) {
-                i = 1;
-            } else if (row == 5) {
-                i = 2;
-            } else if (row == 6) {
-                i = 3;
-            } else if (row == 7) {
-                i = 4;
-            } else if (row == 8) {
-                i = 5;
-            } else if (row == 9) {
-                i = 6;
-            }
+            if (row < 5) {i = 1;}
+            else if (row == 5) {i = 2;}
+            else if (row == 6) {i = 3;}
+            else if (row == 7) {i = 4;}
+            else if (row == 8) {i = 5;}
+            else if (row == 9) {i = 6;}
             row++;
         }
         card = card->next;
@@ -125,7 +118,6 @@ void initializeStartup(Cardpile *tableau[], Cardpile **foundation, Cardpile *dec
         printf("Error: Failed to read cards from file.\n");
         return;
     }
-    startupPopulateTableau(tableau, copyDeck(deck->top));
 }
 
 

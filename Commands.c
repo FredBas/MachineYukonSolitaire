@@ -22,6 +22,8 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         char *filename = strtok(NULL, " ");
         if (filename != NULL) {
             initializeStartup(tableau, foundation, deck, filename);
+            clearTableau(tableau);
+            startupPopulateTableau(tableau, copyDeck(deck->top));
             printUI(tableau, foundation);
             lastCommand = "LD";
             printf("LAST Command: %s\n", lastCommand);
@@ -30,6 +32,8 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
 
         } else {
             initializeStartup(tableau, foundation, deck, "unshuffledDeck.txt");
+            clearTableau(tableau);
+            startupPopulateTableau(tableau, copyDeck(deck->top));
             printUI(tableau, foundation);
             lastCommand = "LD";
             printf("LAST Command: %s\n", lastCommand);
