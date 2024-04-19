@@ -15,16 +15,19 @@ Card* getCardAt(Cardpile *pile, int cardPosition) {
 void printUI(Cardpile *tableau[], Cardpile *foundation[], bool isFaceUp) {
     printf("\nC1\tC2\tC3\tC4\tC5\tC6\tC7\n\n");
     int row = 0;
-    for (int i = 0; i < DECK_SIZE; i++) {
+    int iterator = 52;
+    for (int i = 0; i < iterator; i++) {
         Card *card = getCardAt(tableau[i % 7], row);
         if (card == NULL) {
-            printf("Error: Not enough cards in the tableau.\n");
-            return;
+            printf("  \t");
+            iterator++;
+        } else {
+            card->isFaceUp = isFaceUp;
+            printCard(card);
         }
-        card->isFaceUp = isFaceUp;
-        printCard(card);
+
         if (i % 7 == 6) {
-            if (row % 2 == 0) {
+            if (row < 7 && row % 2 == 0) {
                 if (foundation[row / 2]->size == 0) {
                     printf("\t\t[]\tF%d\n", row / 2 + 1);
                 } else {

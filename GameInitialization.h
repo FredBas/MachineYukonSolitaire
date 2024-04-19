@@ -7,6 +7,7 @@
 
 void startupPopulateTableau(Cardpile *tableau[], Card *head);
 void initializeStartup(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, char* filename);
+void playPopulateTableau(Cardpile *tableau[], Card *head);
 Cardpile* copyTableau(Cardpile *originalTableau);
 
 #endif // GAME_INITIALIZATION_H
