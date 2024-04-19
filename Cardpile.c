@@ -191,6 +191,21 @@ Card *createDeckFromFile(char *filename) {
     return head;
 }
 
+void saveDeckToFile(Card *head, char *filename) {
+    FILE *file = fopen(filename, "w");
+    if (file == NULL) {
+        printf("Error: File '%s' not found.\n", filename);
+        return;
+    }
+
+    Card *current = head;
+    while (current != NULL) {
+        fprintf(file, "%c%c\n", current->rank, current->suit);
+        current = current->next;
+    }
+    fclose(file);
+}
+
 Card *copyDeck(Card *head) {
     Card *copyHead = NULL;
     Card **nextPtr = &copyHead;

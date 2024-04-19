@@ -22,6 +22,8 @@ void freeCardList(Card *head);
 
 Card *createDeckFromFile(char *filename);
 
+void saveDeckToFile(Card *head, char *filename);
+
 Card *copyDeck(Card *head);
 
 void clearTableau(Cardpile *tableau[]);
