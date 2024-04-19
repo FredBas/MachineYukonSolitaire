@@ -80,7 +80,7 @@ void shuffleRandom(Cardpile *deck) {
         printf("Error: Deck is NULL.\n");
         return;
     }
-    if(deck->top == NULL) {
+    if (deck->top == NULL) {
         printf("Error: deck->top is NULL.\n");
         return;
     }
@@ -155,8 +155,8 @@ Card *createDeckFromFile(char *filename) {
     char line[CARD_SIZE];
     int i = 0;
 
-    while(fgets(line,sizeof(line),file)){
-        if (strlen(line) >=2){
+    while (fgets(line, sizeof(line), file)) {
+        if (strlen(line) >= 2) {
             char rank = line[0];
             char suit = line[1];
 
@@ -169,7 +169,7 @@ Card *createDeckFromFile(char *filename) {
             newCard->rank = rank;
             newCard->suit = suit;
             newCard->next = NULL;
-            if (head == NULL){
+            if (head == NULL) {
                 head = newCard;
             } else {
                 prev->next = newCard;
@@ -216,5 +216,16 @@ void clearTableau(Cardpile *tableau[]) {
         tableau[i]->top = NULL;
         tableau[i]->bottom = NULL;
         tableau[i]->size = 0;
+    }
+}
+
+void showTableauCardsStartup(Cardpile *tableau[]) {
+    Card *currentCard;
+    for (int i = 0; i < NUMBER_OF_TABLEAUS; ++i) {
+        currentCard = tableau[i]->top;
+        while (currentCard != NULL) {
+            currentCard->isFaceUp = true;
+            currentCard = currentCard->next;
+        }
     }
 }

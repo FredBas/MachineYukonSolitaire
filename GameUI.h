@@ -3,7 +3,7 @@
 
 #include "Cardpile.h"
 
-void printUI(Cardpile *tableau[], Cardpile *foundation[], bool isFaceUp);
+void printUI(Cardpile *tableau[], Cardpile *foundation[]);
 
 Card* getCardAt(Cardpile *pile, int cardPosition);
 

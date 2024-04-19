@@ -22,7 +22,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         char *filename = strtok(NULL, " ");
         if (filename != NULL) {
             initializeStartup(tableau, foundation, deck, filename);
-            printUI(tableau, foundation, false);
+            printUI(tableau, foundation);
             lastCommand = "LD";
             printf("LAST Command: %s\n", lastCommand);
             printf("Message: \n");
@@ -30,7 +30,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
 
         } else {
             initializeStartup(tableau, foundation, deck, "unshuffledDeck.txt");
-            printUI(tableau, foundation, false);
+            printUI(tableau, foundation);
             lastCommand = "LD";
             printf("LAST Command: %s\n", lastCommand);
             printf("Message: \n");
@@ -48,7 +48,8 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
             printf("Error: No deck loaded.\n");
             return;
         }
-        printUI(tableau, foundation, true);
+        showTableauCardsStartup(tableau);
+        printUI(tableau, foundation);
         lastCommand = "SW";
         printf("LAST Command: %s\n", lastCommand);
         printf("Message: \n");
@@ -71,7 +72,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
             shuffleDeckSplit(deck, 0);
         }
         startupPopulateTableau(tableau, copyDeck(deck->top));
-        printUI(tableau, foundation, false);
+        printUI(tableau, foundation);
         lastCommand = "SI";
         printf("LAST Command: %s\n", lastCommand);
         printf("Message: \n");
@@ -87,7 +88,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         clearTableau(tableau);
         shuffleRandom(deck);
         startupPopulateTableau(tableau, copyDeck(deck->top));
-        printUI(tableau, foundation, false);
+        printUI(tableau, foundation);
         lastCommand = "SR";
         printf("LAST Command: %s\n", lastCommand);
         printf("Message: \n");

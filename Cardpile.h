@@ -26,4 +26,6 @@ Card *copyDeck(Card *head);
 
 void clearTableau(Cardpile *tableau[]);
 
+void showTableauCardsStartup(Cardpile *tableau[]);
+
 #endif // CARDPILE_H
