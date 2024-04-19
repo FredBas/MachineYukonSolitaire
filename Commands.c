@@ -137,12 +137,12 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         again after Q, we basically restart the last game. */
 
     } else if (strcmp(cmd, "HELP") == 0) {
-        if (currentPhase == "welcome") {
+        if (*currentPhase == welcome) {
             printf("LD <filename> - Load deck from file specified by filename during startup phase\n"
                    "QQ - Quit the game\n"
                    "HELP - Display this help message\n");
         }
-        if (currentPhase == startup) {
+        if (*currentPhase == startup) {
             printf("LD <filename> - Load deck from file specified by filename during startup phase\n"
                    "SW - Show cards during startup phase\n"
                    "SI <split> - Shuffle deck of cards using a deck-split at the number specified in split during startup phase\n"
@@ -152,7 +152,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
                    "P - Transition into PLAY phase. Commands specific to startup phase are no longer available\n"
                    "HELP - Display this help message\n");
 
-        } else if (currentPhase == "playPhase") {
+        } else if (*currentPhase == play) {
             printf("M <source> <destination> - Move card(s) from source to destination\n"
                    "H <source> - Move card(s) from source to foundation\n"
                    "R <source> - Move card(s) from source to tableau\n"
