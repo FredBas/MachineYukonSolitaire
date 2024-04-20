@@ -215,8 +215,121 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
 
 
     else if (strcmp(movecmd, "C1") == 0) {
-
-
+        if (*currentPhase == welcome) {
+            printf("Command not available in welcome phase. For a list of available commands, type HELP\n\n");
+            return;
+        } else if (*currentPhase == startup) {
+            printf("Unavailable command: You are already in the startup phase For a list of available commands, type HELP\n\n");
+            return;
+        }
+        Card tableauCard = getCardAtTableauBottom(tableau[1]);
+        char *destination = strtok(NULL, " ");
+        if (destination != NULL) {
+            if (strcmp(destination, "F1") == 0) {
+                Card foundationCard = getCardAtFoundation(foundation[1]);
+                bool foundationMoveLegal =
+                        isSameSuit(tableauCard, foundationCard) && isInSequence(foundationCard, tableauCard);
+                if (foundationMoveLegal) {
+                    tableauCard.prev->next = NULL;
+                    foundationCard.next = &tableauCard;
+                    tableauCard.next = NULL;
+                }
+            } else if (strcmp(destination, "F2") == 0) {
+                Card foundationCard = getCardAtFoundation(foundation[2]);
+                bool foundationMoveLegal =
+                        isSameSuit(tableauCard, foundationCard) && isInSequence(foundationCard, tableauCard);
+                if (foundationMoveLegal) {
+                    tableauCard.prev->next = NULL;
+                    foundationCard.next = &tableauCard;
+                    tableauCard.next = NULL;
+                }
+            } else if (strcmp(destination, "F3") == 0) {
+                Card foundationCard = getCardAtFoundation(foundation[3]);
+                bool foundationMoveLegal =
+                        isSameSuit(tableauCard, foundationCard) && isInSequence(foundationCard, tableauCard);
+                if (foundationMoveLegal) {
+                    tableauCard.prev->next = NULL;
+                    foundationCard.next = &tableauCard;
+                    tableauCard.next = NULL;
+                }
+            } else if (strcmp(destination, "F4") == 0) {
+                Card foundationCard = getCardAtFoundation(foundation[4]);
+                bool foundationMoveLegal =
+                        isSameSuit(tableauCard, foundationCard) && isInSequence(foundationCard, tableauCard);
+                if (foundationMoveLegal) {
+                    tableauCard.prev->next = NULL;
+                    foundationCard.next = &tableauCard;
+                    tableauCard.next = NULL;
+                } else {
+                    printf("Error: Move not valid\n");
+                }
+            } else if (strcmp(destination, "C1") == 0) {
+                printf("Invalid destination\n");
+                return;
+            } else if (strcmp(destination, "C2") == 0) {
+                Card tableauCard2 = getCardAtTableauBottom(tableau[2]);
+                bool tableauMoveLegal = canBePlacedBottom(tableauCard2, tableauCard);
+                if (tableauMoveLegal) {
+                    tableauCard.prev->next = NULL;
+                    tableauCard2.next = &tableauCard;
+                    tableauCard.next = NULL;
+                } else {
+                    printf("Error: Move not valid\n");
+                }
+            } else if (strcmp(destination, "C3") == 0) {
+                Card tableauCard2 = getCardAtTableauBottom(tableau[3]);
+                bool tableauMoveLegal = canBePlacedBottom(tableauCard2, tableauCard);
+                if (tableauMoveLegal) {
+                    tableauCard.prev->next = NULL;
+                    tableauCard2.next = &tableauCard;
+                    tableauCard.next = NULL;
+                } else {
+                    printf("Error: Move not valid\n");
+                }
+            } else if (strcmp(destination, "C4") == 0) {
+                Card tableauCard2 = getCardAtTableauBottom(tableau[4]);
+                bool tableauMoveLegal = canBePlacedBottom(tableauCard2, tableauCard);
+                if (tableauMoveLegal) {
+                    tableauCard.prev->next = NULL;
+                    tableauCard2.next = &tableauCard;
+                    tableauCard.next = NULL;
+                } else {
+                    printf("Error: Move not valid\n");
+                }
+            } else if (strcmp(destination, "C5") == 0) {
+                Card tableauCard2 = getCardAtTableauBottom(tableau[5]);
+                bool tableauMoveLegal = canBePlacedBottom(tableauCard2, tableauCard);
+                if (tableauMoveLegal) {
+                    tableauCard.prev->next = NULL;
+                    tableauCard2.next = &tableauCard;
+                    tableauCard.next = NULL;
+                } else {
+                    printf("Error: Move not valid\n");
+                }
+            } else if (strcmp(destination, "C6") == 0) {
+                Card tableauCard2 = getCardAtTableauBottom(tableau[6]);
+                bool tableauMoveLegal = canBePlacedBottom(tableauCard2, tableauCard);
+                if (tableauMoveLegal) {
+                    tableauCard.prev->next = NULL;
+                    tableauCard2.next = &tableauCard;
+                    tableauCard.next = NULL;
+                } else {
+                    printf("Error: Move not valid\n");
+                }
+            } else if (strcmp(destination, "C7") == 0) {
+                Card tableauCard2 = getCardAtTableauBottom(tableau[7]);
+                bool tableauMoveLegal = canBePlacedBottom(tableauCard2, tableauCard);
+                if (tableauMoveLegal) {
+                    tableauCard.prev->next = NULL;
+                    tableauCard2.next = &tableauCard;
+                    tableauCard.next = NULL;
+                } else {
+                    printf("Error: Move not valid\n");
+                }
+            } else {
+                printf("Error: Invalid destination\n");
+            }
+        }
     }
     free(commandCopy); // Free the command copy
 }
