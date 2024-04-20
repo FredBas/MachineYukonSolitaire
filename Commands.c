@@ -223,7 +223,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
             return;
         }
         Card tableauCard = getCardAtTableauBottom(tableau[1]);
-        char *destination = strtok(NULL, " ");
+        char *destination = strtok(NULL, " -> ");
         if (destination != NULL) {
             if (strcmp(destination, "F1") == 0) {
                 Card foundationCard = getCardAtFoundation(foundation[1]);
@@ -329,7 +329,15 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
             } else {
                 printf("Error: Invalid destination\n");
             }
+
         }
+        clearTableau(tableau);
+        playPopulateTableau(tableau, copyDeck(deck->top));
+        printUI(tableau, foundation);
+        lastCommand = "???";
+        printf("LAST Command: %s\n", lastCommand);
+        printf("Message: \n");
+        printf("INPUT > ");
     }
     free(commandCopy); // Free the command copy
 }
