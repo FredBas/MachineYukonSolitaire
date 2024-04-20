@@ -16,14 +16,14 @@ Card* getCardAt(Cardpile *pile, int cardPosition) {
     return card;
 }
 
-Card getCardAtFoundation(Cardpile *pile) {
+Card *getCardAtFoundation(Cardpile *pile) {
     Card *card = pile->top;
-    return *card;
+    return card;
 }
 
-Card getCardAtTableauBottom(Cardpile *pile) {
+Card *getCardAtTableauBottom(Cardpile *pile) {
     Card *card = pile->top;
-    return *card;
+    return card;
 }
 
 Card* getCardAtTableau(Cardpile *pile, Rank rank, Suit suit) {

@@ -10,9 +10,9 @@ typedef struct Cardpile {
     int size;
 } Cardpile;
 
-Card getCardAtTableauBottom(Cardpile *pile);
+Card * getCardAtTableauBottom(Cardpile *pile);
 
-Card getCardAtFoundation(Cardpile *pile);
+Card * getCardAtFoundation(Cardpile *pile);
 
 void shuffleDeckSplit(Cardpile *deck, int split);
 
