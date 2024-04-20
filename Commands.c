@@ -20,15 +20,16 @@ bool isValidSplitInput(char *str) {
     return true;
 }
 
-void printUIMessages(char *lastCommand) {
+void printUIMessages(char *lastCommand, char *message) {
     printf("LAST Command: %s\n", lastCommand);
-    printf("Message: \n");
+    printf("Message: %s\n", message);
     printf("INPUT > ");
 }
 
 void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundation, Cardpile *deck, gamePhase *currentPhase) {
 
     char *lastCommand = "";
+    char *message = "OK\n";
     // Create a copy of the command string because strtok modifies the original string
     char *commandCopy = strdup(command);
     char *movecmdCopy = strdup(command);
@@ -48,7 +49,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
             startupPopulateTableau(tableau, copyDeck(deck->top));
             printUI(tableau, foundation);
             lastCommand = "LD";
-            printUIMessages(lastCommand);
+            printUIMessages(lastCommand, message);
 
         } else {
             initializeStartup(tableau, foundation, deck, "unshuffledDeck.txt");
@@ -56,7 +57,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
             startupPopulateTableau(tableau, copyDeck(deck->top));
             printUI(tableau, foundation);
             lastCommand = "LD";
-            printUIMessages(lastCommand);
+            printUIMessages(lastCommand, message);
         }
     } else if (strcmp(cmd, "SW") == 0) {
         if(*currentPhase == play) {
@@ -73,7 +74,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         showTableauCardsStartup(tableau);
         printUI(tableau, foundation);
         lastCommand = "SW";
-        printUIMessages(lastCommand);
+        printUIMessages(lastCommand, message);
         // Show cards during startup phase
     } else if (strcmp(cmd, "SI") == 0) {
         if(*currentPhase == play) {
@@ -97,7 +98,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         startupPopulateTableau(tableau, copyDeck(deck->top));
         printUI(tableau, foundation);
         lastCommand = "SI";
-        printUIMessages(lastCommand);
+        printUIMessages(lastCommand, message);
     } else if (strcmp(cmd, "SR") == 0) {
         if(*currentPhase == play) {
             printf("Command not available during a game. For a list of available commands, type HELP\n\n");
@@ -111,7 +112,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         startupPopulateTableau(tableau, copyDeck(deck->top));
         printUI(tableau, foundation);
         lastCommand = "SR";
-        printUIMessages(lastCommand);
+        printUIMessages(lastCommand, message);
     } else if (strcmp(cmd, "SD") == 0) {
         if(*currentPhase == welcome) {
             printf("Command not available in welcome phase. For a list of available commands, type HELP\n\n");
@@ -154,7 +155,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         printCard(getCardAtTableauBottom(tableau[1]));
         printUI(tableau, foundation);
         lastCommand = "P";
-        printUIMessages(lastCommand);
+        printUIMessages(lastCommand, message);
 
     } else if (strcmp(cmd, "Q") == 0) {
         if(*currentPhase == welcome) {
@@ -169,7 +170,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         startupPopulateTableau(tableau, copyDeck(deck->top));
         printUI(tableau, foundation);
         lastCommand = "Q";
-        printUIMessages(lastCommand);
+        printUIMessages(lastCommand, message);
         /*quits the current game and goes back to the STARTUP phase. The memory still
         contains the deck of cards used to play the game that we are quitting. So, if we use the command P
         again after Q, we basically restart the last game. */
@@ -344,7 +345,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         playPopulateTableau(tableau, copyDeck(deck->top));
         printUI(tableau, foundation);
         lastCommand = "???";
-        printUIMessages(lastCommand);
+        printUIMessages(lastCommand, message);
     }
     free(commandCopy); // Free the command copy
 }
