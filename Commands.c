@@ -1,9 +1,24 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <ctype.h>
 #include "GameInitialization.h"
 #include "Cardpile.h"
 #include "Commands.h"
+
+bool isValidSplitInput(char *str) {
+    int length = strlen(str);
+    for(int i = 0; i < length; i++) {
+        if(!isdigit(str[i])) {
+            return false;
+        }
+    }
+    int num = atoi(str);
+    if(num < 1 || num > 52) {
+        return false;
+    }
+    return true;
+}
 
 void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundation, Cardpile *deck, gamePhase *currentPhase) {
 
@@ -71,10 +86,13 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         }
         char *splitStr = strtok(NULL, " ");
         clearTableau(tableau);
-        if (splitStr != NULL) {
+        if (splitStr != NULL && isValidSplitInput(splitStr) == true) {
             int split = atoi(splitStr); // Convert the split string to an integer
             shuffleDeckSplit(deck, split);
-        } else {
+        } else if(isValidSplitInput(splitStr) == false) {
+            printf("Error: Invalid split input. Please enter a number between 1 and 52.\n");
+        }
+        else {
             shuffleDeckSplit(deck, 0);
         }
         startupPopulateTableau(tableau, copyDeck(deck->top));

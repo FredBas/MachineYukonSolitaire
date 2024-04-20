@@ -9,6 +9,7 @@ typedef enum {
     play,
 }gamePhase;
 
+bool isValidSplitInput(char *str);
 void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundation, Cardpile *deck, gamePhase *currentPhase);
 
 #endif // COMMANDS_H
