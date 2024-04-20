@@ -20,22 +20,27 @@ bool isValidSplitInput(char *str) {
     return true;
 }
 
+void printUIMessages(char *lastCommand) {
+    printf("LAST Command: %s\n", lastCommand);
+    printf("Message: \n");
+    printf("INPUT > ");
+}
+
 void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundation, Cardpile *deck, gamePhase *currentPhase) {
 
-       char *lastCommand = "";
+    char *lastCommand = "";
     // Create a copy of the command string because strtok modifies the original string
     char *commandCopy = strdup(command);
     char *movecmdCopy = strdup(command);
     // Get the first token (the command)
     char *cmd = strtok(commandCopy, " ");
     char *movecmd = strtok(movecmdCopy, " -> ");
-
     if (strcmp(cmd, "LD") == 0) {
         if(*currentPhase == play) {
             printf("Command not available during a game. For a list of available commands, type HELP\n\n");
             return;
         }
-        *currentPhase = startup;
+        //*currentPhase = startup;
         char *filename = strtok(NULL, " ");
         if (filename != NULL) {
             initializeStartup(tableau, foundation, deck, filename);
@@ -43,9 +48,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
             startupPopulateTableau(tableau, copyDeck(deck->top));
             printUI(tableau, foundation);
             lastCommand = "LD";
-            printf("LAST Command: %s\n", lastCommand);
-            printf("Message: \n");
-            printf("INPUT > ");
+            printUIMessages(lastCommand);
 
         } else {
             initializeStartup(tableau, foundation, deck, "unshuffledDeck.txt");
@@ -53,9 +56,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
             startupPopulateTableau(tableau, copyDeck(deck->top));
             printUI(tableau, foundation);
             lastCommand = "LD";
-            printf("LAST Command: %s\n", lastCommand);
-            printf("Message: \n");
-            printf("INPUT > ");
+            printUIMessages(lastCommand);
         }
     } else if (strcmp(cmd, "SW") == 0) {
         if(*currentPhase == play) {
@@ -72,9 +73,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         showTableauCardsStartup(tableau);
         printUI(tableau, foundation);
         lastCommand = "SW";
-        printf("LAST Command: %s\n", lastCommand);
-        printf("Message: \n");
-        printf("INPUT > ");
+        printUIMessages(lastCommand);
         // Show cards during startup phase
     } else if (strcmp(cmd, "SI") == 0) {
         if(*currentPhase == play) {
@@ -98,9 +97,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         startupPopulateTableau(tableau, copyDeck(deck->top));
         printUI(tableau, foundation);
         lastCommand = "SI";
-        printf("LAST Command: %s\n", lastCommand);
-        printf("Message: \n");
-        printf("INPUT > ");
+        printUIMessages(lastCommand);
     } else if (strcmp(cmd, "SR") == 0) {
         if(*currentPhase == play) {
             printf("Command not available during a game. For a list of available commands, type HELP\n\n");
@@ -114,9 +111,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         startupPopulateTableau(tableau, copyDeck(deck->top));
         printUI(tableau, foundation);
         lastCommand = "SR";
-        printf("LAST Command: %s\n", lastCommand);
-        printf("Message: \n");
-        printf("INPUT > ");
+        printUIMessages(lastCommand);
     } else if (strcmp(cmd, "SD") == 0) {
         if(*currentPhase == welcome) {
             printf("Command not available in welcome phase. For a list of available commands, type HELP\n\n");
@@ -158,9 +153,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         playPopulateTableau(tableau, copyDeck(deck->top));
         printUI(tableau, foundation);
         lastCommand = "P";
-        printf("LAST Command: %s\n", lastCommand);
-        printf("Message: \n");
-        printf("INPUT > ");
+        printUIMessages(lastCommand);
 
     } else if (strcmp(cmd, "Q") == 0) {
         if(*currentPhase == welcome) {
@@ -175,9 +168,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         startupPopulateTableau(tableau, copyDeck(deck->top));
         printUI(tableau, foundation);
         lastCommand = "Q";
-        printf("LAST Command: %s\n", lastCommand);
-        printf("Message: \n");
-        printf("INPUT > ");
+        printUIMessages(lastCommand);
         /*quits the current game and goes back to the STARTUP phase. The memory still
         contains the deck of cards used to play the game that we are quitting. So, if we use the command P
         again after Q, we basically restart the last game. */
