@@ -344,9 +344,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         playPopulateTableau(tableau, copyDeck(deck->top));
         printUI(tableau, foundation);
         lastCommand = "???";
-        printf("LAST Command: %s\n", lastCommand);
-        printf("Message: \n");
-        printf("INPUT > ");
+        printUIMessages(lastCommand);
     }
     free(commandCopy); // Free the command copy
 }
