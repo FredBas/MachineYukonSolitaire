@@ -151,6 +151,13 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
             return;
         }
         *currentPhase = startup;
+        clearTableau(tableau);
+        startupPopulateTableau(tableau, copyDeck(deck->top));
+        printUI(tableau, foundation);
+        lastCommand = "Q";
+        printf("LAST Command: %s\n", lastCommand);
+        printf("Message: \n");
+        printf("INPUT > ");
         /*quits the current game and goes back to the STARTUP phase. The memory still
         contains the deck of cards used to play the game that we are quitting. So, if we use the command P
         again after Q, we basically restart the last game. */
