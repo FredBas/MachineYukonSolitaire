@@ -5,6 +5,17 @@
 #include <stdio.h>
 #include <string.h>
 
+Card* getCardAt(Cardpile *pile, int cardPosition) {
+    Card *card = pile->bottom;
+    for (int i = 0; i < cardPosition; i++) {
+        if (card == NULL) {
+            return NULL;
+        }
+        card = card->next;
+    }
+    return card;
+}
+
 void shuffleDeckSplit(Cardpile *deck, int split) {
     // If split is not provided (i.e., split is 0), generate a random split
     if (split == 0) {

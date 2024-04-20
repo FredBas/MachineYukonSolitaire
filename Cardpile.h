@@ -30,4 +30,6 @@ void clearTableau(Cardpile *tableau[]);
 
 void showTableauCardsStartup(Cardpile *tableau[]);
 
+Card* getCardAt(Cardpile *pile, int cardPosition);
+
 #endif // CARDPILE_H
