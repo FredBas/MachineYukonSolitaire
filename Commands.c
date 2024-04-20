@@ -41,7 +41,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
             printf("Command not available during a game. For a list of available commands, type HELP\n\n");
             return;
         }
-        //*currentPhase = startup;
+        *currentPhase = startup;
         char *filename = strtok(NULL, " ");
         if (filename != NULL) {
             initializeStartup(tableau, foundation, deck, filename);
