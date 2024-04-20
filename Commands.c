@@ -10,8 +10,10 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
        char *lastCommand = "";
     // Create a copy of the command string because strtok modifies the original string
     char *commandCopy = strdup(command);
+    char *movecmdCopy = strdup(command);
     // Get the first token (the command)
     char *cmd = strtok(commandCopy, " ");
+    char *movecmd = strtok(movecmdCopy, " -> ");
 
     if (strcmp(cmd, "LD") == 0) {
         if(*currentPhase == play) {
@@ -189,6 +191,30 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
 
         //TODO: Add gamemove commands here
 
-        free(commandCopy); // Free the command copy
+        // Game move commands
+        // Follow the format: <from> -> <to>
+        // <from>: The source card or pile:
+            // A specific card in a column: <column>:<card> (e.g., 'C6:4H' for the 4 of Hearts in column 6).
+            // The bottom card in a column: <column> alone indicates the bottom card (e.g., 'C6').
+            // The top card from a foundation: Simply use the foundation number (e.g., 'F3').
+
+        // <to>: The destination:
+            // To a column's bottom: <column> (e.g., 'C4').
+            // To the top of a foundation: <foundation> (e.g., 'F2').
+
+        // Validity Rules:
+            // The card moved must exist at the specified location.
+            // Moving a card to a column is only valid if the bottom card of that column is one rank higher and
+            // of a different suit. A card can only be added to a foundation from the bottom of a column and must follow suit and
+            // one rank higher than the top card of the foundation.
+            // Only the top card from a foundation can be moved to a column, and it must follow the rank and
+            // suit restrictions for columns.
+            // If a move is valid, the system returns OK. Otherwise, an error message states that the move is not valid.
+
+
+        else if (strcmp(movecmd, "C1") == 0){
+
+        }
+                free(commandCopy); // Free the command copy
     }
 }
