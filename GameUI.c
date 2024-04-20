@@ -1,16 +1,6 @@
 #include "GameUI.h"
 #include <stdbool.h>
 #include <stdio.h>
-Card* getCardAt(Cardpile *pile, int cardPosition) {
-    Card *card = pile->bottom;
-    for (int i = 0; i < cardPosition; i++) {
-        if (card == NULL) {
-            return NULL;
-        }
-        card = card->next;
-    }
-    return card;
-}
 
 void printUI(Cardpile *tableau[], Cardpile *foundation[]) {
     printf("\nC1\tC2\tC3\tC4\tC5\tC6\tC7\n\n");

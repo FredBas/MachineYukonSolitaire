@@ -5,6 +5,38 @@
 #include <stdio.h>
 #include <string.h>
 
+Card* getCardAt(Cardpile *pile, int cardPosition) {
+    Card *card = pile->bottom;
+    for (int i = 0; i < cardPosition; i++) {
+        if (card == NULL) {
+            return NULL;
+        }
+        card = card->next;
+    }
+    return card;
+}
+
+Card getCardAtFoundation(Cardpile *pile) {
+    Card *card = pile->top;
+    return *card;
+}
+
+Card getCardAtTableauBottom(Cardpile *pile) {
+    Card *card = pile->top;
+    return *card;
+}
+
+Card* getCardAtTableau(Cardpile *pile, Rank rank, Suit suit) {
+Card *card = pile->top;
+    while (card != NULL) {
+        if (card->rank == rank && card->suit == suit) {
+            return card;
+        }
+        card = card->next;
+    }
+    return NULL;
+}
+
 void shuffleDeckSplit(Cardpile *deck, int split) {
     // If split is not provided (i.e., split is 0), generate a random split
     if (split == 0) {

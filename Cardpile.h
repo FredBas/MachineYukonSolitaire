@@ -10,6 +10,10 @@ typedef struct Cardpile {
     int size;
 } Cardpile;
 
+Card getCardAtTableauBottom(Cardpile *pile);
+
+Card getCardAtFoundation(Cardpile *pile);
+
 void shuffleDeckSplit(Cardpile *deck, int split);
 
 void shuffleRandom(Cardpile *deck);
@@ -29,5 +33,7 @@ Card *copyDeck(Card *head);
 void clearTableau(Cardpile *tableau[]);
 
 void showTableauCardsStartup(Cardpile *tableau[]);
+
+Card* getCardAt(Cardpile *pile, int cardPosition);
 
 #endif // CARDPILE_H

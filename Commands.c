@@ -128,12 +128,12 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         char *filename = strtok(NULL, " ");
         if (filename != NULL) {
             // Save current carddeck to file specified by filename
-            char filepath[sizeof(char)*50];
+            char filepath[sizeof(char) * 50];
             snprintf(filepath, sizeof(filepath), "../%s", filename);
             saveDeckToFile(deck->top, filepath);
         } else {
             // Save current carddeck to "cards.txt"
-            char filepath[sizeof(char)*50];
+            char filepath[sizeof(char) * 50];
             snprintf(filepath, sizeof(filepath), "../cards.txt");
             saveDeckToFile(deck->top, filepath);
         }
@@ -206,33 +206,155 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
                    "QQ - Quit the game\n"
                    "HELP - Display this help message\n");
         }
+    }
 
         //TODO: Add gamemove commands here
 
         // Game move commands
         // Follow the format: <from> -> <to>
         // <from>: The source card or pile:
-            // A specific card in a column: <column>:<card> (e.g., 'C6:4H' for the 4 of Hearts in column 6).
-            // The bottom card in a column: <column> alone indicates the bottom card (e.g., 'C6').
-            // The top card from a foundation: Simply use the foundation number (e.g., 'F3').
+        // A specific card in a column: <column>:<card> (e.g., 'C6:4H' for the 4 of Hearts in column 6).
+        // The bottom card in a column: <column> alone indicates the bottom card (e.g., 'C6').
+        // The top card from a foundation: Simply use the foundation number (e.g., 'F3').
 
         // <to>: The destination:
-            // To a column's bottom: <column> (e.g., 'C4').
-            // To the top of a foundation: <foundation> (e.g., 'F2').
+        // To a column's bottom: <column> (e.g., 'C4').
+        // To the top of a foundation: <foundation> (e.g., 'F2').
 
         // Validity Rules:
-            // The card moved must exist at the specified location.
-            // Moving a card to a column is only valid if the bottom card of that column is one rank higher and
-            // of a different suit. A card can only be added to a foundation from the bottom of a column and must follow suit and
-            // one rank higher than the top card of the foundation.
-            // Only the top card from a foundation can be moved to a column, and it must follow the rank and
-            // suit restrictions for columns.
-            // If a move is valid, the system returns OK. Otherwise, an error message states that the move is not valid.
+        // The card moved must exist at the specified location.
+        // Moving a card to a column is only valid if the bottom card of that column is one rank higher and
+        // of a different suit. A card can only be added to a foundation from the bottom of a column and must follow suit and
+        // one rank higher than the top card of the foundation.
+        // Only the top card from a foundation can be moved to a column, and it must follow the rank and
+        // suit restrictions for columns.
+        // If a move is valid, the system returns OK. Otherwise, an error message states that the move is not valid.
 
 
-        else if (strcmp(movecmd, "C1") == 0){
+    else if (strcmp(movecmd, "C1") == 0) {
+        if (*currentPhase == welcome) {
+            printf("Command not available in welcome phase. For a list of available commands, type HELP\n\n");
+            return;
+        } else if (*currentPhase == startup) {
+            printf("Unavailable command: You are already in the startup phase For a list of available commands, type HELP\n\n");
+            return;
+        }
+        Card tableauCard = getCardAtTableauBottom(tableau[1]);
+        char *destination = strtok(NULL, " -> ");
+        if (destination != NULL) {
+            if (strcmp(destination, "F1") == 0) {
+                Card foundationCard = getCardAtFoundation(foundation[1]);
+                bool foundationMoveLegal =
+                        isSameSuit(tableauCard, foundationCard) && isInSequence(foundationCard, tableauCard);
+                if (foundationMoveLegal) {
+                    tableauCard.prev->next = NULL;
+                    foundationCard.next = &tableauCard;
+                    tableauCard.next = NULL;
+                }
+            } else if (strcmp(destination, "F2") == 0) {
+                Card foundationCard = getCardAtFoundation(foundation[2]);
+                bool foundationMoveLegal =
+                        isSameSuit(tableauCard, foundationCard) && isInSequence(foundationCard, tableauCard);
+                if (foundationMoveLegal) {
+                    tableauCard.prev->next = NULL;
+                    foundationCard.next = &tableauCard;
+                    tableauCard.next = NULL;
+                }
+            } else if (strcmp(destination, "F3") == 0) {
+                Card foundationCard = getCardAtFoundation(foundation[3]);
+                bool foundationMoveLegal =
+                        isSameSuit(tableauCard, foundationCard) && isInSequence(foundationCard, tableauCard);
+                if (foundationMoveLegal) {
+                    tableauCard.prev->next = NULL;
+                    foundationCard.next = &tableauCard;
+                    tableauCard.next = NULL;
+                }
+            } else if (strcmp(destination, "F4") == 0) {
+                Card foundationCard = getCardAtFoundation(foundation[4]);
+                bool foundationMoveLegal =
+                        isSameSuit(tableauCard, foundationCard) && isInSequence(foundationCard, tableauCard);
+                if (foundationMoveLegal) {
+                    tableauCard.prev->next = NULL;
+                    foundationCard.next = &tableauCard;
+                    tableauCard.next = NULL;
+                } else {
+                    printf("Error: Move not valid\n");
+                }
+            } else if (strcmp(destination, "C1") == 0) {
+                printf("Invalid destination\n");
+                return;
+            } else if (strcmp(destination, "C2") == 0) {
+                Card tableauCard2 = getCardAtTableauBottom(tableau[2]);
+                bool tableauMoveLegal = canBePlacedBottom(tableauCard2, tableauCard);
+                if (tableauMoveLegal) {
+                    tableauCard.prev->next = NULL;
+                    tableauCard2.next = &tableauCard;
+                    tableauCard.next = NULL;
+                } else {
+                    printf("Error: Move not valid\n");
+                }
+            } else if (strcmp(destination, "C3") == 0) {
+                Card tableauCard2 = getCardAtTableauBottom(tableau[3]);
+                bool tableauMoveLegal = canBePlacedBottom(tableauCard2, tableauCard);
+                if (tableauMoveLegal) {
+                    tableauCard.prev->next = NULL;
+                    tableauCard2.next = &tableauCard;
+                    tableauCard.next = NULL;
+                } else {
+                    printf("Error: Move not valid\n");
+                }
+            } else if (strcmp(destination, "C4") == 0) {
+                Card tableauCard2 = getCardAtTableauBottom(tableau[4]);
+                bool tableauMoveLegal = canBePlacedBottom(tableauCard2, tableauCard);
+                if (tableauMoveLegal) {
+                    tableauCard.prev->next = NULL;
+                    tableauCard2.next = &tableauCard;
+                    tableauCard.next = NULL;
+                } else {
+                    printf("Error: Move not valid\n");
+                }
+            } else if (strcmp(destination, "C5") == 0) {
+                Card tableauCard2 = getCardAtTableauBottom(tableau[5]);
+                bool tableauMoveLegal = canBePlacedBottom(tableauCard2, tableauCard);
+                if (tableauMoveLegal) {
+                    tableauCard.prev->next = NULL;
+                    tableauCard2.next = &tableauCard;
+                    tableauCard.next = NULL;
+                } else {
+                    printf("Error: Move not valid\n");
+                }
+            } else if (strcmp(destination, "C6") == 0) {
+                Card tableauCard2 = getCardAtTableauBottom(tableau[6]);
+                bool tableauMoveLegal = canBePlacedBottom(tableauCard2, tableauCard);
+                if (tableauMoveLegal) {
+                    tableauCard.prev->next = NULL;
+                    tableauCard2.next = &tableauCard;
+                    tableauCard.next = NULL;
+                } else {
+                    printf("Error: Move not valid\n");
+                }
+            } else if (strcmp(destination, "C7") == 0) {
+                Card tableauCard2 = getCardAtTableauBottom(tableau[7]);
+                bool tableauMoveLegal = canBePlacedBottom(tableauCard2, tableauCard);
+                if (tableauMoveLegal) {
+                    tableauCard.prev->next = NULL;
+                    tableauCard2.next = &tableauCard;
+                    tableauCard.next = NULL;
+                } else {
+                    printf("Error: Move not valid\n");
+                }
+            } else {
+                printf("Error: Invalid destination\n");
+            }
 
         }
-                free(commandCopy); // Free the command copy
+        clearTableau(tableau);
+        playPopulateTableau(tableau, copyDeck(deck->top));
+        printUI(tableau, foundation);
+        lastCommand = "???";
+        printf("LAST Command: %s\n", lastCommand);
+        printf("Message: \n");
+        printf("INPUT > ");
     }
+    free(commandCopy); // Free the command copy
 }
