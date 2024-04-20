@@ -11,7 +11,6 @@
 
 int main() {
     // Initialize game
-
     char command[20];
     Cardpile *tableau[NUMBER_OF_TABLEAUS];
 
@@ -35,20 +34,9 @@ int main() {
 
     gamePhase currentPhase = welcome;
 
-    printf("\nC1\tC2\tC3\tC4\tC5\tC6\tC7\n\n");
-    printf("  \t  \t  \t  \t  \t  \t  \t\t[]\tF1\n");
-    printf("  \t  \t  \t  \t  \t  \t  \t\n");
-    printf("  \t  \t  \t  \t  \t  \t  \t\t[]\tF2\n");
-    printf("  \t  \t  \t  \t  \t  \t  \t\n");
-    printf("  \t  \t  \t  \t  \t  \t  \t\t[]\tF3\n");
-    printf("  \t  \t  \t  \t  \t  \t  \t\n");
-    printf("  \t  \t  \t  \t  \t  \t  \t\t[]\tF4\n");
-    printf("\n");
-    printf("LAST COMMAND: \n");
-    printf("Message: Welcome to Yukon Solitaire!(For a list of commands, type 'HELP')\n");
-    printf("INPUT >");
-
-
+    char *empty = "";
+    initialTableauPrinter();
+    printUIMessages(empty,empty);
 
     // Main game loop
     while (true) {
@@ -56,7 +44,6 @@ int main() {
         command[strcspn(command, "\n")] = 0; // Remove the newline character
         commandHandler(command, tableau, foundation, deck, &currentPhase);
     }
-
     // Cleanup
     cleanup(&deck);
 
