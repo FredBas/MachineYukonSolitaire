@@ -35,7 +35,20 @@ int main() {
 
     gamePhase currentPhase = welcome;
 
-    printf("\nWelcome to Yukon Solitaire!\n\n(For a list of commands, type 'HELP')\n\n");
+    printf("\nC1\tC2\tC3\tC4\tC5\tC6\tC7\n\n");
+    printf("  \t  \t  \t  \t  \t  \t  \t\t[]\tF1\n");
+    printf("  \t  \t  \t  \t  \t  \t  \t\n");
+    printf("  \t  \t  \t  \t  \t  \t  \t\t[]\tF2\n");
+    printf("  \t  \t  \t  \t  \t  \t  \t\n");
+    printf("  \t  \t  \t  \t  \t  \t  \t\t[]\tF3\n");
+    printf("  \t  \t  \t  \t  \t  \t  \t\n");
+    printf("  \t  \t  \t  \t  \t  \t  \t\t[]\tF4\n");
+    printf("\n");
+    printf("LAST COMMAND: \n");
+    printf("Message: Welcome to Yukon Solitaire!(For a list of commands, type 'HELP')\n");
+    printf("INPUT >");
+
+
 
     // Main game loop
     while (true) {

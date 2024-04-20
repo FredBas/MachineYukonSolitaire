@@ -29,7 +29,7 @@ void printUIMessages(char *lastCommand, char *message) {
 void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundation, Cardpile *deck, gamePhase *currentPhase) {
 
     char *lastCommand = "";
-    char *message = "OK\n";
+    char *message = "OK";
     // Create a copy of the command string because strtok modifies the original string
     char *commandCopy = strdup(command);
     char *movecmdCopy = strdup(command);
