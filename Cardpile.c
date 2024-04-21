@@ -289,6 +289,7 @@ void moveToFoundation(int sourceIndex, Cardpile **tableau, Cardpile **foundation
             if (tableauCard->prev != NULL) {
                 tableau[sourceIndex]->top = tableauCard->prev;
                 tableau[sourceIndex]->top->next = NULL;
+                tableau[sourceIndex]->top->isFaceUp = true;
             } else {
                 tableau[sourceIndex]->bottom = NULL;
                 tableau[sourceIndex]->top = NULL;
@@ -317,6 +318,7 @@ void moveBottomCardToTableau(int sourceIndex, Cardpile **tableau, const char *de
             if (tableauCard->prev != NULL) {
                 tableau[sourceIndex]->top = tableauCard->prev;
                 tableau[sourceIndex]->top->next = NULL;
+                tableau[sourceIndex]->top->isFaceUp = true;
             } else {
                 tableau[sourceIndex]->bottom = NULL;
                 tableau[sourceIndex]->top = NULL;
