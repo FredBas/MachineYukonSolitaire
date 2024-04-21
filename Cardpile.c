@@ -280,19 +280,19 @@ void showTableauCardsStartup(Cardpile *tableau[]) {
         }
     }
 }
-void moveToFoundation(int sourceIndex, Cardpile **tableau, Cardpile **foundation, char *destination) {
+void moveToFoundation(int sourceIndex, Cardpile **tableau, Cardpile **foundation, const char *destination) {
     int foundationIndex = destination[1] - '1'; // Convert from char to int (0-based)
     if (foundationIndex >= 0 && foundationIndex < NUMBER_OF_FOUNDATIONS) {
-        Card *tableauCard = getCardAtTableauBottom(tableau[sourceIndex]);
-        Card *foundationCard = getCardAtFoundation(foundation[foundationIndex]);
+        Card *tableauCard = tableau[sourceIndex]->top;
+        Card *foundationCard = foundation[foundationIndex]->top;
         if (foundationCard == NULL || canBePlacedFoundation(*tableauCard, *foundationCard)) {
             if (tableauCard->prev != NULL) {
                 tableau[sourceIndex]->top = tableauCard->prev;
+                tableau[sourceIndex]->top->next = NULL;
             } else {
                 tableau[sourceIndex]->bottom = NULL;
                 tableau[sourceIndex]->top = NULL;
             }
-            tableau[sourceIndex]->top->next = NULL;
             tableau[sourceIndex]->size--;
 
             if (foundationCard != NULL) {
@@ -302,6 +302,7 @@ void moveToFoundation(int sourceIndex, Cardpile **tableau, Cardpile **foundation
                 foundation[foundationIndex]->bottom = tableauCard;
             }
             foundation[foundationIndex]->top = tableauCard;
+            tableauCard->next = NULL;
             foundation[foundationIndex]->size++;
         }
     }
@@ -330,6 +331,7 @@ void moveBottomCardToTableau(int sourceIndex, Cardpile **tableau, const char *de
             }
 
             tableau[tableauIndex]->top = tableauCard;
+            tableauCard->next = NULL;
             tableau[tableauIndex]->size++;
 
         } else {

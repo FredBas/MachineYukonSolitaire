@@ -21,14 +21,18 @@ void printUI(Cardpile *tableau[], Cardpile *foundation[]) {
                     printf("\t\t[]\tF%d\n", row / 2 + 1);
                 } else {
                     foundation[row / 2]->top->isFaceUp = true;
-                    printCard(foundation[row / 2]->top);
-                    printf("\tF%d\n", row / 2 + 1);
+                    printf("\t\t%c%c\tF%d\n", foundation[row / 2]->top->rank, foundation[row / 2]->top->suit, row / 2 + 1);
                 }
             } else {
                 printf("\n");
             }
             row++;
         }
+        if (iterator == 80) {
+            printf("\n\n");
+            return;
+        }
+
     }
 
     printf("\n\n");

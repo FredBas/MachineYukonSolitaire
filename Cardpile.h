@@ -36,7 +36,7 @@ void showTableauCardsStartup(Cardpile *tableau[]);
 
 Card* getCardAt(Cardpile *pile, int cardPosition);
 
-void moveToFoundation(int sourcIndex, Cardpile **tableau, Cardpile **foundation, char *destination);
+void moveToFoundation(int sourcIndex, Cardpile **tableau, Cardpile **foundation, const char *destination);
 
 void moveBottomCardToTableau(int sourceIndex, Cardpile **from, const char *destination);
 #endif // CARDPILE_H
