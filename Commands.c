@@ -38,8 +38,7 @@ void initialTableauPrinter() {
     printf("\n");
 }
 
-void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundation, Cardpile *deck,
-                    gamePhase *currentPhase) {
+void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundation, Cardpile *deck, gamePhase *currentPhase) {
 
     char *lastCommand = "";
     char *message = "OK";
@@ -49,44 +48,41 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
     // Get the first token (the command)
     char *cmd = strtok(commandCopy, " ");
     char *movecmd = strtok(movecmdCopy, " -> ");
+
     if (strcmp(cmd, "LD") == 0) {
+        lastCommand = "LD";
         if (*currentPhase == play) {
-            printf("Command not available during a game. For a list of available commands, type HELP\n\n");
+            message = "Command not available during a game. For a list of available commands, type HELP";
+            printUIMessages(lastCommand, message);
             return;
         }
         *currentPhase = startup;
         char *filename = strtok(NULL, " ");
-        if (filename != NULL) {
-            initializeStartup(tableau, foundation, deck, filename);
-            clearTableau(tableau);
-            startupPopulateTableau(tableau, copyDeck(deck->top));
-            printUI(tableau, foundation);
-            lastCommand = "LD";
-            printUIMessages(lastCommand, message);
-
-        } else {
-            initializeStartup(tableau, foundation, deck, "unshuffledDeck.txt");
-            clearTableau(tableau);
-            startupPopulateTableau(tableau, copyDeck(deck->top));
-            printUI(tableau, foundation);
-            lastCommand = "LD";
-            printUIMessages(lastCommand, message);
+        if (filename == NULL) {
+            filename = "unshuffledDeck.txt";
         }
+        initializeStartup(tableau, foundation, deck, filename);
+        clearTableau(tableau);
+        startupPopulateTableau(tableau, copyDeck(deck->top));
+        printUI(tableau, foundation);
+        printUIMessages(lastCommand, message);
     } else if (strcmp(cmd, "SW") == 0) {
-        if (*currentPhase == play) {
-            printf("Command not available during a game. For a list of available commands, type HELP\n\n");
-            return;
-        } else if (*currentPhase == welcome) {
-            printf("Command not available in welcome phase. For a list of available commands, type HELP\n\n");
-            return;
-        }
+        lastCommand = "SW";
         if (deck->top == NULL) {
-            printf("Error: No deck loaded.\n");
+            message = "Error: No deck loaded. Please load a deck using the LD command.";
+            printUIMessages(lastCommand, message);
             return;
         }
+
+        if (*currentPhase == play || *currentPhase == welcome) {
+            message = (*currentPhase == play) ? "Command not available during a game. For a list of available commands, type HELP" :
+                                                "Command not available in welcome phase. For a list of available commands, type HELP";
+            printUIMessages(lastCommand, message);
+            return;
+        }
+
         showTableauCardsStartup(tableau);
         printUI(tableau, foundation);
-        lastCommand = "SW";
         printUIMessages(lastCommand, message);
         // Show cards during startup phase
     } else if (strcmp(cmd, "SI") == 0) {
