@@ -289,8 +289,7 @@ void moveToFoundation(Card *tableauCard, Cardpile **tableau, Cardpile **foundati
                 tableauCard->prev->next = NULL;
             } else {
                 int tableauIndex = destination[1] - '1'; // Convert from char to int (0-based)
-                tableau[tableauIndex]->top = NULL;
-                tableau[tableauIndex]->bottom = NULL;
+                tableau[tableauIndex]->bottom = tableauCard->next;
             }
             foundationCard->next = tableauCard;
             tableauCard->next = NULL;
@@ -306,8 +305,7 @@ void moveBottomCardToTableau(Card *tableauCard, Cardpile **tableau, const char *
             if (tableauCard->prev != NULL) {
                 tableauCard->prev->next = NULL;
             } else {
-                tableau[tableauIndex]->top = NULL;
-                tableau[tableauIndex]->bottom = NULL;
+                tableau[tableauIndex]->bottom = tableauCard->next;
             }
             tableauCard2->next = tableauCard;
             tableauCard->next = NULL;
