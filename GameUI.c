@@ -22,6 +22,7 @@ void printUI(Cardpile *tableau[], Cardpile *foundation[]) {
                 } else {
                     foundation[row / 2]->top->isFaceUp = true;
                     printf("\t\t%c%c\tF%d\n", foundation[row / 2]->top->rank, foundation[row / 2]->top->suit, row / 2 + 1);
+                    iterator = iterator - foundation[row / 2]->size;
                 }
             } else {
                 printf("\n");
