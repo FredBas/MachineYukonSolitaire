@@ -1,5 +1,6 @@
 #include "Definitions.h"
 #include "Cardpile.h"
+#include "Card.h"
 #include <stdlib.h>
 #include <time.h>
 #include <stdio.h>
@@ -292,12 +293,11 @@ void moveToFoundation(Card *tableauCard, Cardpile **foundation, char *destinatio
     }
 }
 
-void moveBottomCardToTableau(Card *tableauCard, Cardpile **tableau, char *destination) {
+void moveBottomCardToTableau(Card *tableauCard, Cardpile **tableau, const char *destination) {
     int tableauIndex = destination[1] - '1'; // Convert from char to int (0-based)
     if (tableauIndex >= 0 && tableauIndex < NUMBER_OF_TABLEAUS) {
         Card *tableauCard2 = getCardAtTableauBottom(tableau[tableauIndex]);
-        bool tableauMoveLegal = canBePlacedBottom(*tableauCard2, *tableauCard);
-        if (tableauMoveLegal) {
+        if (tableauCard->suit != tableauCard2->suit && tableauCard->rank == tableauCard2->rank - 1) {
             tableauCard->prev->next = NULL;
             tableauCard2->next = tableauCard;
             tableauCard->next = NULL;
