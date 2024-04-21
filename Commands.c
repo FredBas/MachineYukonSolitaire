@@ -248,7 +248,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         char *destination = strtok(NULL, " -> ");
         if (destination != NULL) {
             if (destination[0] == 'F') {
-                moveToFoundation(tableauCard, foundation, destination);
+                moveToFoundation(tableauCard, tableau, foundation, destination);
             } else if (strcmp(destination, "C1") == 0) {
                 printf("Invalid destination\n");
                 return;
@@ -274,7 +274,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         char *destination = strtok(NULL, " -> ");
         if (destination != NULL) {
             if (destination[0] == 'F') {
-                moveToFoundation(tableauCard, foundation, destination);
+                moveToFoundation(tableauCard, tableau, foundation, destination);
             } else if (strcmp(destination, "C2") == 0) {
                 printf("Invalid destination\n");
                 return;
@@ -299,7 +299,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         char *destination = strtok(NULL, " -> ");
         if (destination != NULL) {
             if (destination[0] == 'F') {
-                moveToFoundation(tableauCard, foundation, destination);
+                moveToFoundation(tableauCard, tableau, foundation, destination);
             } else if (strcmp(destination, "C3") == 0) {
                 printf("Invalid destination\n");
                 return;
@@ -324,7 +324,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         char *destination = strtok(NULL, " -> ");
         if (destination != NULL) {
             if (destination[0] == 'F') {
-                moveToFoundation(tableauCard, foundation, destination);
+                moveToFoundation(tableauCard, tableau, foundation, destination);
             } else if (strcmp(destination, "C4") == 0) {
                 printf("Invalid destination\n");
                 return;
@@ -349,7 +349,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         char *destination = strtok(NULL, " -> ");
         if (destination != NULL) {
             if (destination[0] == 'F') {
-                moveToFoundation(tableauCard, foundation, destination);
+                moveToFoundation(tableauCard, tableau, foundation, destination);
             } else if (strcmp(destination, "C5") == 0) {
                 printf("Invalid destination\n");
                 return;
@@ -375,7 +375,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         char *destination = strtok(NULL, " -> ");
         if (destination != NULL) {
             if (destination[0] == 'F') {
-                moveToFoundation(tableauCard, foundation, destination);
+                moveToFoundation(tableauCard, tableau, foundation, destination);
             } else if (strcmp(destination, "C6") == 0) {
                 printf("Invalid destination\n");
                 return;
@@ -401,7 +401,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         char *destination = strtok(NULL, " -> ");
         if (destination != NULL) {
             if (destination[0] == 'F') {
-                moveToFoundation(tableauCard, foundation, destination);
+                moveToFoundation(tableauCard, tableau, foundation, destination);
             } else if (strcmp(destination, "C7") == 0) {
                 printf("Invalid destination\n");
                 return;

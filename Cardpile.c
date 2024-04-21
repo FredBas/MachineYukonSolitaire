@@ -280,13 +280,24 @@ void showTableauCardsStartup(Cardpile *tableau[]) {
         }
     }
 }
-void moveToFoundation(Card *tableauCard, Cardpile **foundation, char *destination) {
+void moveToFoundation(Card *tableauCard, Cardpile **tableau, Cardpile **foundation, char *destination) {
     int foundationIndex = destination[1] - '1'; // Convert from char to int (0-based)
     if (foundationIndex >= 0 && foundationIndex < NUMBER_OF_FOUNDATIONS) {
         Card *foundationCard = getCardAtFoundation(foundation[foundationIndex]);
-        bool foundationMoveLegal = isSameSuit(*tableauCard, *foundationCard) && isInSequence(*foundationCard, *tableauCard);
+        bool foundationMoveLegal = false;
+        if (foundationCard == NULL) {
+            foundationMoveLegal = tableauCard->rank == 'A';
+        } else {
+            foundationMoveLegal = isSameSuit(*tableauCard, *foundationCard) && isInSequence(*foundationCard, *tableauCard);
+        }
         if (foundationMoveLegal) {
-            tableauCard->prev->next = NULL;
+            if (tableauCard->prev != NULL) {
+                tableauCard->prev->next = NULL;
+            } else {
+                int tableauIndex = destination[1] - '1'; // Convert from char to int (0-based)
+                tableau[tableauIndex]->top = NULL;
+                tableau[tableauIndex]->bottom = NULL;
+            }
             foundationCard->next = tableauCard;
             tableauCard->next = NULL;
         }
@@ -297,8 +308,19 @@ void moveBottomCardToTableau(Card *tableauCard, Cardpile **tableau, const char *
     int tableauIndex = destination[1] - '1'; // Convert from char to int (0-based)
     if (tableauIndex >= 0 && tableauIndex < NUMBER_OF_TABLEAUS) {
         Card *tableauCard2 = getCardAtTableauBottom(tableau[tableauIndex]);
-        if (tableauCard->suit != tableauCard2->suit && tableauCard->rank == tableauCard2->rank - 1) {
-            tableauCard->prev->next = NULL;
+        bool tableauMoveLegal = false;
+        if (tableauCard2 == NULL) {
+            tableauMoveLegal = tableauCard->rank == 'K';
+        } else {
+            tableauMoveLegal = tableauCard->suit != tableauCard2->suit && tableauCard->rank == tableauCard2->rank - 1;
+        }
+        if (tableauMoveLegal) {
+            if (tableauCard->prev != NULL) {
+                tableauCard->prev->next = NULL;
+            } else {
+                tableau[tableauIndex]->top = NULL;
+                tableau[tableauIndex]->bottom = NULL;
+            }
             tableauCard2->next = tableauCard;
             tableauCard->next = NULL;
         } else {

@@ -29,4 +29,6 @@ bool canBePlacedFoundation(Card card1, Card card2);
 
 void printCard(Card *card); // Add this line
 
+int rankValue(char rank);
+
 #endif // CARD_H
