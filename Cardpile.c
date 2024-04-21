@@ -284,13 +284,7 @@ void moveToFoundation(Card *tableauCard, Cardpile **tableau, Cardpile **foundati
     int foundationIndex = destination[1] - '1'; // Convert from char to int (0-based)
     if (foundationIndex >= 0 && foundationIndex < NUMBER_OF_FOUNDATIONS) {
         Card *foundationCard = getCardAtFoundation(foundation[foundationIndex]);
-        bool foundationMoveLegal = false;
-        if (foundationCard == NULL) {
-            foundationMoveLegal = tableauCard->rank == 'A';
-        } else {
-            foundationMoveLegal = isSameSuit(*tableauCard, *foundationCard) && isInSequence(*foundationCard, *tableauCard);
-        }
-        if (foundationMoveLegal) {
+        if (foundationCard == NULL || canBePlacedFoundation(*tableauCard, *foundationCard)) {
             if (tableauCard->prev != NULL) {
                 tableauCard->prev->next = NULL;
             } else {
@@ -308,13 +302,7 @@ void moveBottomCardToTableau(Card *tableauCard, Cardpile **tableau, const char *
     int tableauIndex = destination[1] - '1'; // Convert from char to int (0-based)
     if (tableauIndex >= 0 && tableauIndex < NUMBER_OF_TABLEAUS) {
         Card *tableauCard2 = getCardAtTableauBottom(tableau[tableauIndex]);
-        bool tableauMoveLegal = false;
-        if (tableauCard2 == NULL) {
-            tableauMoveLegal = tableauCard->rank == 'K';
-        } else {
-            tableauMoveLegal = tableauCard->suit != tableauCard2->suit && tableauCard->rank == tableauCard2->rank - 1;
-        }
-        if (tableauMoveLegal) {
+        if (tableauCard2 == NULL || canBePlacedBottom(*tableauCard, *tableauCard2)) {
             if (tableauCard->prev != NULL) {
                 tableauCard->prev->next = NULL;
             } else {
