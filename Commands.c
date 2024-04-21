@@ -102,7 +102,11 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         if (splitStr != NULL && isValidSplitInput(splitStr) == true) {
             int split = atoi(splitStr); // Convert the split string to an integer
             shuffleDeckSplit(deck, split);
-        } else if (isValidSplitInput(splitStr) == false) {
+        }else if (splitStr == NULL) {
+            message = "No split input provided. Shuffling deck with split 0.";
+            shuffleDeckSplit(deck, 0);
+        }
+        else if (isValidSplitInput(splitStr) == false) {
             printf("Error: Invalid split input. Please enter a number between 1 and 52.\n");
         } else {
             shuffleDeckSplit(deck, 0);
