@@ -280,35 +280,58 @@ void showTableauCardsStartup(Cardpile *tableau[]) {
         }
     }
 }
-void moveToFoundation(Card *tableauCard, Cardpile **tableau, Cardpile **foundation, char *destination) {
+void moveToFoundation(int sourceIndex, Cardpile **tableau, Cardpile **foundation, char *destination) {
     int foundationIndex = destination[1] - '1'; // Convert from char to int (0-based)
     if (foundationIndex >= 0 && foundationIndex < NUMBER_OF_FOUNDATIONS) {
+        Card *tableauCard = getCardAtTableauBottom(tableau[sourceIndex]);
         Card *foundationCard = getCardAtFoundation(foundation[foundationIndex]);
         if (foundationCard == NULL || canBePlacedFoundation(*tableauCard, *foundationCard)) {
             if (tableauCard->prev != NULL) {
-                tableauCard->prev->next = NULL;
+                tableau[sourceIndex]->top = tableauCard->prev;
             } else {
-                int tableauIndex = destination[1] - '1'; // Convert from char to int (0-based)
-                tableau[tableauIndex]->bottom = tableauCard->next;
+                tableau[sourceIndex]->bottom = NULL;
+                tableau[sourceIndex]->top = NULL;
             }
-            foundationCard->next = tableauCard;
-            tableauCard->next = NULL;
+            tableau[sourceIndex]->top->next = NULL;
+            tableau[sourceIndex]->size--;
+
+            if (foundationCard != NULL) {
+                foundation[foundationIndex]->top->next = tableauCard;
+                tableauCard->prev = foundation[foundationIndex]->top;
+            } else {
+                foundation[foundationIndex]->bottom = tableauCard;
+            }
+            foundation[foundationIndex]->top = tableauCard;
+            foundation[foundationIndex]->size++;
         }
     }
 }
 
-void moveBottomCardToTableau(Card *tableauCard, Cardpile **tableau, const char *destination) {
+void moveBottomCardToTableau(int sourceIndex, Cardpile **tableau, const char *destination) {
     int tableauIndex = destination[1] - '1'; // Convert from char to int (0-based)
     if (tableauIndex >= 0 && tableauIndex < NUMBER_OF_TABLEAUS) {
-        Card *tableauCard2 = getCardAtTableauBottom(tableau[tableauIndex]);
+        Card *tableauCard = tableau[sourceIndex]->top;
+        Card *tableauCard2 = tableau[tableauIndex]->top;
         if (tableauCard2 == NULL || canBePlacedBottom(*tableauCard, *tableauCard2)) {
             if (tableauCard->prev != NULL) {
-                tableauCard->prev->next = NULL;
+                tableau[sourceIndex]->top = tableauCard->prev;
+                tableau[sourceIndex]->top->next = NULL;
             } else {
-                tableau[tableauIndex]->bottom = tableauCard->next;
+                tableau[sourceIndex]->bottom = NULL;
+                tableau[sourceIndex]->top = NULL;
             }
-            tableauCard2->next = tableauCard;
-            tableauCard->next = NULL;
+            tableau[sourceIndex]->size--;
+
+            if (tableauCard2 != NULL) {
+                tableau[tableauIndex]->top->next = tableauCard;
+                tableauCard->prev = tableau[tableauIndex]->top;
+            } else {
+                tableau[tableauIndex]->bottom = tableauCard;
+            }
+
+            tableau[tableauIndex]->top = tableauCard;
+            tableau[tableauIndex]->size++;
+
         } else {
             printf("Error: Move not valid\n");
         }

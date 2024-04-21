@@ -248,16 +248,16 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
             printf("Unavailable command: You are already in the startup phase For a list of available commands, type HELP\n\n");
             return;
         }
-        Card *tableauCard = getCardAtTableauBottom(tableau[0]);
+        int sourceIndex = 0;
         char *destination = strtok(NULL, " -> ");
         if (destination != NULL) {
             if (destination[0] == 'F') {
-                moveToFoundation(tableauCard, tableau, foundation, destination);
+                moveToFoundation(sourceIndex, tableau, foundation, destination);
             } else if (strcmp(destination, "C1") == 0) {
                 printf("Invalid destination\n");
                 return;
             } else if (destination[0] == 'C') {
-                moveBottomCardToTableau(tableauCard, tableau, destination);
+                moveBottomCardToTableau(sourceIndex, tableau, destination);
             }
         } else {
             printf("Error: Invalid destination\n");
@@ -274,16 +274,16 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
             printf("Unavailable command: You are already in the startup phase For a list of available commands, type HELP\n\n");
             return;
         }
-        Card *tableauCard = getCardAtTableauBottom(tableau[1]);
+        int sourceIndex = 1;
         char *destination = strtok(NULL, " -> ");
         if (destination != NULL) {
             if (destination[0] == 'F') {
-                moveToFoundation(tableauCard, tableau, foundation, destination);
+                moveToFoundation(sourceIndex, tableau, foundation, destination);
             } else if (strcmp(destination, "C2") == 0) {
                 printf("Invalid destination\n");
                 return;
             } else if (destination[0] == 'C') {
-                moveBottomCardToTableau(tableauCard, tableau, destination);
+                moveBottomCardToTableau(sourceIndex, tableau, destination);
             }
         } else {
             printf("Error: Invalid destination\n");
@@ -299,16 +299,16 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
             printf("Unavailable command: You are already in the startup phase For a list of available commands, type HELP\n\n");
             return;
         }
-        Card *tableauCard = getCardAtTableauBottom(tableau[2]);
+        int sourceIndex = 2;
         char *destination = strtok(NULL, " -> ");
         if (destination != NULL) {
             if (destination[0] == 'F') {
-                moveToFoundation(tableauCard, tableau, foundation, destination);
+                moveToFoundation(sourceIndex, tableau, foundation, destination);
             } else if (strcmp(destination, "C3") == 0) {
                 printf("Invalid destination\n");
                 return;
             } else if (destination[0] == 'C') {
-                moveBottomCardToTableau(tableauCard, tableau, destination);
+                moveBottomCardToTableau(sourceIndex, tableau, destination);
             }
         } else {
             printf("Error: Invalid destination\n");
@@ -324,16 +324,16 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
             printf("Unavailable command: You are already in the startup phase For a list of available commands, type HELP\n\n");
             return;
         }
-        Card *tableauCard = getCardAtTableauBottom(tableau[3]);
+        int sourceIndex = 3;
         char *destination = strtok(NULL, " -> ");
         if (destination != NULL) {
             if (destination[0] == 'F') {
-                moveToFoundation(tableauCard, tableau, foundation, destination);
+                moveToFoundation(sourceIndex, tableau, foundation, destination);
             } else if (strcmp(destination, "C4") == 0) {
                 printf("Invalid destination\n");
                 return;
             } else if (destination[0] == 'C') {
-                moveBottomCardToTableau(tableauCard, tableau, destination);
+                moveBottomCardToTableau(sourceIndex, tableau, destination);
             }
         } else {
             printf("Error: Invalid destination\n");
@@ -349,16 +349,16 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
             printf("Unavailable command: You are already in the startup phase For a list of available commands, type HELP\n\n");
             return;
         }
-        Card *tableauCard = getCardAtTableauBottom(tableau[4]);
+        int sourceIndex = 4;
         char *destination = strtok(NULL, " -> ");
         if (destination != NULL) {
             if (destination[0] == 'F') {
-                moveToFoundation(tableauCard, tableau, foundation, destination);
+                moveToFoundation(sourceIndex, tableau, foundation, destination);
             } else if (strcmp(destination, "C5") == 0) {
                 printf("Invalid destination\n");
                 return;
             } else if (destination[0] == 'C') {
-                moveBottomCardToTableau(tableauCard, tableau, destination);
+                moveBottomCardToTableau(sourceIndex, tableau, destination);
             }
         } else {
             printf("Error: Invalid destination\n");
@@ -375,16 +375,16 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
             printf("Unavailable command: You are already in the startup phase For a list of available commands, type HELP\n\n");
             return;
         }
-        Card *tableauCard = getCardAtTableauBottom(tableau[5]);
+        int sourceIndex = 5;
         char *destination = strtok(NULL, " -> ");
         if (destination != NULL) {
             if (destination[0] == 'F') {
-                moveToFoundation(tableauCard, tableau, foundation, destination);
+                moveToFoundation(sourceIndex, tableau, foundation, destination);
             } else if (strcmp(destination, "C6") == 0) {
                 printf("Invalid destination\n");
                 return;
             } else if (destination[0] == 'C') {
-                moveBottomCardToTableau(tableauCard, tableau, destination);
+                moveBottomCardToTableau(sourceIndex, tableau, destination);
             }
         } else {
             printf("Error: Invalid destination\n");
@@ -401,16 +401,16 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
             printf("Unavailable command: You are already in the startup phase For a list of available commands, type HELP\n\n");
             return;
         }
-        Card *tableauCard = getCardAtTableauBottom(tableau[6]);
+        int sourceIndex = 6;
         char *destination = strtok(NULL, " -> ");
         if (destination != NULL) {
             if (destination[0] == 'F') {
-                moveToFoundation(tableauCard, tableau, foundation, destination);
+                moveToFoundation(sourceIndex, tableau, foundation, destination);
             } else if (strcmp(destination, "C7") == 0) {
                 printf("Invalid destination\n");
                 return;
             } else if (destination[0] == 'C') {
-                moveBottomCardToTableau(tableauCard, tableau, destination);
+                moveBottomCardToTableau(sourceIndex, tableau, destination);
             }
         } else {
             printf("Error: Invalid destination\n");
