@@ -416,6 +416,5 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         printUIMessages(lastCommand, message);
     }
 
-
     free(commandCopy); // Free the command copy
 }
