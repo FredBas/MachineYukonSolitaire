@@ -86,11 +86,11 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         printUIMessages(lastCommand, message);
         // Show cards during startup phase
     } else if (strcmp(cmd, "SI") == 0) {
-        if (*currentPhase == play) {
-            printf("Command not available during a game. For a list of available commands, type HELP\n\n");
-            return;
-        } else if (*currentPhase == welcome) {
-            printf("Command not available in welcome phase. For a list of available commands, type HELP\n\n");
+        lastCommand = "SI";
+        if (*currentPhase == play || *currentPhase == welcome) {
+            message = (*currentPhase == play) ? "Command not available during a game. For a list of available commands, type HELP" :
+                                                "Command not available in welcome phase. For a list of available commands, type HELP";
+            printUIMessages(lastCommand, message);
             return;
         }
         char *splitStr = strtok(NULL, " ");
@@ -103,27 +103,25 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
             shuffleDeckSplit(deck, 0);
         }
         else if (isValidSplitInput(splitStr) == false) {
-            printf("Error: Invalid split input. Please enter a number between 1 and 52.\n");
+            message = "Error: Invalid split input. Please enter a number between 1 and 52.";
         } else {
             shuffleDeckSplit(deck, 0);
         }
         startupPopulateTableau(tableau, copyDeck(deck->top));
         printUI(tableau, foundation);
-        lastCommand = "SI";
         printUIMessages(lastCommand, message);
     } else if (strcmp(cmd, "SR") == 0) {
-        if (*currentPhase == play) {
-            printf("Command not available during a game. For a list of available commands, type HELP\n\n");
-            return;
-        } else if (*currentPhase == welcome) {
-            printf("Command not available in welcome phase. For a list of available commands, type HELP\n\n");
+        lastCommand = "SR";
+        if (*currentPhase == play || *currentPhase == welcome) {
+            message = (*currentPhase == play) ? "Command not available during a game. For a list of available commands, type HELP" :
+                                                "Command not available in welcome phase. For a list of available commands, type HELP";
+            printUIMessages(lastCommand, message);
             return;
         }
         clearTableau(tableau);
         shuffleRandom(deck);
         startupPopulateTableau(tableau, copyDeck(deck->top));
         printUI(tableau, foundation);
-        lastCommand = "SR";
         printUIMessages(lastCommand, message);
     } else if (strcmp(cmd, "SD") == 0) {
         if (*currentPhase == welcome) {
