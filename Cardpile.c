@@ -279,3 +279,30 @@ void showTableauCardsStartup(Cardpile *tableau[]) {
         }
     }
 }
+void moveToFoundation(Card *tableauCard, Cardpile **foundation, char *destination) {
+    int foundationIndex = destination[1] - '1'; // Convert from char to int (0-based)
+    if (foundationIndex >= 0 && foundationIndex < NUMBER_OF_FOUNDATIONS) {
+        Card *foundationCard = getCardAtFoundation(foundation[foundationIndex]);
+        bool foundationMoveLegal = isSameSuit(*tableauCard, *foundationCard) && isInSequence(*foundationCard, *tableauCard);
+        if (foundationMoveLegal) {
+            tableauCard->prev->next = NULL;
+            foundationCard->next = tableauCard;
+            tableauCard->next = NULL;
+        }
+    }
+}
+
+void moveBottomCardToTableau(Card *tableauCard, Cardpile **tableau, char *destination) {
+    int tableauIndex = destination[1] - '1'; // Convert from char to int (0-based)
+    if (tableauIndex >= 0 && tableauIndex < NUMBER_OF_TABLEAUS) {
+        Card *tableauCard2 = getCardAtTableauBottom(tableau[tableauIndex]);
+        bool tableauMoveLegal = canBePlacedBottom(*tableauCard2, *tableauCard);
+        if (tableauMoveLegal) {
+            tableauCard->prev->next = NULL;
+            tableauCard2->next = tableauCard;
+            tableauCard->next = NULL;
+        } else {
+            printf("Error: Move not valid\n");
+        }
+    }
+}

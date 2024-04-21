@@ -8,13 +8,13 @@
 
 bool isValidSplitInput(char *str) {
     int length = strlen(str);
-    for(int i = 0; i < length; i++) {
-        if(!isdigit(str[i])) {
+    for (int i = 0; i < length; i++) {
+        if (!isdigit(str[i])) {
             return false;
         }
     }
     int num = atoi(str);
-    if(num < 1 || num > 52) {
+    if (num < 1 || num > 52) {
         return false;
     }
     return true;
@@ -38,7 +38,8 @@ void initialTableauPrinter() {
     printf("\n");
 }
 
-void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundation, Cardpile *deck, gamePhase *currentPhase) {
+void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundation, Cardpile *deck,
+                    gamePhase *currentPhase) {
 
     char *lastCommand = "";
     char *message = "OK";
@@ -49,7 +50,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
     char *cmd = strtok(commandCopy, " ");
     char *movecmd = strtok(movecmdCopy, " -> ");
     if (strcmp(cmd, "LD") == 0) {
-        if(*currentPhase == play) {
+        if (*currentPhase == play) {
             printf("Command not available during a game. For a list of available commands, type HELP\n\n");
             return;
         }
@@ -72,10 +73,10 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
             printUIMessages(lastCommand, message);
         }
     } else if (strcmp(cmd, "SW") == 0) {
-        if(*currentPhase == play) {
+        if (*currentPhase == play) {
             printf("Command not available during a game. For a list of available commands, type HELP\n\n");
             return;
-        } else if(*currentPhase == welcome) {
+        } else if (*currentPhase == welcome) {
             printf("Command not available in welcome phase. For a list of available commands, type HELP\n\n");
             return;
         }
@@ -89,10 +90,10 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         printUIMessages(lastCommand, message);
         // Show cards during startup phase
     } else if (strcmp(cmd, "SI") == 0) {
-        if(*currentPhase == play) {
+        if (*currentPhase == play) {
             printf("Command not available during a game. For a list of available commands, type HELP\n\n");
             return;
-        } else if(*currentPhase == welcome) {
+        } else if (*currentPhase == welcome) {
             printf("Command not available in welcome phase. For a list of available commands, type HELP\n\n");
             return;
         }
@@ -101,10 +102,9 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         if (splitStr != NULL && isValidSplitInput(splitStr) == true) {
             int split = atoi(splitStr); // Convert the split string to an integer
             shuffleDeckSplit(deck, split);
-        } else if(isValidSplitInput(splitStr) == false) {
+        } else if (isValidSplitInput(splitStr) == false) {
             printf("Error: Invalid split input. Please enter a number between 1 and 52.\n");
-        }
-        else {
+        } else {
             shuffleDeckSplit(deck, 0);
         }
         startupPopulateTableau(tableau, copyDeck(deck->top));
@@ -112,10 +112,10 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         lastCommand = "SI";
         printUIMessages(lastCommand, message);
     } else if (strcmp(cmd, "SR") == 0) {
-        if(*currentPhase == play) {
+        if (*currentPhase == play) {
             printf("Command not available during a game. For a list of available commands, type HELP\n\n");
             return;
-        } else if(*currentPhase == welcome) {
+        } else if (*currentPhase == welcome) {
             printf("Command not available in welcome phase. For a list of available commands, type HELP\n\n");
             return;
         }
@@ -126,10 +126,10 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         lastCommand = "SR";
         printUIMessages(lastCommand, message);
     } else if (strcmp(cmd, "SD") == 0) {
-        if(*currentPhase == welcome) {
+        if (*currentPhase == welcome) {
             printf("Command not available in welcome phase. For a list of available commands, type HELP\n\n");
             return;
-        }else if(*currentPhase == play) {
+        } else if (*currentPhase == play) {
             printf("Command not available during a game. For a list of available commands, type HELP\n\n");
             return;
         }
@@ -151,10 +151,10 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         exit(0);
 
     } else if (strcmp(cmd, "P") == 0) {
-        if(*currentPhase == welcome) {
+        if (*currentPhase == welcome) {
             printf("Command not available in welcome phase. For a list of available commands, type HELP\n\n");
             return;
-        } else if(*currentPhase == play) {
+        } else if (*currentPhase == play) {
             printf("Unavailable command: You are already playing a game. For a list of available commands, type HELP\n\n");
             return;
         }
@@ -170,10 +170,10 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         printUIMessages(lastCommand, message);
 
     } else if (strcmp(cmd, "Q") == 0) {
-        if(*currentPhase == welcome) {
+        if (*currentPhase == welcome) {
             printf("Command not available in welcome phase. For a list of available commands, type HELP\n\n");
             return;
-        } else if(*currentPhase == startup) {
+        } else if (*currentPhase == startup) {
             printf("Unavailable command: You are already in the startup phase For a list of available commands, type HELP\n\n");
             return;
         }
@@ -247,117 +247,24 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         Card *tableauCard = getCardAtTableauBottom(tableau[0]);
         char *destination = strtok(NULL, " -> ");
         if (destination != NULL) {
-            if (strcmp(destination, "F1") == 0) {
-                Card *foundationCard = getCardAtFoundation(foundation[0]);
-                bool foundationMoveLegal =
-                        isSameSuit(*tableauCard, *foundationCard) && isInSequence(*foundationCard, *tableauCard);
-                if (foundationMoveLegal) {
-                    tableauCard->prev->next = NULL;
-                    foundationCard->next = tableauCard;
-                    tableauCard->next = NULL;
-                }
-            } else if (strcmp(destination, "F2") == 0) {
-                Card *foundationCard = getCardAtFoundation(foundation[1]);
-                bool foundationMoveLegal =
-                        isSameSuit(*tableauCard, *foundationCard) && isInSequence(*foundationCard, *tableauCard);
-                if (foundationMoveLegal) {
-                    tableauCard->prev->next = NULL;
-                    foundationCard->next = tableauCard;
-                    tableauCard->next = NULL;
-                }
-            } else if (strcmp(destination, "F3") == 0) {
-                Card *foundationCard = getCardAtFoundation(foundation[2]);
-                bool foundationMoveLegal =
-                        isSameSuit(*tableauCard, *foundationCard) && isInSequence(*foundationCard, *tableauCard);
-                if (foundationMoveLegal) {
-                    tableauCard->prev->next = NULL;
-                    foundationCard->next = tableauCard;
-                    tableauCard->next = NULL;
-                }
-            } else if (strcmp(destination, "F4") == 0) {
-                Card *foundationCard = getCardAtFoundation(foundation[3]);
-                bool foundationMoveLegal =
-                        isSameSuit(*tableauCard, *foundationCard) && isInSequence(*foundationCard, *tableauCard);
-                if (foundationMoveLegal) {
-                    tableauCard->prev->next = NULL;
-                    foundationCard->next = tableauCard;
-                    tableauCard->next = NULL;
-                } else {
-                    printf("Error: Move not valid\n");
-                }
+            if (destination[0] == 'F') {
+                moveToFoundation(tableauCard, foundation, destination);
             } else if (strcmp(destination, "C1") == 0) {
                 printf("Invalid destination\n");
                 return;
-            } else if (strcmp(destination, "C2") == 0) {
-                Card *tableauCard2 = getCardAtTableauBottom(tableau[1]);
-                bool tableauMoveLegal = canBePlacedBottom(*tableauCard2, *tableauCard);
-                if (tableauMoveLegal) {
-                    tableauCard->prev->next = NULL;
-                    tableauCard2->next = tableauCard;
-                    tableauCard->next = NULL;
-                } else {
-                    printf("Error: Move not valid\n");
-                }
-            } else if (strcmp(destination, "C3") == 0) {
-                Card *tableauCard2 = getCardAtTableauBottom(tableau[2]);
-                bool tableauMoveLegal = canBePlacedBottom(*tableauCard2, *tableauCard);
-                if (tableauMoveLegal) {
-                    tableauCard->prev->next = NULL;
-                    tableauCard2->next = tableauCard;
-                    tableauCard->next = NULL;
-                } else {
-                    printf("Error: Move not valid\n");
-                }
-            } else if (strcmp(destination, "C4") == 0) {
-                Card *tableauCard2 = getCardAtTableauBottom(tableau[3]);
-                bool tableauMoveLegal = canBePlacedBottom(*tableauCard2, *tableauCard);
-                if (tableauMoveLegal) {
-                    tableauCard->prev->next = NULL;
-                    tableauCard2->next = tableauCard;
-                    tableauCard->next = NULL;
-                } else {
-                    printf("Error: Move not valid\n");
-                }
-            } else if (strcmp(destination, "C5") == 0) {
-                Card *tableauCard2 = getCardAtTableauBottom(tableau[4]);
-                bool tableauMoveLegal = canBePlacedBottom(*tableauCard2, *tableauCard);
-                if (tableauMoveLegal) {
-                    tableauCard->prev->next = NULL;
-                    tableauCard2->next = tableauCard;
-                    tableauCard->next = NULL;
-                } else {
-                    printf("Error: Move not valid\n");
-                }
-            } else if (strcmp(destination, "C6") == 0) {
-                Card *tableauCard2 = getCardAtTableauBottom(tableau[5]);
-                bool tableauMoveLegal = canBePlacedBottom(*tableauCard2, *tableauCard);
-                if (tableauMoveLegal) {
-                    tableauCard->prev->next = NULL;
-                    tableauCard2->next = tableauCard;
-                    tableauCard->next = NULL;
-                } else {
-                    printf("Error: Move not valid\n");
-                }
-            } else if (strcmp(destination, "C7") == 0) {
-                Card *tableauCard2 = getCardAtTableauBottom(tableau[6]);
-                bool tableauMoveLegal = canBePlacedBottom(*tableauCard2, *tableauCard);
-                if (tableauMoveLegal) {
-                    tableauCard->prev->next = NULL;
-                    tableauCard2->next = tableauCard;
-                    tableauCard->next = NULL;
-                } else {
-                    printf("Error: Move not valid\n");
-                }
-            } else {
-                printf("Error: Invalid destination\n");
+            } else if (destination[0] == 'C') {
+                moveBottomCardToTableau(tableauCard, tableau, destination);
             }
-
+        } else {
+            printf("Error: Invalid destination\n");
         }
+
         clearTableau(tableau);
         playPopulateTableau(tableau, copyDeck(deck->top));
         printUI(tableau, foundation);
         lastCommand = "???";
         printUIMessages(lastCommand, message);
     }
+
     free(commandCopy); // Free the command copy
 }
