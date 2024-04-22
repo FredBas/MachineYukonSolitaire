@@ -124,31 +124,28 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         printUI(tableau, foundation);
         printUIMessages(lastCommand, message);
     } else if (strcmp(cmd, "SD") == 0) {
-        if (*currentPhase == welcome) {
-            printf("Command not available in welcome phase. For a list of available commands, type HELP\n\n");
-            return;
-        } else if (*currentPhase == play) {
-            printf("Command not available during a game. For a list of available commands, type HELP\n\n");
+        lastCommand = "SD";
+        if (*currentPhase == play || *currentPhase == welcome) {
+            message = (*currentPhase == play) ? "Command not available during a game. For a list of available commands, type HELP" :
+                                                "Command not available in welcome phase. For a list of available commands, type HELP";
+            printUIMessages(lastCommand, message);
             return;
         }
         char *filename = strtok(NULL, " ");
-        if (filename != NULL) {
-            // Save current carddeck to file specified by filename
-            char filepath[sizeof(char) * 50];
-            snprintf(filepath, sizeof(filepath), "../%s", filename);
-            saveDeckToFile(deck->top, filepath);
-        } else {
-            // Save current carddeck to "cards.txt"
-            char filepath[sizeof(char) * 50];
-            snprintf(filepath, sizeof(filepath), "../cards.txt");
-            saveDeckToFile(deck->top, filepath);
+        if(filename == NULL) {
+            filename = "cards.txt";
         }
+        char filepath[sizeof(char) * 50];
+        snprintf(filepath, sizeof(filepath), "../%s", filename);
+        saveDeckToFile(deck->top, filepath);
+
     } else if (strcmp(cmd, "QQ") == 0) {
         // Quit the game
-        printf("Goodbye! Thank you for playing Yukon Solitaire...\n");
+        printf("Message : Goodbye! Thank you for playing Yukon Solitaire...");
         exit(0);
 
     } else if (strcmp(cmd, "P") == 0) {
+        lastCommand = "P";
         if (*currentPhase == welcome) {
             printf("Command not available in welcome phase. For a list of available commands, type HELP\n\n");
             return;
@@ -164,7 +161,6 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         playPopulateTableau(tableau, copyDeck(deck->top));
         printCard(getCardAtTableauBottom(tableau[1]));
         printUI(tableau, foundation);
-        lastCommand = "P";
         printUIMessages(lastCommand, message);
 
     } else if (strcmp(cmd, "Q") == 0) {
