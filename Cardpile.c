@@ -341,3 +341,53 @@ void moveBottomCardToTableau(int sourceIndex, Cardpile **tableau, const char *de
         }
     }
 }
+
+void moveMultipleCardsToTableau(int sourceIndex, Cardpile **tableau, const char *destination, Card *card) {
+    int destinationIndex = destination[1] - '1'; // Convert from char to int (0-based)
+    if (destinationIndex >= 0 && destinationIndex < NUMBER_OF_TABLEAUS) {
+        Card *tableauCard = tableau[sourceIndex]->top;
+        Card *tableauCard2 = tableau[destinationIndex]->top;
+        for (int i = 0; i < tableau[sourceIndex]->size; i++) {
+            if (tableauCard->suit == card->suit && tableauCard->rank == card->rank) {
+                break;
+            } else {
+                tableauCard = tableauCard->prev;
+            }
+        }
+        if (tableauCard == NULL) {
+            printf("Error: Card not found\n");
+            return;
+        }
+        if (tableauCard2 == NULL || canBePlacedBottom(*tableauCard, *tableauCard2)) {
+            if (tableauCard->prev != NULL) {
+                tableau[sourceIndex]->top = tableauCard->prev;
+                tableau[sourceIndex]->top->next = NULL;
+                tableau[sourceIndex]->top->isFaceUp = true;
+            } else {
+                tableau[sourceIndex]->bottom = NULL;
+                tableau[sourceIndex]->top = NULL;
+            }
+            tableau[sourceIndex]->size--;
+
+            if (tableauCard2 != NULL) {
+                tableau[destinationIndex]->top->next = tableauCard;
+                tableauCard->prev = tableau[destinationIndex]->top;
+            } else {
+                tableau[destinationIndex]->bottom = tableauCard;
+            }
+            tableau[destinationIndex]->top = tableauCard;
+            Card *current = tableauCard->next;
+            while (current != NULL) {
+                tableau[destinationIndex]->top = current;
+                current = current->next;
+                tableau[sourceIndex]->size--;
+                tableau[destinationIndex]->size++;
+            }
+            tableau[destinationIndex]->top->next = NULL;
+        } else {
+            printf("Error: Move not valid\n");
+        }
+    } else {
+        printf("Error: Invalid destination\n");
+    }
+}
