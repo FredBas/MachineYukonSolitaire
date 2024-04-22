@@ -407,7 +407,81 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         printUI(tableau, foundation);
         lastCommand = "???";
         printUIMessages(lastCommand, message);
+    } else if (movecmd[0] == 'F') {
+        if (*currentPhase == welcome) {
+            printf("Command not available in welcome phase. For a list of available commands, type HELP\n\n");
+            return;
+        } else if (*currentPhase == startup) {
+            printf("Unavailable command: You are already in the startup phase For a list of available commands, type HELP\n\n");
+            return;
+        }
+        int sourceIndex = movecmd[1] - '1'; // Convert from char to int (0-based)
+        if (foundation[sourceIndex]->top == NULL) {
+            printf("Error: No card in foundation\n");
+            return;
+        }
+        char *destination = strtok(NULL, " -> ");
+        if (destination != NULL) {
+            if (destination[0] == 'F') {
+                int destinationIndex = destination[1] - '1'; // Convert from char to int (0-based)
+                if (foundation[destinationIndex]->top == NULL || canBePlacedBottom(*foundation[sourceIndex]->top, *foundation[destinationIndex]->top)) {
+                    moveToFoundation(sourceIndex, foundation, foundation, destination);
+                } else {
+                    printf("Error: Move not valid\n");
+                }
+            } else if (destination[0] == 'C') {
+                if (tableau[destination[1] - '1']->top == NULL || canBePlacedBottom(*foundation[sourceIndex]->top, *tableau[destination[1] - '1']->top)) {
+                    moveBottomCardToTableau(sourceIndex, foundation, destination);
+                } else {
+                    printf("Error: Move not valid\n");
+                }
+            } else {
+                printf("Error: Invalid destination\n");
+            }
+        } else {
+            printf("Error: Invalid destination\n");
+        }
+        printUI(tableau, foundation);
+        lastCommand = "???";
+        printUIMessages(lastCommand, message);
+    } else if (movecmd[0] == 'C' && movecmd[2] == ':') {
+        if (*currentPhase == welcome) {
+            printf("Command not available in welcome phase. For a list of available commands, type HELP\n\n");
+            return;
+        } else if (*currentPhase == startup) {
+            printf("Unavailable command: You are already in the startup phase For a list of available commands, type HELP\n\n");
+            return;
+        }
+        int sourceIndex = movecmd[1] - '1'; // Convert from char to int (0-based)
+        if (tableau[sourceIndex]->top == NULL) {
+            printf("Error: No card in tableau\n");
+            return;
+        }
+        char *cardStr = strtok(movecmd + 3, " -> ");
+        Rank rank = cardStr[0];
+        if(rank == 'A' || rank == 'T' || rank == 'J' || rank == 'Q' || rank == 'K') {
+            rank = rankValue(rank);
+        } else {
+            rank = rank - '0';
+        }
+        Suit suit = cardStr[1];
+        printf("Rank: %d, Suit: %c\n", rank, suit);
+        Card *card = getCardAtTableau(tableau[sourceIndex], rank, suit);
+        if (card == NULL) {
+            printf("Error: Card not found in tableau\n");
+            return;
+        }
+        char *destination = strtok(NULL, " -> ");
+        if (destination != NULL && destination[0] == 'C') {
+            moveMultipleCardsToTableau(sourceIndex, tableau, destination, card);
+        } else {
+            printf("Error: Invalid destination\n");
+        }
+        printUI(tableau, foundation);
+        lastCommand = "???";
+        printUIMessages(lastCommand, message);
+    } else {
+        printf("Error: Invalid command\n");
     }
-
     free(commandCopy); // Free the command copy
 }

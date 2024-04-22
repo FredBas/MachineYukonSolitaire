@@ -27,15 +27,21 @@ Card *getCardAtTableauBottom(Cardpile *pile) {
     return card;
 }
 
-Card* getCardAtTableau(Cardpile *pile, Rank rank, Suit suit) {
-Card *card = pile->top;
-    while (card != NULL) {
-        if (card->rank == rank && card->suit == suit) {
-            return card;
+Card* getCardAtTableau(Cardpile *tableau, Rank rank, Suit suit) {
+    Card *currentCard = tableau->top;
+    while (currentCard != NULL) {
+        if(currentCard->rank == 'A' || currentCard->rank == 'T' || currentCard->rank == 'J' || currentCard->rank == 'Q' || currentCard->rank == 'K') {
+            currentCard->rank = rankValue(currentCard->rank);
+        } else {
+            currentCard->rank = currentCard->rank - '0';
         }
-        card = card->next;
+        printf("Current card - Rank: %d, Suit: %c\n", currentCard->rank, currentCard->suit);
+        if (currentCard->rank == rank && currentCard->suit == suit) {
+            return currentCard;
+        }
+        currentCard = currentCard->prev;
     }
-    return NULL;
+    return NULL; // Return NULL if the card is not found
 }
 
 void shuffleDeckSplit(Cardpile *deck, int split) {

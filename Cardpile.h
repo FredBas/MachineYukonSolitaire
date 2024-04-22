@@ -41,4 +41,7 @@ void moveToFoundation(int sourcIndex, Cardpile **tableau, Cardpile **foundation,
 void moveBottomCardToTableau(int sourceIndex, Cardpile **from, const char *destination);
 
 void moveMultipleCardsToTableau(int sourceIndex, Cardpile **tableau, const char *destination, Card *card);
+
+Card* getCardAtTableau(Cardpile *pile, Rank rank, Suit suit);
+
 #endif // CARDPILE_H
