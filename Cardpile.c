@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <string.h>
 
-Card* getCardAt(Cardpile *pile, int cardPosition) {
+Card *getCardAt(Cardpile *pile, int cardPosition) {
     Card *card = pile->bottom;
     for (int i = 0; i < cardPosition; i++) {
         if (card == NULL) {
@@ -27,17 +27,20 @@ Card *getCardAtTableauBottom(Cardpile *pile) {
     return card;
 }
 
-Card* getCardAtTableau(Cardpile *tableau, Rank rank, Suit suit) {
+Card *getCardAtTableau(Cardpile *tableau, Rank rank, Suit suit) {
     Card *currentCard = tableau->top;
     while (currentCard != NULL) {
-        if(currentCard->rank == 'A' || currentCard->rank == 'T' || currentCard->rank == 'J' || currentCard->rank == 'Q' || currentCard->rank == 'K') {
-            currentCard->rank = rankValue(currentCard->rank);
-        } else {
-            currentCard->rank = currentCard->rank - '0';
-        }
-        printf("Current card - Rank: %d, Suit: %c\n", currentCard->rank, currentCard->suit);
-        if (currentCard->rank == rank && currentCard->suit == suit) {
-            return currentCard;
+        if (currentCard->isFaceUp == true) {
+            if (currentCard->rank == 'A' || currentCard->rank == 'T' || currentCard->rank == 'J' ||
+                currentCard->rank == 'Q' || currentCard->rank == 'K') {
+                currentCard->rank = rankValue(currentCard->rank);
+            } else {
+                currentCard->rank = currentCard->rank - '0';
+            }
+            printf("Current card - Rank: %d, Suit: %c\n", currentCard->rank, currentCard->suit);
+            if (currentCard->rank == rank && currentCard->suit == suit) {
+                return currentCard;
+            }
         }
         currentCard = currentCard->prev;
     }
@@ -286,6 +289,7 @@ void showTableauCardsStartup(Cardpile *tableau[]) {
         }
     }
 }
+
 void moveToFoundation(int sourceIndex, Cardpile **tableau, Cardpile **foundation, const char *destination) {
     int foundationIndex = destination[1] - '1'; // Convert from char to int (0-based)
     if (foundationIndex >= 0 && foundationIndex < NUMBER_OF_FOUNDATIONS) {
