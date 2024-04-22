@@ -147,8 +147,8 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
     } else if (strcmp(cmd, "P") == 0) {
         lastCommand = "P";
         if (*currentPhase == play || *currentPhase == welcome) {
-            message = (*currentPhase == play) ? "Command not available in welcome phase. For a list of available commands, type HELP" :
-                                                "Unavailable command: You are already playing a game. For a list of available commands, type HELP";
+            message = (*currentPhase == play) ? "Unavailable command: You are already playing a game. For a list of available commands, type HELP":
+                                                "Command not available in welcome phase. For a list of available commands, type HELP";
             printUIMessages(lastCommand, message);
             return;
         }
@@ -166,7 +166,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         lastCommand = "Q";
         if (*currentPhase == welcome || *currentPhase == startup) {
             message = (*currentPhase == welcome) ? "Command not available in welcome phase. For a list of available commands, type HELP" :
-                                                   "Unavailable command: You are already in the startup phase For a list of available commands, type HELP";
+                                                   "Unavailable command: You are already in the startup phase. For a list of available commands, type HELP";
             printUIMessages(lastCommand, message);
             return;
         }
