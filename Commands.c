@@ -472,6 +472,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
             return;
         }
         char *destination = strtok(NULL, " -> ");
+        printf("Destination: %s\n", destination);
         if (destination != NULL && destination[0] == 'C') {
             moveMultipleCardsToTableau(sourceIndex, tableau, destination, card);
         } else {
