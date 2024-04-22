@@ -146,11 +146,10 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
 
     } else if (strcmp(cmd, "P") == 0) {
         lastCommand = "P";
-        if (*currentPhase == welcome) {
-            printf("Command not available in welcome phase. For a list of available commands, type HELP\n\n");
-            return;
-        } else if (*currentPhase == play) {
-            printf("Unavailable command: You are already playing a game. For a list of available commands, type HELP\n\n");
+        if (*currentPhase == play || *currentPhase == welcome) {
+            message = (*currentPhase == play) ? "Command not available in welcome phase. For a list of available commands, type HELP" :
+                                                "Unavailable command: You are already playing a game. For a list of available commands, type HELP";
+            printUIMessages(lastCommand, message);
             return;
         }
         *currentPhase = play;
@@ -164,18 +163,18 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         printUIMessages(lastCommand, message);
 
     } else if (strcmp(cmd, "Q") == 0) {
-        if (*currentPhase == welcome) {
-            printf("Command not available in welcome phase. For a list of available commands, type HELP\n\n");
-            return;
-        } else if (*currentPhase == startup) {
-            printf("Unavailable command: You are already in the startup phase For a list of available commands, type HELP\n\n");
+        lastCommand = "Q";
+        if (*currentPhase == welcome || *currentPhase == startup) {
+            message = (*currentPhase == welcome) ? "Command not available in welcome phase. For a list of available commands, type HELP" :
+                                                   "Unavailable command: You are already in the startup phase For a list of available commands, type HELP";
+            printUIMessages(lastCommand, message);
             return;
         }
+
         *currentPhase = startup;
         clearTableau(tableau);
         startupPopulateTableau(tableau, copyDeck(deck->top));
         printUI(tableau, foundation);
-        lastCommand = "Q";
         printUIMessages(lastCommand, message);
         /*quits the current game and goes back to the STARTUP phase. The memory still
         contains the deck of cards used to play the game that we are quitting. So, if we use the command P
