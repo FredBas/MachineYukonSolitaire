@@ -26,26 +26,33 @@ Card *getCardAtTableauBottom(Cardpile *pile) {
     Card *card = pile->top;
     return card;
 }
-
 Card *getCardAtTableau(Cardpile *tableau, Rank rank, Suit suit) {
     Card *currentCard = tableau->top;
     while (currentCard != NULL) {
         if (currentCard->isFaceUp == true) {
+            int rankInt;
             if (currentCard->rank == 'A' || currentCard->rank == 'T' || currentCard->rank == 'J' ||
                 currentCard->rank == 'Q' || currentCard->rank == 'K') {
-                currentCard->rank = rankValue(currentCard->rank);
+                rankInt = rankValue(currentCard->rank);
             } else {
-                currentCard->rank = currentCard->rank - '0';
+                rankInt = currentCard->rank - '0'; // Convert from char to int
             }
-            printf("Current card - Rank: %d, Suit: %c\n", currentCard->rank, currentCard->suit);
-            if (currentCard->rank == rank && currentCard->suit == suit) {
+            printf("Current card - Rank: %d, Suit: %c\n", rankInt, currentCard->suit);
+            if (rankInt == rank && currentCard->suit == suit) {
                 return currentCard;
             }
         }
-        currentCard = currentCard->prev;
+        if (currentCard->prev != NULL) {
+            currentCard = currentCard->prev;
+        } else {
+            printf("Error: Reached end of tableau\n");
+            break;
+        }
     }
-    return NULL; // Return NULL if the card is not found
+    return NULL; // Return NULL if card is not found
 }
+
+
 
 void shuffleDeckSplit(Cardpile *deck, int split) {
     // If split is not provided (i.e., split is 0), generate a random split
@@ -401,3 +408,4 @@ void moveMultipleCardsToTableau(int sourceIndex, Cardpile **tableau, const char 
         printf("Error: Invalid destination\n");
     }
 }
+
