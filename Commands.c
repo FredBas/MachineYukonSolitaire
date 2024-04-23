@@ -38,6 +38,15 @@ void initialTableauPrinter() {
     printf("\n");
 }
 
+void unableMoveCommand(gamePhase *currentPhase, char *message, char *lastcommand) {
+    if (*currentPhase == play || *currentPhase == welcome) {
+        message = (*currentPhase == play) ? "Command not available during a game. For a list of available commands, type HELP" :
+                                            "Command not available in welcome phase. For a list of available commands, type HELP";
+        printUIMessages(lastcommand, message);
+        return;
+    }
+}
+
 void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundation, Cardpile *deck, gamePhase *currentPhase) {
 
     char *lastCommand = "";

@@ -12,6 +12,7 @@ typedef enum {
 bool isValidSplitInput(char *str);
 void printUIMessages(char *lastcommands, char *message);
 void initialTableauPrinter();
+void unableMoveCommand(gamePhase *currentPhase, char *message, char *lastcommand);
 void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundation, Cardpile *deck, gamePhase *currentPhase);
 
 #endif // COMMANDS_H
