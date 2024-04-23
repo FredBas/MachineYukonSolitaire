@@ -488,8 +488,10 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         } else {
             printf("Card found: %c%c\n", card->rank, card->suit);
         }
-        char *destination = strtok(NULL, "");
-        while (*destination != '\0' && isspace((unsigned char) *destination)) destination++;
+        char *destination;
+        for (int i = 0; i < 8; i++) {
+            destination = commandCopy++; //Moves through the command string till only the destination is left
+        }
         printf("Destination: %s\n", destination);
         if (destination != NULL && destination[0] == 'C') {
             moveMultipleCardsToTableau(sourceIndex, tableau, destination, card);
@@ -503,5 +505,5 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
     } else {
         printf("Error: Invalid command\n");
     }
-    free(commandCopy); // Free the command copy
+    //free(commandCopy); // Free the command copy
 }
