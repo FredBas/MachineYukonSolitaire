@@ -27,6 +27,7 @@ void printUIMessages(char *lastCommand, char *message) {
 }
 
 void initialTableauPrinter() {
+    printf("__________________________________________________________________________________");
     printf("\nC1\tC2\tC3\tC4\tC5\tC6\tC7\n\n");
     printf("  \t  \t  \t  \t  \t  \t  \t\t[]\tF1\n");
     printf("  \t  \t  \t  \t  \t  \t  \t\n");
