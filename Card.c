@@ -13,14 +13,12 @@ bool isSameSuit(Card card1, Card card2) {
 bool canBePlacedBottom(Card card1, Card card2) {
     bool inSequence = isInSequence(card1, card2);
     bool sameSuit = isSameSuit(card1, card2);
-    printf("Card1: %c%c, Card2: %c%c, isInSequence: %d, isSameSuit: %d\n", card1.rank, card1.suit, card2.rank, card2.suit, inSequence, sameSuit);
     return inSequence && !sameSuit;
 }
 
 bool canBePlacedFoundation(Card card1, Card card2) {
     bool sameSuit = isSameSuit(card1, card2);
     bool inSequence = isInSequence(card2, card1);
-    printf("Card1: %c%c, Card2: %c%c, isInSequence: %d, isSameSuit: %d\n", card1.rank, card1.suit, card2.rank, card2.suit, inSequence, sameSuit);
     return sameSuit && inSequence;
 }
 

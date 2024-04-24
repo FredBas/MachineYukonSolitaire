@@ -468,17 +468,13 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
             rank = rank - '0';
         }
         Suit suit = cardStr[1];
-        printf("Rank: %d, Suit: %c\n", rank, suit);
         Card *card = getCardAtTableau(tableau[sourceIndex], rank, suit);
         if (card == NULL) {
             printf("Error: Card not found in tableau\n");
             return;
-        } else {
-            printf("Card found: %c%c\n", card->rank, card->suit);
         }
         char *destination;
         destination = commandCopy + 7;
-        printf("Destination: %s\n", destination);
         if (destination != NULL && destination[0] == 'C') {
             moveMultipleCardsToTableau(sourceIndex, tableau, destination, card);
         } else {
