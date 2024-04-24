@@ -35,6 +35,7 @@ int main() {
     gamePhase currentPhase = welcome;
 
     char *empty = "";
+    printf("\nWelcome to Yukon Solitaire!\n\nFor a list of commands, type 'HELP'.\n\n");
     initialTableauPrinter();
     printUIMessages(empty,empty);
 

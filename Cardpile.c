@@ -37,7 +37,6 @@ Card *getCardAtTableau(Cardpile *tableau, Rank rank, Suit suit) {
             } else {
                 rankInt = currentCard->rank - '0'; // Convert from char to int
             }
-            printf("Current card - Rank: %d, Suit: %c\n", rankInt, currentCard->suit);
             if (rankInt == rank && currentCard->suit == suit) {
                 return currentCard;
             }
