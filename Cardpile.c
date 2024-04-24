@@ -333,6 +333,10 @@ void moveToFoundation(int sourceIndex, Cardpile **tableau, Cardpile **foundation
     if (foundationIndex >= 0 && foundationIndex < NUMBER_OF_FOUNDATIONS) {
         Card *tableauCard = tableau[sourceIndex]->top;
         Card *foundationCard = foundation[foundationIndex]->top;
+        if (tableauCard == NULL) {
+            printf("Error: No card to move\n");
+            return;
+        }
         if (foundationCard == NULL) {
             if (tableauCard->rank == 'A') {
                 moveCard(tableau[sourceIndex], foundation[foundationIndex], tableauCard);
@@ -352,6 +356,10 @@ void moveBottomCardToTableau(int sourceIndex, Cardpile **tableau, const char *de
     if (tableauIndex >= 0 && tableauIndex < NUMBER_OF_TABLEAUS) {
         Card *tableauCard = tableau[sourceIndex]->top;
         Card *tableauCard2 = tableau[tableauIndex]->top;
+        if (tableauCard == NULL) {
+            printf("Error: No card to move\n");
+            return;
+        }
         if (tableauCard2 == NULL || canBePlacedBottom(*tableauCard, *tableauCard2)) {
             moveCard(tableau[sourceIndex], tableau[tableauIndex], tableauCard);
 
@@ -366,6 +374,10 @@ void moveMultipleCardsToTableau(int sourceIndex, Cardpile **tableau, const char 
     if (destinationIndex >= 0 && destinationIndex < NUMBER_OF_TABLEAUS) {
         Card *tableauCard = tableau[sourceIndex]->top;
         Card *tableauCard2 = tableau[destinationIndex]->top;
+        if (tableauCard == NULL) {
+            printf("Error: No card to move\n");
+            return;
+        }
         for (int i = 0; i < tableau[sourceIndex]->size; i++) {
             if (tableauCard->suit == card->suit && tableauCard->rank == card->rank) {
                 break;
