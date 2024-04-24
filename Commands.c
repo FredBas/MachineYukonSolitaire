@@ -172,7 +172,6 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         //“Command not available in the PLAY phase.”
         clearTableau(tableau);
         playPopulateTableau(tableau, copyDeck(deck->top));
-        printCard(getCardAtTableauBottom(tableau[1]));
         printUI(tableau, foundation);
         printUIMessages(lastCommand, message);
 
