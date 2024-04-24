@@ -333,8 +333,16 @@ void moveToFoundation(int sourceIndex, Cardpile **tableau, Cardpile **foundation
     if (foundationIndex >= 0 && foundationIndex < NUMBER_OF_FOUNDATIONS) {
         Card *tableauCard = tableau[sourceIndex]->top;
         Card *foundationCard = foundation[foundationIndex]->top;
-        if (foundationCard == NULL || canBePlacedFoundation(*tableauCard, *foundationCard)) {
+        if (foundationCard == NULL) {
+            if (tableauCard->rank == 'A') {
+                moveCard(tableau[sourceIndex], foundation[foundationIndex], tableauCard);
+            } else {
+                printf("Error: Move not valid\n");
+            }
+        } else if (canBePlacedFoundation(*tableauCard, *foundationCard)) {
             moveCard(tableau[sourceIndex], foundation[foundationIndex], tableauCard);
+        } else {
+            printf("Error: Move not valid\n");
         }
     }
 }
