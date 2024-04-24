@@ -53,13 +53,13 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
     char *message = "OK";
     // Create a copy of the command string because strtok modifies the original string
     char *commandCopy = strdup(command);
+    lastCommand = commandCopy;
     char *movecmdCopy = strdup(command);
     // Get the first token (the command)
     char *cmd = strtok(commandCopy, " ");
     char *movecmd = strtok(movecmdCopy, " -> ");
 
     if (strcmp(cmd, "LD") == 0) {
-        lastCommand = "LD";
         if (*currentPhase == play) {
             message = "Command not available during a game. For a list of available commands, type HELP";
             printUIMessages(lastCommand, message);
@@ -76,7 +76,6 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         printUI(tableau, foundation);
         printUIMessages(lastCommand, message);
     } else if (strcmp(cmd, "SW") == 0) {
-        lastCommand = "SW";
         if (deck->top == NULL) {
             message = "Error: No deck loaded. Please load a deck using the LD command.";
             printUIMessages(lastCommand, message);
@@ -96,7 +95,6 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         printUIMessages(lastCommand, message);
         // Show cards during startup phase
     } else if (strcmp(cmd, "SI") == 0) {
-        lastCommand = "SI";
         if (*currentPhase == play || *currentPhase == welcome) {
             message = (*currentPhase == play)
                       ? "Command not available during a game. For a list of available commands, type HELP" :
@@ -121,7 +119,6 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         printUI(tableau, foundation);
         printUIMessages(lastCommand, message);
     } else if (strcmp(cmd, "SR") == 0) {
-        lastCommand = "SR";
         if (*currentPhase == play || *currentPhase == welcome) {
             message = (*currentPhase == play)
                       ? "Command not available during a game. For a list of available commands, type HELP" :
@@ -157,7 +154,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         exit(0);
 
     } else if (strcmp(cmd, "P") == 0) {
-        lastCommand = "P";
+        //lastCommand = "P";
         if (*currentPhase == play || *currentPhase == welcome) {
             message = (*currentPhase == play)
                       ? "Unavailable command: You are already playing a game. For a list of available commands, type HELP"
@@ -177,7 +174,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         printUIMessages(lastCommand, message);
 
     } else if (strcmp(cmd, "Q") == 0) {
-        lastCommand = "Q";
+        //lastCommand = "Q";
         if (*currentPhase == welcome || *currentPhase == startup) {
             message = (*currentPhase == welcome)
                       ? "Command not available in welcome phase. For a list of available commands, type HELP" :
@@ -267,7 +264,6 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
             printf("Error: Invalid destination\n");
         }
         printUI(tableau, foundation);
-        lastCommand = "???";
         printUIMessages(lastCommand, message);
     } else if (strcmp(movecmd, "C2") == 0) {
         if (*currentPhase == welcome) {
@@ -292,7 +288,6 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
             printf("Error: Invalid destination\n");
         }
         printUI(tableau, foundation);
-        lastCommand = "???";
         printUIMessages(lastCommand, message);
     } else if (strcmp(movecmd, "C3") == 0) {
         if (*currentPhase == welcome) {
@@ -317,7 +312,6 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
             printf("Error: Invalid destination\n");
         }
         printUI(tableau, foundation);
-        lastCommand = "???";
         printUIMessages(lastCommand, message);
     } else if (strcmp(movecmd, "C4") == 0) {
         if (*currentPhase == welcome) {
@@ -342,7 +336,6 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
             printf("Error: Invalid destination\n");
         }
         printUI(tableau, foundation);
-        lastCommand = "???";
         printUIMessages(lastCommand, message);
     } else if (strcmp(movecmd, "C5") == 0) {
         if (*currentPhase == welcome) {
@@ -367,7 +360,6 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
             printf("Error: Invalid destination\n");
         }
         printUI(tableau, foundation);
-        lastCommand = "???";
         printUIMessages(lastCommand, message);
     } else if (strcmp(movecmd, "C6") == 0) {
         if (*currentPhase == welcome) {
@@ -392,7 +384,6 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
             printf("Error: Invalid destination\n");
         }
         printUI(tableau, foundation);
-        lastCommand = "???";
         printUIMessages(lastCommand, message);
     } else if (strcmp(movecmd, "C7") == 0) {
         if (*currentPhase == welcome) {
@@ -417,7 +408,6 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
             printf("Error: Invalid destination\n");
         }
         printUI(tableau, foundation);
-        lastCommand = "???";
         printUIMessages(lastCommand, message);
     } else if (movecmd[0] == 'F') {
         if (*currentPhase == welcome) {
@@ -456,7 +446,6 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
             printf("Error: Invalid destination\n");
         }
         printUI(tableau, foundation);
-        lastCommand = "???";
         printUIMessages(lastCommand, message);
     } else if (movecmd[0] == 'C' && movecmd[2] == ':') {
         if (*currentPhase == welcome) {
@@ -497,7 +486,6 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
             printf("Error: Invalid destination\n");
         }
         printUI(tableau, foundation);
-        lastCommand = "???";
         printUIMessages(lastCommand, message);
         free(cardStrCopy); // Free the card string copy
     } else {
