@@ -296,31 +296,45 @@ void showTableauCardsStartup(Cardpile *tableau[]) {
     }
 }
 
+void moveCard(Cardpile *from, Cardpile *to, Card *card) {
+    Card *current = card;
+    if (current == NULL) {
+        return;
+    }
+    if (current->prev != NULL) {
+        from->top = current->prev;
+        from->top->next = NULL;
+        from->top->isFaceUp = true;
+    } else {
+        from->bottom = NULL;
+        from->top = from->bottom;
+        from->top = NULL;
+    }
+    from->size--;
+
+    if (to->top != NULL) {
+        to->top->next = current;
+        current->prev = to->top;
+    } else {
+        to->bottom = current;
+    }
+    to->size++;
+
+    while (current->next != NULL) {
+        to->size++;
+        current = current->next;
+    }
+    to->top = current;
+    to->top->next = NULL;
+}
+
 void moveToFoundation(int sourceIndex, Cardpile **tableau, Cardpile **foundation, const char *destination) {
     int foundationIndex = destination[1] - '1'; // Convert from char to int (0-based)
     if (foundationIndex >= 0 && foundationIndex < NUMBER_OF_FOUNDATIONS) {
         Card *tableauCard = tableau[sourceIndex]->top;
         Card *foundationCard = foundation[foundationIndex]->top;
         if (foundationCard == NULL || canBePlacedFoundation(*tableauCard, *foundationCard)) {
-            if (tableauCard->prev != NULL) {
-                tableau[sourceIndex]->top = tableauCard->prev;
-                tableau[sourceIndex]->top->next = NULL;
-                tableau[sourceIndex]->top->isFaceUp = true;
-            } else {
-                tableau[sourceIndex]->bottom = NULL;
-                tableau[sourceIndex]->top = NULL;
-            }
-            tableau[sourceIndex]->size--;
-
-            if (foundationCard != NULL) {
-                foundation[foundationIndex]->top->next = tableauCard;
-                tableauCard->prev = foundation[foundationIndex]->top;
-            } else {
-                foundation[foundationIndex]->bottom = tableauCard;
-            }
-            foundation[foundationIndex]->top = tableauCard;
-            tableauCard->next = NULL;
-            foundation[foundationIndex]->size++;
+            moveCard(tableau[sourceIndex], foundation[foundationIndex], tableauCard);
         }
     }
 }
@@ -331,26 +345,7 @@ void moveBottomCardToTableau(int sourceIndex, Cardpile **tableau, const char *de
         Card *tableauCard = tableau[sourceIndex]->top;
         Card *tableauCard2 = tableau[tableauIndex]->top;
         if (tableauCard2 == NULL || canBePlacedBottom(*tableauCard, *tableauCard2)) {
-            if (tableauCard->prev != NULL) {
-                tableau[sourceIndex]->top = tableauCard->prev;
-                tableau[sourceIndex]->top->next = NULL;
-                tableau[sourceIndex]->top->isFaceUp = true;
-            } else {
-                tableau[sourceIndex]->bottom = NULL;
-                tableau[sourceIndex]->top = NULL;
-            }
-            tableau[sourceIndex]->size--;
-
-            if (tableauCard2 != NULL) {
-                tableau[tableauIndex]->top->next = tableauCard;
-                tableauCard->prev = tableau[tableauIndex]->top;
-            } else {
-                tableau[tableauIndex]->bottom = tableauCard;
-            }
-
-            tableau[tableauIndex]->top = tableauCard;
-            tableauCard->next = NULL;
-            tableau[tableauIndex]->size++;
+            moveCard(tableau[sourceIndex], tableau[tableauIndex], tableauCard);
 
         } else {
             printf("Error: Move not valid\n");
@@ -375,31 +370,7 @@ void moveMultipleCardsToTableau(int sourceIndex, Cardpile **tableau, const char 
             return;
         }
         if (tableauCard2 == NULL || canBePlacedBottom(*tableauCard, *tableauCard2)) {
-            if (tableauCard->prev != NULL) {
-                tableau[sourceIndex]->top = tableauCard->prev;
-                tableau[sourceIndex]->top->next = NULL;
-                tableau[sourceIndex]->top->isFaceUp = true;
-            } else {
-                tableau[sourceIndex]->bottom = NULL;
-                tableau[sourceIndex]->top = NULL;
-            }
-            tableau[sourceIndex]->size--;
-
-            if (tableauCard2 != NULL) {
-                tableau[destinationIndex]->top->next = tableauCard;
-                tableauCard->prev = tableau[destinationIndex]->top;
-            } else {
-                tableau[destinationIndex]->bottom = tableauCard;
-            }
-            tableau[destinationIndex]->top = tableauCard;
-            Card *current = tableauCard->next;
-            while (current != NULL) {
-                tableau[destinationIndex]->top = current;
-                current = current->next;
-                tableau[sourceIndex]->size--;
-                tableau[destinationIndex]->size++;
-            }
-            tableau[destinationIndex]->top->next = NULL;
+            moveCard(tableau[sourceIndex], tableau[destinationIndex], tableauCard);
         } else {
             printf("Error: Move not valid\n");
         }

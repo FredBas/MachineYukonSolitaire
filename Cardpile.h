@@ -36,6 +36,8 @@ void showTableauCardsStartup(Cardpile *tableau[]);
 
 Card* getCardAt(Cardpile *pile, int cardPosition);
 
+void moveCard(Cardpile *from, Cardpile *to, Card *card);
+
 void moveToFoundation(int sourcIndex, Cardpile **tableau, Cardpile **foundation, const char *destination);
 
 void moveBottomCardToTableau(int sourceIndex, Cardpile **from, const char *destination);
