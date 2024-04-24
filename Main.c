@@ -44,6 +44,15 @@ int main() {
         fgets(command, 20, stdin);
         command[strcspn(command, "\n")] = 0; // Remove the newline character
         commandHandler(command, tableau, foundation, deck, &currentPhase);
+
+        int cardsInFoundations = 0;
+        for (int i = 0; i < NUMBER_OF_FOUNDATIONS; i++) {
+            cardsInFoundations += foundation[i]->size;
+        }
+        if (cardsInFoundations == DECK_SIZE) {
+            printf("Congratulations! You have won the game!\n");
+            break;
+        }
     }
     // Cleanup
     cleanup(&deck);

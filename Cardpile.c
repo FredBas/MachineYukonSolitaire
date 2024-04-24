@@ -301,14 +301,14 @@ void moveCard(Cardpile *from, Cardpile *to, Card *card) {
     if (current == NULL) {
         return;
     }
-    if (current->prev != NULL) {
+    if (current != from->bottom) {
         from->top = current->prev;
         from->top->next = NULL;
         from->top->isFaceUp = true;
     } else {
         from->bottom = NULL;
-        from->top = from->bottom;
         from->top = NULL;
+        from->top = from->bottom;
     }
     from->size--;
 
