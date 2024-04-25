@@ -38,11 +38,11 @@ Card* getCardAt(Cardpile *pile, int cardPosition);
 
 void moveCard(Cardpile *from, Cardpile *to, Card *card);
 
-void moveToFoundation(int sourcIndex, Cardpile **tableau, Cardpile **foundation, const char *destination);
+void moveToFoundation(int sourcIndex, Cardpile **tableau, Cardpile **foundation, const char *destination, char *message[]);
 
-void moveBottomCardToTableau(int sourceIndex, Cardpile **from, const char *destination);
+void moveBottomCardToTableau(int sourceIndex, Cardpile **from, const char *destination, char *message[]);
 
-void moveMultipleCardsToTableau(int sourceIndex, Cardpile **tableau, const char *destination, Card *card);
+void moveMultipleCardsToTableau(int sourceIndex, Cardpile **tableau, const char *destination, Card *card, char *message[]);
 
 Card* getCardAtTableau(Cardpile *pile, Rank rank, Suit suit);
 

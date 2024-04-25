@@ -20,9 +20,11 @@ bool isValidSplitInput(char *str) {
     return true;
 }
 
-void printUIMessages(char *lastCommand, char *message) {
+void printUIMessages(char *lastCommand, char *message[]) {
     printf("LAST Command: %s\n", lastCommand);
-    printf("Message: %s\n", message);
+    if (*message != NULL) {
+        printf("Message: %s\n", *message);
+    } else printf("Message: \n");
     printf("INPUT > ");
 }
 
@@ -43,7 +45,7 @@ void initialTableauPrinter() {
 void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundation, Cardpile *deck, gamePhase *currentPhase) {
 
     char *lastCommand = "";
-    char *message = "OK";
+    char *message[50] = {0};
     // Create a copy of the command string because strtok modifies the original string
     char *commandCopy = strdup(command);
     lastCommand = commandCopy;
@@ -54,7 +56,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
 
     if (strcmp(cmd, "LD") == 0) {
         if (*currentPhase == play) {
-            message = "Command not available during a game. For a list of available commands, type HELP";
+            message[0] = "Command not available during a game. For a list of available commands, type HELP";
             printUIMessages(lastCommand, message);
             return;
         }
@@ -67,16 +69,17 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         clearTableau(tableau);
         startupPopulateTableau(tableau, copyDeck(deck->top));
         printUI(tableau, foundation);
+        message[0] = "Deck loaded successfully";
         printUIMessages(lastCommand, message);
     } else if (strcmp(cmd, "SW") == 0) {
         if (deck->top == NULL) {
-            message = "Error: No deck loaded. Please load a deck using the LD command.";
+            message[0] = "Error: No deck loaded. Please load a deck using the LD command.";
             printUIMessages(lastCommand, message);
             return;
         }
 
         if (*currentPhase == play || *currentPhase == welcome) {
-            message = (*currentPhase == play)
+            message[0] = (*currentPhase == play)
                       ? "Command not available during a game. For a list of available commands, type HELP" :
                       "Command not available in welcome phase. For a list of available commands, type HELP";
             printUIMessages(lastCommand, message);
@@ -85,11 +88,12 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
 
         showTableauCardsStartup(tableau);
         printUI(tableau, foundation);
+        message[0] = "Cards shown successfully";
         printUIMessages(lastCommand, message);
         // Show cards during startup phase
     } else if (strcmp(cmd, "SI") == 0) {
         if (*currentPhase == play || *currentPhase == welcome) {
-            message = (*currentPhase == play)
+            message[0] = (*currentPhase == play)
                       ? "Command not available during a game. For a list of available commands, type HELP" :
                       "Command not available in welcome phase. For a list of available commands, type HELP";
             printUIMessages(lastCommand, message);
@@ -101,19 +105,20 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
             int split = atoi(splitStr); // Convert the split string to an integer
             shuffleDeckSplit(deck, split);
         } else if (splitStr == NULL) {
-            message = "No split input provided. Shuffling deck with split 0.";
+            message[0] = "No split input provided. Shuffling deck with split 0.";
             shuffleDeckSplit(deck, 0);
         } else if (isValidSplitInput(splitStr) == false) {
-            message = "Error: Invalid split input. Please enter a number between 1 and 52.";
+            message[0] = "Error: Invalid split input. Please enter a number between 1 and 52.";
         } else {
             shuffleDeckSplit(deck, 0);
         }
         startupPopulateTableau(tableau, copyDeck(deck->top));
         printUI(tableau, foundation);
+        message[0] = "Deck shuffled successfully";
         printUIMessages(lastCommand, message);
     } else if (strcmp(cmd, "SR") == 0) {
         if (*currentPhase == play || *currentPhase == welcome) {
-            message = (*currentPhase == play)
+            message[0] = (*currentPhase == play)
                       ? "Command not available during a game. For a list of available commands, type HELP" :
                       "Command not available in welcome phase. For a list of available commands, type HELP";
             printUIMessages(lastCommand, message);
@@ -123,11 +128,12 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         shuffleRandom(deck);
         startupPopulateTableau(tableau, copyDeck(deck->top));
         printUI(tableau, foundation);
+        message[0] = "Deck shuffled randomly";
         printUIMessages(lastCommand, message);
     } else if (strcmp(cmd, "SD") == 0) {
         lastCommand = "SD";
         if (*currentPhase == play || *currentPhase == welcome) {
-            message = (*currentPhase == play)
+            message[0] = (*currentPhase == play)
                       ? "Command not available during a game. For a list of available commands, type HELP" :
                       "Command not available in welcome phase. For a list of available commands, type HELP";
             printUIMessages(lastCommand, message);
@@ -147,9 +153,8 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         exit(0);
 
     } else if (strcmp(cmd, "P") == 0) {
-        //lastCommand = "P";
         if (*currentPhase == play || *currentPhase == welcome) {
-            message = (*currentPhase == play)
+            message[0] = (*currentPhase == play)
                       ? "Unavailable command: You are already playing a game. For a list of available commands, type HELP"
                       :
                       "Command not available in welcome phase. For a list of available commands, type HELP";
@@ -163,12 +168,13 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         clearTableau(tableau);
         playPopulateTableau(tableau, copyDeck(deck->top));
         printUI(tableau, foundation);
+        message[0] = "Transitioned to play phase";
         printUIMessages(lastCommand, message);
 
     } else if (strcmp(cmd, "Q") == 0) {
         //lastCommand = "Q";
         if (*currentPhase == welcome || *currentPhase == startup) {
-            message = (*currentPhase == welcome)
+            message[0] = (*currentPhase == welcome)
                       ? "Command not available in welcome phase. For a list of available commands, type HELP" :
                       "Unavailable command: You are already in the startup phase. For a list of available commands, type HELP";
             printUIMessages(lastCommand, message);
@@ -179,6 +185,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         clearTableau(tableau);
         startupPopulateTableau(tableau, copyDeck(deck->top));
         printUI(tableau, foundation);
+        message[0] = "Transitioned to startup phase";
         printUIMessages(lastCommand, message);
         /*quits the current game and goes back to the STARTUP phase. The memory still
         contains the deck of cards used to play the game that we are quitting. So, if we use the command P
@@ -235,11 +242,11 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
 
     else if (strcmp(movecmd, "C1") == 0) {
         if (*currentPhase == welcome) {
-            message = "Command not available in welcome phase. For a list of available commands, type HELP";
+            message[0] = "Command not available in welcome phase. For a list of available commands, type HELP";
             printUIMessages(lastCommand, message);
             return;
         } else if (*currentPhase == startup) {
-            message = "Unavailable command: You are already in the startup phase For a list of available commands, type HELP";
+            message[0] = "Unavailable command: You are already in the startup phase For a list of available commands, type HELP";
             printUIMessages(lastCommand, message);
             return;
         }
@@ -247,27 +254,27 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         char *destination = strtok(NULL, " -> ");
         if (destination != NULL) {
             if (destination[0] == 'F') {
-                moveToFoundation(sourceIndex, tableau, foundation, destination);
+                moveToFoundation(sourceIndex, tableau, foundation, destination, message);
             } else if (strcmp(destination, "C1") == 0) {
-                message = "Invalid destination";
+                message[0] = "Invalid destination";
                 printUIMessages(lastCommand, message);
                 return;
             } else if (destination[0] == 'C') {
-                moveBottomCardToTableau(sourceIndex, tableau, destination);
+                moveBottomCardToTableau(sourceIndex, tableau, destination, message);
             }
         } else {
-            message = "Error: Invalid destination";
+            message[0] = "Error: Invalid destination";
             printUIMessages(lastCommand, message);
         }
         printUI(tableau, foundation);
         printUIMessages(lastCommand, message);
     } else if (strcmp(movecmd, "C2") == 0) {
         if (*currentPhase == welcome) {
-            message = "Command not available in welcome phase. For a list of available commands, type HELP";
+            message[0] = "Command not available in welcome phase. For a list of available commands, type HELP";
             printUIMessages(lastCommand, message);
             return;
         } else if (*currentPhase == startup) {
-            message = "Unavailable command: You are already in the startup phase For a list of available commands, type HELP";
+            message[0] = "Unavailable command: You are already in the startup phase For a list of available commands, type HELP";
             printUIMessages(lastCommand, message);
             return;
         }
@@ -275,26 +282,26 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         char *destination = strtok(NULL, " -> ");
         if (destination != NULL) {
             if (destination[0] == 'F') {
-                moveToFoundation(sourceIndex, tableau, foundation, destination);
+                moveToFoundation(sourceIndex, tableau, foundation, destination, message);
             } else if (strcmp(destination, "C2") == 0) {
-                message = "Invalid destination";
+                message[0] = "Invalid destination";
                 printUIMessages(lastCommand, message);
                 return;
             } else if (destination[0] == 'C') {
-                moveBottomCardToTableau(sourceIndex, tableau, destination);
+                moveBottomCardToTableau(sourceIndex, tableau, destination, message);
             }
         } else {
-            message = "Error: Invalid destination";
+            message[0] = "Error: Invalid destination";
         }
         printUI(tableau, foundation);
         printUIMessages(lastCommand, message);
     } else if (strcmp(movecmd, "C3") == 0) {
         if (*currentPhase == welcome) {
-            message = "Command not available in welcome phase. For a list of available commands, type HELP";
+            message[0] = "Command not available in welcome phase. For a list of available commands, type HELP";
             printUIMessages(lastCommand, message);
             return;
         } else if (*currentPhase == startup) {
-            message = "Unavailable command: You are already in the startup phase For a list of available commands, type HELP";
+            message[0] = "Unavailable command: You are already in the startup phase For a list of available commands, type HELP";
             printUIMessages(lastCommand, message);
             return;
         }
@@ -302,26 +309,26 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         char *destination = strtok(NULL, " -> ");
         if (destination != NULL) {
             if (destination[0] == 'F') {
-                moveToFoundation(sourceIndex, tableau, foundation, destination);
+                moveToFoundation(sourceIndex, tableau, foundation, destination, message);
             } else if (strcmp(destination, "C3") == 0) {
-                message = "Invalid destination";
+                message[0] = "Invalid destination";
                 printUIMessages(lastCommand, message);
                 return;
             } else if (destination[0] == 'C') {
-                moveBottomCardToTableau(sourceIndex, tableau, destination);
+                moveBottomCardToTableau(sourceIndex, tableau, destination, message);
             }
         } else {
-            message = "Error: Invalid destination";
+            message[0] = "Error: Invalid destination";
         }
         printUI(tableau, foundation);
         printUIMessages(lastCommand, message);
     } else if (strcmp(movecmd, "C4") == 0) {
         if (*currentPhase == welcome) {
-            message = "Command not available in welcome phase. For a list of available commands, type HELP";
+            message[0] = "Command not available in welcome phase. For a list of available commands, type HELP";
             printUIMessages(lastCommand, message);
             return;
         } else if (*currentPhase == startup) {
-            message = "Unavailable command: You are already in the startup phase For a list of available commands, type HELP";
+            message[0] = "Unavailable command: You are already in the startup phase For a list of available commands, type HELP";
             printUIMessages(lastCommand, message);
             return;
         }
@@ -329,26 +336,26 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         char *destination = strtok(NULL, " -> ");
         if (destination != NULL) {
             if (destination[0] == 'F') {
-                moveToFoundation(sourceIndex, tableau, foundation, destination);
+                moveToFoundation(sourceIndex, tableau, foundation, destination, message);
             } else if (strcmp(destination, "C4") == 0) {
-                message = "Invalid destination";
+                message[0] = "Invalid destination";
                 printUIMessages(lastCommand, message);
                 return;
             } else if (destination[0] == 'C') {
-                moveBottomCardToTableau(sourceIndex, tableau, destination);
+                moveBottomCardToTableau(sourceIndex, tableau, destination, message);
             }
         } else {
-            message = "Error: Invalid destination";
+            message[0] = "Error: Invalid destination";
         }
         printUI(tableau, foundation);
         printUIMessages(lastCommand, message);
     } else if (strcmp(movecmd, "C5") == 0) {
         if (*currentPhase == welcome) {
-            message = "Command not available in welcome phase. For a list of available commands, type HELP";
+            message[0] = "Command not available in welcome phase. For a list of available commands, type HELP";
             printUIMessages(lastCommand, message);
             return;
         } else if (*currentPhase == startup) {
-            message = "Unavailable command: You are already in the startup phase For a list of available commands, type HELP";
+            message[0] = "Unavailable command: You are already in the startup phase For a list of available commands, type HELP";
             printUIMessages(lastCommand, message);
             return;
         }
@@ -356,26 +363,26 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         char *destination = strtok(NULL, " -> ");
         if (destination != NULL) {
             if (destination[0] == 'F') {
-                moveToFoundation(sourceIndex, tableau, foundation, destination);
+                moveToFoundation(sourceIndex, tableau, foundation, destination, message);
             } else if (strcmp(destination, "C5") == 0) {
-                message = "Invalid destination";
+                message[0] = "Invalid destination";
                 printUIMessages(lastCommand, message);
                 return;
             } else if (destination[0] == 'C') {
-                moveBottomCardToTableau(sourceIndex, tableau, destination);
+                moveBottomCardToTableau(sourceIndex, tableau, destination, message);
             }
         } else {
-            message = "Error: Invalid destination";
+            message[0] = "Error: Invalid destination";
         }
         printUI(tableau, foundation);
         printUIMessages(lastCommand, message);
     } else if (strcmp(movecmd, "C6") == 0) {
         if (*currentPhase == welcome) {
-            message = "Command not available in welcome phase. For a list of available commands, type HELP";
+            message[0] = "Command not available in welcome phase. For a list of available commands, type HELP";
             printUIMessages(lastCommand, message);
             return;
         } else if (*currentPhase == startup) {
-            message = "Unavailable command: You are already in the startup phase For a list of available commands, type HELP";
+            message[0] = "Unavailable command: You are already in the startup phase For a list of available commands, type HELP";
             printUIMessages(lastCommand, message);
             return;
         }
@@ -383,26 +390,26 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         char *destination = strtok(NULL, " -> ");
         if (destination != NULL) {
             if (destination[0] == 'F') {
-                moveToFoundation(sourceIndex, tableau, foundation, destination);
+                moveToFoundation(sourceIndex, tableau, foundation, destination, message);
             } else if (strcmp(destination, "C6") == 0) {
-                message = "Invalid destination";
+                message[0] = "Invalid destination";
                 printUIMessages(lastCommand, message);
                 return;
             } else if (destination[0] == 'C') {
-                moveBottomCardToTableau(sourceIndex, tableau, destination);
+                moveBottomCardToTableau(sourceIndex, tableau, destination, message);
             }
         } else {
-            message = "Error: Invalid destination";
+            message[0] = "Error: Invalid destination";
         }
         printUI(tableau, foundation);
         printUIMessages(lastCommand, message);
     } else if (strcmp(movecmd, "C7") == 0) {
         if (*currentPhase == welcome) {
-            message = "Command not available in welcome phase. For a list of available commands, type HELP";
+            message[0] = "Command not available in welcome phase. For a list of available commands, type HELP";
             printUIMessages(lastCommand, message);
             return;
         } else if (*currentPhase == startup) {
-            message = "Unavailable command: You are already in the startup phase For a list of available commands, type HELP";
+            message[0] = "Unavailable command: You are already in the startup phase For a list of available commands, type HELP";
             printUIMessages(lastCommand, message);
             return;
         }
@@ -410,32 +417,32 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         char *destination = strtok(NULL, " -> ");
         if (destination != NULL) {
             if (destination[0] == 'F') {
-                moveToFoundation(sourceIndex, tableau, foundation, destination);
+                moveToFoundation(sourceIndex, tableau, foundation, destination, message);
             } else if (strcmp(destination, "C7") == 0) {
-                message = "Invalid destination";
+                message[0] = "Invalid destination";
                 printUIMessages(lastCommand, message);
                 return;
             } else if (destination[0] == 'C') {
-                moveBottomCardToTableau(sourceIndex, tableau, destination);
+                moveBottomCardToTableau(sourceIndex, tableau, destination, message);
             }
         } else {
-            message = "Error: Invalid destination";
+            message[0] = "Error: Invalid destination";
         }
         printUI(tableau, foundation);
         printUIMessages(lastCommand, message);
     } else if (movecmd[0] == 'F') {
         if (*currentPhase == welcome) {
-            message = "Command not available in welcome phase. For a list of available commands, type HELP";
+            message[0] = "Command not available in welcome phase. For a list of available commands, type HELP";
             printUIMessages(lastCommand, message);
             return;
         } else if (*currentPhase == startup) {
-            message = "Unavailable command: You are already in the startup phase For a list of available commands, type HELP";
+            message[0] = "Unavailable command: You are already in the startup phase For a list of available commands, type HELP";
             printUIMessages(lastCommand, message);
             return;
         }
         int sourceIndex = movecmd[1] - '1'; // Convert from char to int (0-based)
         if (foundation[sourceIndex]->top == NULL) {
-            message = "Error: No card in foundation";
+            message[0] = "Error: No card in foundation";
             printUIMessages(lastCommand, message);
             return;
         }
@@ -445,38 +452,38 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
                 int destinationIndex = destination[1] - '1'; // Convert from char to int (0-based)
                 if (foundation[destinationIndex]->top == NULL ||
                     canBePlacedBottom(*foundation[sourceIndex]->top, *foundation[destinationIndex]->top)) {
-                    moveToFoundation(sourceIndex, foundation, foundation, destination);
+                    moveToFoundation(sourceIndex, foundation, foundation, destination, message);
                 } else {
-                    message = "Error: Move not valid";
+                    message[0] = "Error: Move not valid";
                 }
             } else if (destination[0] == 'C') {
                 if (tableau[destination[1] - '1']->top == NULL ||
                     canBePlacedBottom(*foundation[sourceIndex]->top, *tableau[destination[1] - '1']->top)) {
-                    moveBottomCardToTableau(sourceIndex, foundation, destination);
+                    moveBottomCardToTableau(sourceIndex, foundation, destination, message);
                 } else {
-                    message = "Error: Move not valid";
+                    message[0] = "Error: Move not valid";
                 }
             } else {
-                message = "Error: Invalid destination";
+                message[0] = "Error: Invalid destination";
             }
         } else {
-            message = "Error: Invalid destination";
+            message[0] = "Error: Invalid destination";
         }
         printUI(tableau, foundation);
         printUIMessages(lastCommand, message);
     } else if (movecmd[0] == 'C' && movecmd[2] == ':') {
         if (*currentPhase == welcome) {
-            message = "Command not available in welcome phase. For a list of available commands, type HELP";
+            message[0] = "Command not available in welcome phase. For a list of available commands, type HELP";
             printUIMessages(lastCommand, message);
             return;
         } else if (*currentPhase == startup) {
-            message = "Unavailable command: You are already in the startup phase For a list of available commands, type HELP";
+            message[0] = "Unavailable command: You are already in the startup phase For a list of available commands, type HELP";
             printUIMessages(lastCommand, message);
             return;
         }
         int sourceIndex = movecmd[1] - '1'; // Convert from char to int (0-based)
         if (tableau[sourceIndex]->top == NULL) {
-            message = "Error: No card in tableau";
+            message[0] = "Error: No card in tableau";
             printUIMessages(lastCommand, message);
             return;
         }
@@ -492,7 +499,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         printf("Rank: %d, Suit: %c\n", rank, suit);
         Card *card = getCardAtTableau(tableau[sourceIndex], rank, suit);
         if (card == NULL) {
-            message = "Error: Card not found";
+            message[0] = "Error: Card not found";
             printUIMessages(lastCommand, message);
             return;
         } else {
@@ -502,15 +509,15 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         destination = commandCopy + 7;
         printf("Destination: %s\n", destination);
         if (destination != NULL && destination[0] == 'C') {
-            moveMultipleCardsToTableau(sourceIndex, tableau, destination, card);
+            moveMultipleCardsToTableau(sourceIndex, tableau, destination, card, message);
         } else {
-            message = "Error: Invalid destination";
+            message[0] = "Error: Invalid destination";
         }
         printUI(tableau, foundation);
         printUIMessages(lastCommand, message);
         free(cardStrCopy); // Free the card string copy
     } else {
-        message = "Error: Invalid command";
+        message[0] = "Error: Invalid command";
         printUIMessages(lastCommand, message);
     }
     free(commandCopy); // Free the command copy
