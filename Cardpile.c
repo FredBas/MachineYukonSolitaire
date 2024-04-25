@@ -352,22 +352,22 @@ void moveToFoundation(int sourceIndex, Cardpile **tableau, Cardpile **foundation
 }
 
 void moveBottomCardToTableau(int sourceIndex, Cardpile **tableau, const char *destination) {
-    int tableauIndex = destination[1] - '1'; // Convert from char to int (0-based)
-    if (tableauIndex >= 0 && tableauIndex < NUMBER_OF_TABLEAUS) {
+    int destinationIndex = destination[1] - '1'; // Convert from char to int (0-based)
+    if (destinationIndex >= 0 && destinationIndex < NUMBER_OF_TABLEAUS) {
         Card *tableauCard = tableau[sourceIndex]->top;
-        Card *tableauCard2 = tableau[tableauIndex]->top;
+        Card *tableauCard2 = tableau[destinationIndex]->top;
         if (tableauCard == NULL) {
             printf("Error: No card to move\n");
             return;
         }
         if (tableauCard2 == NULL) {
            if (tableauCard->rank == 'K') {
-               moveCard(tableau[sourceIndex], tableau[tableauIndex], tableauCard);
+               moveCard(tableau[sourceIndex], tableau[destinationIndex], tableauCard);
            } else {
                printf("Error: Move not valid\n");
            }
         } else if (canBePlacedBottom(*tableauCard, *tableauCard2)) {
-            moveCard(tableau[sourceIndex], tableau[tableauIndex], tableauCard);
+            moveCard(tableau[sourceIndex], tableau[destinationIndex], tableauCard);
         } else {
             printf("Error: Move not valid\n");
         }
