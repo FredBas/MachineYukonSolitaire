@@ -360,9 +360,14 @@ void moveBottomCardToTableau(int sourceIndex, Cardpile **tableau, const char *de
             printf("Error: No card to move\n");
             return;
         }
-        if (tableauCard2 == NULL || canBePlacedBottom(*tableauCard, *tableauCard2)) {
+        if (tableauCard2 == NULL) {
+           if (tableauCard->rank == 'K') {
+               moveCard(tableau[sourceIndex], tableau[tableauIndex], tableauCard);
+           } else {
+               printf("Error: Move not valid\n");
+           }
+        } else if (canBePlacedBottom(*tableauCard, *tableauCard2)) {
             moveCard(tableau[sourceIndex], tableau[tableauIndex], tableauCard);
-
         } else {
             printf("Error: Move not valid\n");
         }
@@ -389,7 +394,14 @@ void moveMultipleCardsToTableau(int sourceIndex, Cardpile **tableau, const char 
             printf("Error: Card not found\n");
             return;
         }
-        if (tableauCard2 == NULL || canBePlacedBottom(*tableauCard, *tableauCard2)) {
+        if (tableauCard2 == NULL) {
+            if (tableauCard->rank == 'K') {
+                moveCard(tableau[sourceIndex], tableau[destinationIndex], tableauCard);
+            } else {
+                printf("Error: Move not valid\n");
+            }
+
+        } else if (canBePlacedBottom(*tableauCard, *tableauCard2)) {
             moveCard(tableau[sourceIndex], tableau[destinationIndex], tableauCard);
         } else {
             printf("Error: Move not valid\n");
