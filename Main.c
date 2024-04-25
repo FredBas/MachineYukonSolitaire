@@ -50,7 +50,7 @@ int main() {
             cardsInFoundations += foundation[i]->size;
         }
         if (cardsInFoundations == DECK_SIZE) {
-            printf("Congratulations! You have won the game!\n");
+            printf("\n\nCongratulations! You have won the game!\n");
             break;
         }
     }
