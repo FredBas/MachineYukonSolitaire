@@ -7,6 +7,7 @@
 #include "Cardpile.h"
 #include "MemoryManagement.h"
 #include "Commands.h"
+#include "GUI.h"
 
 
 int main() {
@@ -34,7 +35,7 @@ int main() {
 
     gamePhase currentPhase = welcome;
 
-    char *empty = "";
+    /*char *empty = "";
     char *message[50] ={"Welcome to Yukon Solitaire! Type 'LD' to start. For a list of commands, type 'HELP'."};
     initialTableauPrinter();
     printUIMessages(empty,message);
@@ -55,7 +56,9 @@ int main() {
         }
     }
     // Cleanup
-    cleanup(&deck);
+    cleanup(&deck);*/
+    drawGUI();
+
 
     return 0;
 }
