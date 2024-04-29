@@ -5,6 +5,7 @@
 #include "GameInitialization.h"
 #include "Cardpile.h"
 #include "Commands.h"
+#include "GUI.h"
 
 bool isValidSplitInput(char *str) {
     int length = strlen(str);
@@ -53,6 +54,10 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
     // Get the first token (the command)
     char *cmd = strtok(commandCopy, " ");
     char *movecmd = strtok(movecmdCopy, " -> ");
+
+    if(strcmp(cmd, "GUI") == 0) {
+        drawGUI();
+    }
 
     if (strcmp(cmd, "LD") == 0) {
         if (*currentPhase == play) {
