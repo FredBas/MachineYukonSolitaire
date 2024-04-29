@@ -56,7 +56,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
     char *movecmd = strtok(movecmdCopy, " -> ");
 
     if(strcmp(cmd, "GUI") == 0) {
-        drawGUI();
+        drawGUI(tableau, foundation, deck->top, currentPhase);
     }
 
     if (strcmp(cmd, "LD") == 0) {

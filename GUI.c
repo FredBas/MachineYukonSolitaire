@@ -1,8 +1,10 @@
 #include <printf.h>
 #include "GUI.h"
 #include "raylib.h"
+#include "GameInitialization.h"
 
-void drawGUI() {
+void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Card *deck, gamePhase *phase) {
+    startupPopulateTableau(tableau, deck);
     const int screenWidth = 1200;
     const int screenHeight = 800;
     const Color custGreen = {0, 128, 43, 255};
@@ -38,7 +40,27 @@ void drawGUI() {
             DrawText(TextFormat("C%d", i+1), x, y, 15, BLACK);
             x += 100;
         }
-        x+= 100;
+
+        for (int i = 0; i < DECK_SIZE; i++) {
+            for (int j = 0; j < 7; j++) {
+                Card *card = deck;
+
+                if (j != 0) {x += 100;}
+                if (tableau[j]->size <= i) {continue;}
+                for (int k = 0; k < i; k++) {
+                    if (card->next == NULL) {break;}
+                    card = card->next;
+                }
+                card->isFaceUp = false;
+                if (card->isFaceUp) {
+                    DrawTexture(cardToTexture(*card, textures), x, y, WHITE);
+                } else {
+                    DrawTexture(faceDownCard, x, y, WHITE);
+                }
+
+            }
+        }
+        x = 800;
         y = 100;
         for (int i = 0; i < 4; ++i) {
             DrawRectangleLines(x, y, faceDownCard.width, faceDownCard.height, BLACK);
@@ -54,7 +76,7 @@ void drawGUI() {
 
             DrawText(buttons[i]->text, textX,textY,20,GREEN);
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && buttons[i]->x < GetMouseX() && buttons[i]->x + buttons[i]->width > GetMouseX() && buttons[i]->y < GetMouseY() && buttons[i]->y + buttons[i]->height > GetMouseY()) {
-
+                commandHandler(buttons[i]->commandToExecute, tableau, foundation, &deck, phase);
             }
         }
         EndDrawing();
@@ -146,7 +168,7 @@ void createButtons (Button *buttons[], int amountOfButtons) {
     buttons[0]->height = buttonHeight;
     buttons[0]->width = buttonWidth;
     buttons[0]->text = "Load";
-    buttons[0]->commandToExecute = load;
+    buttons[0]->commandToExecute = "LD";
     buttons[0]->x = x;
     buttons[0]->y = y;
     buttons[0]->phase = welcome;
@@ -156,7 +178,7 @@ void createButtons (Button *buttons[], int amountOfButtons) {
     buttons[1]->height = buttonHeight;
     buttons[1]->width = buttonWidth;
     buttons[1]->text = "Show";
-    buttons[1]->commandToExecute = show;
+    buttons[1]->commandToExecute = "SW";
     buttons[1]->x = x;
     buttons[1]->y = y;
     buttons[1]->phase = startup;
@@ -166,7 +188,7 @@ void createButtons (Button *buttons[], int amountOfButtons) {
     buttons[2]->height = buttonHeight;
     buttons[2]->width = buttonWidth;
     buttons[2]->text = "Split";
-    buttons[2]->commandToExecute = splitShuffle;
+    buttons[2]->commandToExecute = "SI";
     buttons[2]->x = x;
     buttons[2]->y = y;
     buttons[2]->phase = startup;
@@ -176,7 +198,7 @@ void createButtons (Button *buttons[], int amountOfButtons) {
     buttons[3]->height = buttonHeight;
     buttons[3]->width = buttonWidth;
     buttons[3]->text = "Shuffle";
-    buttons[3]->commandToExecute = randomShuffle;
+    buttons[3]->commandToExecute = "SR";
     buttons[3]->x = x;
     buttons[3]->y = y;
     buttons[3]->phase = startup;
@@ -186,7 +208,7 @@ void createButtons (Button *buttons[], int amountOfButtons) {
     buttons[4]->height = buttonHeight;
     buttons[4]->width = buttonWidth;
     buttons[4]->text = "Save";
-    buttons[4]->commandToExecute = saveDeck;
+    buttons[4]->commandToExecute = "SD";
     buttons[4]->x = x;
     buttons[4]->y = y;
     buttons[4]->phase = startup;
@@ -196,7 +218,7 @@ void createButtons (Button *buttons[], int amountOfButtons) {
     buttons[5]->height = buttonHeight;
     buttons[5]->width = buttonWidth;
     buttons[5]->text = "Start";
-    buttons[5]->commandToExecute = playGame;
+    buttons[5]->commandToExecute = "P";
     buttons[5]->x = x;
     buttons[5]->y = y;
     buttons[5]->phase = startup;
@@ -206,7 +228,7 @@ void createButtons (Button *buttons[], int amountOfButtons) {
     buttons[6]->height = buttonHeight;
     buttons[6]->width = buttonWidth;
     buttons[6]->text = "Quit";
-    buttons[6]->commandToExecute = quit;
+    buttons[6]->commandToExecute = "QQ";
     buttons[6]->x = x;
     buttons[6]->y = y;
     buttons[6]->phase = welcome;
@@ -214,7 +236,7 @@ void createButtons (Button *buttons[], int amountOfButtons) {
     buttons[7]->height = buttonHeight;
     buttons[7]->width = buttonWidth;
     buttons[7]->text = "Quit";
-    buttons[7]->commandToExecute = quit;
+    buttons[7]->commandToExecute = "QQ";
     buttons[7]->x = x;
     buttons[7]->y = y;
     buttons[7]->phase = startup;
@@ -222,7 +244,7 @@ void createButtons (Button *buttons[], int amountOfButtons) {
     buttons[8]->height = buttonHeight;
     buttons[8]->width = buttonWidth;
     buttons[8]->text = "Quit";
-    buttons[8]->commandToExecute = quit;
+    buttons[8]->commandToExecute = "QQ";
     buttons[8]->x = x;
     buttons[8]->y = y;
     buttons[8]->phase = play;

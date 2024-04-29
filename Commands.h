@@ -9,20 +9,6 @@ typedef enum {
     play,
 }gamePhase;
 
-typedef enum {
-    load,
-    show,
-    splitShuffle,
-    randomShuffle,
-    saveDeck,
-    quit,
-    playGame,
-    backToStart,
-    moves,
-    help,
-    invalid,
-}command;
-
 bool isValidSplitInput(char *str);
 void printUIMessages(char *lastcommands, char *message[]);
 void initialTableauPrinter();

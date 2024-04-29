@@ -35,7 +35,7 @@ int main() {
 
     gamePhase currentPhase = welcome;
 
-    /*char *empty = "";
+    char *empty = "";
     char *message[50] ={"Welcome to Yukon Solitaire! Type 'LD' to start. For a list of commands, type 'HELP'."};
     initialTableauPrinter();
     printUIMessages(empty,message);
@@ -56,8 +56,7 @@ int main() {
         }
     }
     // Cleanup
-    cleanup(&deck);*/
-    drawGUI();
+    cleanup(&deck);
 
 
     return 0;
