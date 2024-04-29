@@ -35,14 +35,14 @@ void drawGUI() {
         y = 15;
         for (int i = 0; i < 7; ++i) {
             //DrawRectangleLines(100 + i * 100, 100, 100, 200, BLACK);
-            DrawText(TextFormat("C%d", i+1), x, y, 20, BLACK);
+            DrawText(TextFormat("C%d", i+1), x, y, 15, BLACK);
             x += 100;
         }
         x+= 100;
         y = 100;
         for (int i = 0; i < 4; ++i) {
             DrawRectangleLines(x, y, faceDownCard.width, faceDownCard.height, BLACK);
-            DrawText(TextFormat("F%d", i+1), x + faceDownCard.width + 15, y, 20, BLACK);
+            DrawText(TextFormat("F%d", i+1), x + faceDownCard.width + 15, y, 15, BLACK);
             y += faceDownCard.height + 15;
 
         }
@@ -52,7 +52,7 @@ void drawGUI() {
             int textX = buttons[i]->x + (buttons[i]->width - textWidth) / 2;
             int textY = buttons[i]->y + (buttons[i]->height - 20) / 2;
 
-            DrawText(buttons[i]->text, textX,textY,20,RED);
+            DrawText(buttons[i]->text, textX,textY,20,GREEN);
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && buttons[i]->x < GetMouseX() && buttons[i]->x + buttons[i]->width > GetMouseX() && buttons[i]->y < GetMouseY() && buttons[i]->y + buttons[i]->height > GetMouseY()) {
 
             }
