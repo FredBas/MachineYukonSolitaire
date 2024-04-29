@@ -40,6 +40,8 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Card *deck, gamePhase 
             DrawText(TextFormat("C%d", i+1), x, y, 15, BLACK);
             x += 100;
         }
+        x = 15;
+        y = 40;
 
         for (int i = 0; i < DECK_SIZE; i++) {
             for (int j = 0; j < 7; j++) {
@@ -51,7 +53,6 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Card *deck, gamePhase 
                     if (card->next == NULL) {break;}
                     card = card->next;
                 }
-                card->isFaceUp = false;
                 if (card->isFaceUp) {
                     DrawTexture(cardToTexture(*card, textures), x, y, WHITE);
                 } else {
@@ -59,6 +60,8 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Card *deck, gamePhase 
                 }
 
             }
+            x = 15;
+            y += 15;
         }
         x = 800;
         y = 100;
@@ -217,7 +220,7 @@ void createButtons (Button *buttons[], int amountOfButtons) {
 
     buttons[5]->height = buttonHeight;
     buttons[5]->width = buttonWidth;
-    buttons[5]->text = "Start";
+    buttons[5]->text = "Play";
     buttons[5]->commandToExecute = "P";
     buttons[5]->x = x;
     buttons[5]->y = y;
