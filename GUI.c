@@ -3,8 +3,7 @@
 #include "raylib.h"
 #include "GameInitialization.h"
 
-void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Card *deck, gamePhase *phase) {
-    startupPopulateTableau(tableau, deck);
+void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, gamePhase *phase) {
     const int screenWidth = 1200;
     const int screenHeight = 800;
     const Color custGreen = {0, 128, 43, 255};
@@ -35,51 +34,57 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Card *deck, gamePhase 
         DrawRectangleGradientV(x, y, screenWidth, screenHeight, custGreen, custLime);
         x = 15;
         y = 15;
-        for (int i = 0; i < 7; ++i) {
-            //DrawRectangleLines(100 + i * 100, 100, 100, 200, BLACK);
-            DrawText(TextFormat("C%d", i+1), x, y, 15, BLACK);
-            x += 100;
-        }
-        x = 15;
-        y = 40;
 
-        for (int i = 0; i < DECK_SIZE; i++) {
-            for (int j = 0; j < 7; j++) {
-                Card *card = deck;
-
-                if (j != 0) {x += 100;}
-                if (tableau[j]->size <= i) {continue;}
-                for (int k = 0; k < i; k++) {
-                    if (card->next == NULL) {break;}
-                    card = card->next;
-                }
-                if (card->isFaceUp) {
-                    DrawTexture(cardToTexture(*card, textures), x, y, WHITE);
-                } else {
-                    DrawTexture(faceDownCard, x, y, WHITE);
-                }
-
+        if (*phase != welcome) {
+            for (int i = 0; i < 7; ++i) {
+                //DrawRectangleLines(100 + i * 100, 100, 100, 200, BLACK);
+                DrawText(TextFormat("C%d", i+1), x, y, 15, BLACK);
+                x += 100;
             }
             x = 15;
-            y += 15;
-        }
-        x = 800;
-        y = 100;
-        for (int i = 0; i < 4; ++i) {
-            DrawRectangleLines(x, y, faceDownCard.width, faceDownCard.height, BLACK);
-            DrawText(TextFormat("F%d", i+1), x + faceDownCard.width + 15, y, 15, BLACK);
-            y += faceDownCard.height + 15;
+            y = 40;
 
+            for (int i = 0; i < DECK_SIZE; i++) {
+                for (int j = 0; j < 7; j++) {
+                    Card *card = tableau[j]->bottom;
+
+                    if (j != 0) {x += 100;}
+                    if (tableau[j]->size <= i) {continue;}
+                    for (int k = 0; k < i; k++) {
+                        if (card->next == NULL) {break;}
+                        card = card->next;
+                    }
+                    if (card->isFaceUp) {
+                        DrawTexture(cardToTexture(*card, textures), x, y, WHITE);
+                    } else {
+                        DrawTexture(faceDownCard, x, y, WHITE);
+                    }
+
+                }
+                x = 15;
+                y += 15;
+            }
+            x = 800;
+            y = 100;
+            for (int i = 0; i < 4; ++i) {
+                DrawRectangleLines(x, y, faceDownCard.width, faceDownCard.height, BLACK);
+                DrawText(TextFormat("F%d", i+1), x + faceDownCard.width + 15, y, 15, BLACK);
+                y += faceDownCard.height + 15;
+
+            }
         }
+
         for (int i = 0; i < amountOfButtons; i++) {
+            if (buttons[i]->phase != *phase) {continue;}
             DrawRectangle(buttons[i]->x,buttons[i]->y,buttons[i]->width,buttons[i]->height, BLACK);
             int textWidth = MeasureText(buttons[i]->text, 20);
             int textX = buttons[i]->x + (buttons[i]->width - textWidth) / 2;
             int textY = buttons[i]->y + (buttons[i]->height - 20) / 2;
 
+
             DrawText(buttons[i]->text, textX,textY,20,GREEN);
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && buttons[i]->x < GetMouseX() && buttons[i]->x + buttons[i]->width > GetMouseX() && buttons[i]->y < GetMouseY() && buttons[i]->y + buttons[i]->height > GetMouseY()) {
-                commandHandler(buttons[i]->commandToExecute, tableau, foundation, &deck, phase);
+                commandHandler(buttons[i]->commandToExecute, tableau, foundation, deck, phase);
             }
         }
         EndDrawing();
@@ -163,7 +168,7 @@ void createButtons (Button *buttons[], int amountOfButtons) {
     for (int i = 0; i < amountOfButtons; i++) {
         buttons[i] = malloc(sizeof (Button));
     }
-    int x = 0;
+    int x = 25;
     int y = 700;
     int buttonHeight = 100;
     int buttonWidth = 150;
@@ -172,11 +177,9 @@ void createButtons (Button *buttons[], int amountOfButtons) {
     buttons[0]->width = buttonWidth;
     buttons[0]->text = "Load";
     buttons[0]->commandToExecute = "LD";
-    buttons[0]->x = x;
-    buttons[0]->y = y;
+    buttons[0]->x = 350;
+    buttons[0]->y = 350;
     buttons[0]->phase = welcome;
-
-    x += buttonWidth + 50;
 
     buttons[1]->height = buttonHeight;
     buttons[1]->width = buttonWidth;
@@ -232,8 +235,8 @@ void createButtons (Button *buttons[], int amountOfButtons) {
     buttons[6]->width = buttonWidth;
     buttons[6]->text = "Quit";
     buttons[6]->commandToExecute = "QQ";
-    buttons[6]->x = x;
-    buttons[6]->y = y;
+    buttons[6]->x = 700;
+    buttons[6]->y = 350;
     buttons[6]->phase = welcome;
 
     buttons[7]->height = buttonHeight;

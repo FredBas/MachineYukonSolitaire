@@ -55,10 +55,6 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
     char *cmd = strtok(commandCopy, " ");
     char *movecmd = strtok(movecmdCopy, " -> ");
 
-    if(strcmp(cmd, "GUI") == 0) {
-        drawGUI(tableau, foundation, deck->top, currentPhase);
-    }
-
     if (strcmp(cmd, "LD") == 0) {
         if (*currentPhase == play) {
             message[0] = "Command not available during a game. For a list of available commands, type HELP";
