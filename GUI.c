@@ -1,7 +1,8 @@
-#include <printf.h>
+//#include <printf.h>
 #include "GUI.h"
 #include "raylib.h"
 #include "GameInitialization.h"
+#include <stdio.h>
 
 void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Card *deck, gamePhase *phase) {
     startupPopulateTableau(tableau, deck);
