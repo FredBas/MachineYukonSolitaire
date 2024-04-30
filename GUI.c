@@ -6,6 +6,10 @@
 const double cardHeight = 100;
 const double cardWidth = cardHeight * 0.7159090909;
 
+bool isDragging = false;
+Vector2 dragOffset = {0}; // Offset to maintain relative position while dragging
+Card *draggedCard = NULL;
+
 Suit suitFromASCII(int ascii) {
     switch (ascii) {
         case 67:
@@ -85,6 +89,31 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, gamePh
         x = 15;
         y = 15;
 
+        if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+            for (int i = 0; i < 52; ++i) {
+                Card *card = getCardAt(tableau[i % 7], i);
+                if(card != NULL) {
+                    Rectangle cardRect = {x, y, cardWidth, cardHeight};
+                    if(CheckCollisionPointRec(GetMousePosition(), cardRect)) {
+                        isDragging = true;
+                        draggedCard = card;
+                        dragOffset.x = GetMouseX() - x;
+                        dragOffset.y = GetMouseY() - y;
+                        break;
+                    }
+                }
+            }
+        }
+        if(IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
+            if(isDragging) {
+                isDragging = false;
+                draggedCard = NULL;
+            }
+        }
+        if(isDragging && draggedCard != NULL) {
+            draggedCard->x = GetMouseX() - dragOffset.x;
+            draggedCard->y = GetMouseY() - dragOffset.y;
+        }
         if (*phase != welcome) {
             for (int i = 0; i < 7; ++i) {
                 //DrawRectangleLines(100 + i * 100, 100, 100, 200, BLACK);
@@ -147,9 +176,6 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, gamePh
                 buttons[i]->x + buttons[i]->width > GetMouseX() && buttons[i]->y < GetMouseY() &&
                 buttons[i]->y + buttons[i]->height > GetMouseY()) {
                 commandHandler(buttons[i]->commandToExecute, tableau, foundation, deck, phase);
-            }
-            if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-                
             }
         }
         EndDrawing();
