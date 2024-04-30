@@ -3,6 +3,53 @@
 #include "raylib.h"
 #include "GameInitialization.h"
 
+Suit suitFromASCII(int ascii) {
+    switch (ascii) {
+        case 67:
+            return C;
+        case 68:
+            return D;
+        case 72:
+            return H;
+        case 83:
+            return S;
+        default:
+            return -1;
+    }
+}
+
+int rankFromASCII(int ascii) {
+    switch (ascii) {
+        case 65:
+            return 1;
+        case 50:
+            return 2;
+        case 51:
+            return 3;
+        case 52:
+            return 4;
+        case 53:
+            return 5;
+        case 54:
+            return 6;
+        case 55:
+            return 7;
+        case 56:
+            return 8;
+        case 57:
+            return 9;
+        case 84:
+            return 10;
+        case 74:
+            return 11;
+        case 81:
+            return 12;
+        case 75:
+            return 13;
+        default:
+            return -1;
+    }
+}
 void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, gamePhase *phase) {
     const int screenWidth = 1200;
     const int screenHeight = 800;
@@ -147,7 +194,7 @@ void initializeTextures(Texture2D *textures[13][4]) {
 
 Texture2D cardToTexture(Card card, Texture2D *textures[13][4]) {
     int suitNumber = -1;
-    switch (card.suit) {
+    switch (suitFromASCII(card.suit)) {
         case C:
             suitNumber = 0;
             break;
@@ -166,7 +213,7 @@ Texture2D cardToTexture(Card card, Texture2D *textures[13][4]) {
         printf("Error: Suit not found\n");
         return LoadTexture("../PNG-cards-1.3/unshown.png");
     } else {
-        Texture2D textureToReturn = *textures[card.rank - 1][suitNumber];
+        Texture2D textureToReturn = *textures[rankFromASCII(card.rank)-1][suitNumber];
         textureToReturn.height = 100;
         textureToReturn.width = textureToReturn.height * 0.71;
         return textureToReturn;
