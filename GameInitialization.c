@@ -8,7 +8,6 @@ void startupPopulateTableau(Cardpile *tableau[], Card *head) {
     Card *card = head;
     for (int i = 0; i < DECK_SIZE; i++) {
         if (card == NULL) {
-            printf("Error: head or next is NULL\n");
             return;
         }
 
@@ -113,11 +112,6 @@ void initializeStartup(Cardpile *tableau[], Cardpile **foundation, Cardpile *dec
 
     // Read cards from file
     deck->top = createDeckFromFile(filepath);
-
-    if (deck->top == NULL) {
-        printf("Error: Failed to read cards from file.\n");
-        return;
-    }
 }
 
 

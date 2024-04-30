@@ -71,6 +71,11 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
             filename = "unshuffledDeck.txt";
         }
         initializeStartup(tableau, foundation, deck, filename);
+        if (deck->top == NULL) {
+            message[0] = "Error: Deck not loaded";
+            printUIMessages(lastCommand, message);
+            return;
+        }
         clearTableau(tableau);
         startupPopulateTableau(tableau, copyDeck(deck->top));
         printUI(tableau, foundation);

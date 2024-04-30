@@ -203,10 +203,23 @@ Card *createDeckFromFile(char *filename) {
     char line[CARD_SIZE];
     int i = 0;
 
+    int suitCount[4] = {0}; // Hearts, Diamonds, Clubs, Spades
+    int rankCount[13] = {0}; // Ace through King
+
+    Card *cards[52] = {NULL}; // Array to store the cards that have been read
+
     while (fgets(line, sizeof(line), file)) {
         if (strlen(line) >= 2) {
             char rank = line[0];
             char suit = line[1];
+
+            // Check for duplicates
+            for (int j = 0; j < i; j++) {
+                if (cards[j]->rank == rank && cards[j]->suit == suit) {
+                    printf("Error: Duplicate card (%c%c) on line %d.\n", rank, suit, i + 1);
+                    return NULL;
+                }
+            }
 
             Card *newCard = (Card *) malloc(sizeof(Card));
             if (newCard == NULL) {
@@ -224,7 +237,36 @@ Card *createDeckFromFile(char *filename) {
                 prev->next = newCard;
             }
             prev = newCard;
+            cards[i] = newCard; // Add the new card to the array
             i++;
+
+            // Check the card
+            switch (suit) {
+                case 'H': suitCount[0]++; break;
+                case 'D': suitCount[1]++; break;
+                case 'C': suitCount[2]++; break;
+                case 'S': suitCount[3]++; break;
+                default:
+                    printf("Error: Invalid suit on line %d.\n", i);
+                    return NULL; // Invalid suit
+            }
+
+            int rankIndex;
+            if (rank >= '2' && rank <= '9') {
+                rankIndex = rank - '1';
+            } else {
+                switch (rank) {
+                    case 'A': rankIndex = 0; break;
+                    case 'T': rankIndex = 9; break;
+                    case 'J': rankIndex = 10; break;
+                    case 'Q': rankIndex = 11; break;
+                    case 'K': rankIndex = 12; break;
+                    default:
+                        printf("Error: Invalid rank on line %d.\n", i);
+                        return NULL; // Invalid rank
+                }
+            }
+            rankCount[rankIndex]++;
         }
     }
 
@@ -234,6 +276,22 @@ Card *createDeckFromFile(char *filename) {
     if (i != 52) {
         printf("Error: File does not contain 52 cards.\n");
         return NULL;
+    }
+
+    // Check that each suit has exactly 13 cards
+    for (int i = 0; i < 4; i++) {
+        if (suitCount[i] != 13) {
+            printf("Error: Incorrect number of suit cards.\n");
+            return NULL;
+        }
+    }
+
+    // Check that each rank appears exactly 4 times
+    for (int i = 0; i < 13; i++) {
+        if (rankCount[i] != 4) {
+            printf("Error: Incorrect number of rank cards.\n");
+            return NULL;
+        }
     }
 
     return head;
