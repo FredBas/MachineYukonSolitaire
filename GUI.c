@@ -1,4 +1,4 @@
-#include <printf.h>
+#include <stdio.h>
 #include "GUI.h"
 #include "raylib.h"
 #include "GameInitialization.h"
