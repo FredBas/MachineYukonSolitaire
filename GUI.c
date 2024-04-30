@@ -92,10 +92,14 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, gamePh
             y = 40;
 
             int row = 0;
-            for (int i = 0; i < DECK_SIZE; i++) {
+            int iterator = 52;
+            int nullCardCounter = 0;
+            for (int i = 0; i < iterator; i++) {
                 Card *card = getCardAt(tableau[i % 7], row);
                 if (card == NULL) {
                     x += 86;
+                    iterator++;
+                    nullCardCounter++;
                 } else {
                     if (card->isFaceUp) {
                         Texture2D texture = cardToTexture(*card, textures);
@@ -107,6 +111,11 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, gamePh
                     }
                 }
                 if (i % 7 == 6) {
+                    if (nullCardCounter == 7) {
+                        break;
+                    } else {
+                        nullCardCounter = 0;
+                    }
                     x = 15;
                     y += 20;
                     row++;
