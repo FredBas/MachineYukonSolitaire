@@ -39,7 +39,7 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, gamePh
             for (int i = 0; i < 7; ++i) {
                 //DrawRectangleLines(100 + i * 100, 100, 100, 200, BLACK);
                 DrawText(TextFormat("C%d", i+1), x, y, 15, BLACK);
-                x += 100;
+                x += 86;
             }
             x = 15;
             y = 40;
