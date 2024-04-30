@@ -44,25 +44,26 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, gamePh
             x = 15;
             y = 40;
 
+            int row = 0;
             for (int i = 0; i < DECK_SIZE; i++) {
-                for (int j = 0; j < 7; j++) {
-                    Card *card = tableau[j]->bottom;
-
-                    if (j != 0) {x += 100;}
-                    if (tableau[j]->size <= i) {continue;}
-                    for (int k = 0; k < i; k++) {
-                        if (card->next == NULL) {break;}
-                        card = card->next;
-                    }
+                Card *card = getCardAt(tableau[i % 7], row);
+                if (card == NULL) {
+                    x += 100;
+                } else {
                     if (card->isFaceUp) {
-                        DrawTexture(cardToTexture(*card, textures), x, y, WHITE);
+                        Texture2D texture = cardToTexture(*card, textures);
+                        DrawTexture(texture, x, y, WHITE);
+                        x += texture.width + 15;
                     } else {
                         DrawTexture(faceDownCard, x, y, WHITE);
+                        x += faceDownCard.width + 15;
                     }
-
                 }
-                x = 15;
-                y += 15;
+                if (i % 7 == 6) {
+                    x = 15;
+                    y += 20;
+                    row++;
+                }
             }
             x = 800;
             y = 100;
@@ -145,16 +146,16 @@ void initializeTextures (Texture2D* textures[13][4]) {
 Texture2D cardToTexture (Card card, Texture2D* textures[13][4]) {
     int suitNumber = -1;
     switch(card.suit) {
-        case 'C':
+        case C:
             suitNumber = 0;
             break;
-        case 'D':
+        case D:
             suitNumber = 1;
             break;
-        case 'H':
+        case H:
             suitNumber = 2;
             break;
-        case 'S':
+        case S:
             suitNumber = 3;
             break;
     }

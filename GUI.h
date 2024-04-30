@@ -1,5 +1,6 @@
 #ifndef MACHINEYUKONSOLITAIRE_GUI_H
 #define MACHINEYUKONSOLITAIRE_GUI_H
+#pragma once
 
 #include "raylib.h"
 #include "Cardpile.h"
