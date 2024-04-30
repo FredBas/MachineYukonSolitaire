@@ -89,34 +89,6 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, gamePh
         x = 15;
         y = 15;
 
-        if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-            //printf("Left mouse button pressed.\n");
-            for (int i = 0; i < 52; ++i) {
-                Card *card = getCardAt(tableau[i % 7], i);
-                if(card != NULL) {
-                    Rectangle cardRect = {x, y, cardWidth, cardHeight};
-                    if(CheckCollisionPointRec(GetMousePosition(), cardRect)) {
-                        //printf("Clicked on card %d\n", i);
-                        isDragging = true;
-                        draggedCard = card;
-                        dragOffset.x = GetMouseX() - x;
-                        dragOffset.y = GetMouseY() - y;
-                        break;
-                    }
-                }
-            }
-        }
-        if(IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
-            if(isDragging) {
-                isDragging = false;
-                draggedCard = NULL;
-            }
-        }
-        if(isDragging && draggedCard != NULL) {
-            //printf("Dragging card. Mouse position: (%f, %f)\n", GetMouseX(), GetMouseY());
-            draggedCard->x = GetMouseX() - dragOffset.x;
-            draggedCard->y = GetMouseY() - dragOffset.y;
-        }
         if (*phase != welcome) {
             for (int i = 0; i < 7; ++i) {
                 //DrawRectangleLines(100 + i * 100, 100, 100, 200, BLACK);
@@ -145,6 +117,41 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, gamePh
                         dragOffset.x = GetMouseX() - x;
                         dragOffset.y = GetMouseY() - y;
                     }
+                    if(isDragging && draggedCard != NULL) {
+                        bool isTopCard = true;
+                        for (int i = 0; i < 7; ++i) {
+                            if(tableau[i]->top != draggedCard) {
+                                isTopCard = false;
+                                break;
+                            }
+                        }
+                        if(isTopCard) {
+                            float offsetX = GetMouseX() - dragOffset.x;
+                            float offsetY = GetMouseY() - dragOffset.y;
+
+                            draggedCard->x = offsetX;
+                            draggedCard->y = offsetY;
+
+                            for (int i = 0; i < 7; ++i) {
+                                Card *currentCard = draggedCard->next;
+                                while (currentCard != NULL) {
+                                    currentCard->x = offsetX;
+                                    currentCard->y = offsetY + (currentCard->y * 20);
+                                    currentCard = currentCard->next;
+                                }
+                            }
+                        }else {
+                            draggedCard->x = GetMouseX() - dragOffset.x;
+                            draggedCard->y = GetMouseY() - dragOffset.y;
+                        }
+                    }
+                    if(IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
+                        if(isDragging) {
+                            isDragging = false;
+                            draggedCard = NULL;
+                        }
+                    }
+
                     if (card->isFaceUp) {
                         Texture2D texture = cardToTexture(*card, textures);
                         if(isDragging && draggedCard == card) {
