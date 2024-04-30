@@ -3,6 +3,9 @@
 #include "raylib.h"
 #include "GameInitialization.h"
 
+const double cardHeight = 100;
+const double cardWidth = cardHeight * 0.7159090909;
+
 Suit suitFromASCII(int ascii) {
     switch (ascii) {
         case 67:
@@ -66,8 +69,8 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, gamePh
     }
     initializeTextures(textures);
     Texture2D faceDownCard = LoadTexture("../PNG-cards-1.3/unshown.png");
-    faceDownCard.height = 100;
-    faceDownCard.width = faceDownCard.height * 0.7159090909;
+    faceDownCard.height = cardHeight;
+    faceDownCard.width = cardWidth;
 
     int amountOfButtons = 9;
     Button *buttons[amountOfButtons];
@@ -144,6 +147,9 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, gamePh
                 buttons[i]->x + buttons[i]->width > GetMouseX() && buttons[i]->y < GetMouseY() &&
                 buttons[i]->y + buttons[i]->height > GetMouseY()) {
                 commandHandler(buttons[i]->commandToExecute, tableau, foundation, deck, phase);
+            }
+            if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+                
             }
         }
         EndDrawing();
@@ -223,8 +229,8 @@ Texture2D cardToTexture(Card card, Texture2D *textures[13][4]) {
         return LoadTexture("../PNG-cards-1.3/unshown.png");
     } else {
         Texture2D textureToReturn = *textures[rankFromASCII(card.rank)-1][suitNumber];
-        textureToReturn.height = 100;
-        textureToReturn.width = textureToReturn.height * 0.71;
+        textureToReturn.height = cardHeight;
+        textureToReturn.width = cardWidth;
         return textureToReturn;
     }
 
