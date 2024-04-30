@@ -90,11 +90,13 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, gamePh
         y = 15;
 
         if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+            //printf("Left mouse button pressed.\n");
             for (int i = 0; i < 52; ++i) {
                 Card *card = getCardAt(tableau[i % 7], i);
                 if(card != NULL) {
                     Rectangle cardRect = {x, y, cardWidth, cardHeight};
                     if(CheckCollisionPointRec(GetMousePosition(), cardRect)) {
+                        //printf("Clicked on card %d\n", i);
                         isDragging = true;
                         draggedCard = card;
                         dragOffset.x = GetMouseX() - x;
@@ -111,6 +113,7 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, gamePh
             }
         }
         if(isDragging && draggedCard != NULL) {
+            //printf("Dragging card. Mouse position: (%f, %f)\n", GetMouseX(), GetMouseY());
             draggedCard->x = GetMouseX() - dragOffset.x;
             draggedCard->y = GetMouseY() - dragOffset.y;
         }
@@ -133,10 +136,24 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, gamePh
                     iterator++;
                     nullCardCounter++;
                 } else {
+                    Rectangle cardRect = {x, y, cardWidth, cardHeight};
+                    bool isMouseOverCard = CheckCollisionPointRec(GetMousePosition(), cardRect);
+                    if (isMouseOverCard && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+                        // If the left mouse button is pressed over the card, start dragging
+                        isDragging = true;
+                        draggedCard = card;
+                        dragOffset.x = GetMouseX() - x;
+                        dragOffset.y = GetMouseY() - y;
+                    }
                     if (card->isFaceUp) {
                         Texture2D texture = cardToTexture(*card, textures);
-                        DrawTexture(texture, x, y, WHITE);
+                        if(isDragging && draggedCard == card) {
+                            DrawTexture(texture, GetMouseX() - dragOffset.x, GetMouseY() - dragOffset.y, WHITE);
+                        } else {
+                            DrawTexture(texture, x, y, WHITE);
+                        }
                         x += texture.width + 15;
+
                     } else {
                         DrawTexture(faceDownCard, x, y, WHITE);
                         x += faceDownCard.width + 15;
