@@ -57,6 +57,7 @@ int rankFromASCII(int ascii) {
             return -1;
     }
 }
+
 void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, gamePhase *phase) {
     const int screenWidth = 1200;
     const int screenHeight = 800;
@@ -101,6 +102,8 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, gamePh
             int row = 0;
             int iterator = 52;
             int nullCardCounter = 0;
+
+            int sourceIndex = -1;
             for (int i = 0; i < iterator; i++) {
                 Card *card = getCardAt(tableau[i % 7], row);
                 if (card == NULL) {
@@ -108,24 +111,35 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, gamePh
                     iterator++;
                     nullCardCounter++;
                 } else {
+                    int sourceIndex = -1;
+                    int destinationIndex = -1;
                     Rectangle cardRect = {x, y, cardWidth, cardHeight};
                     bool isMouseOverCard = CheckCollisionPointRec(GetMousePosition(), cardRect);
                     if (isMouseOverCard && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
                         // If the left mouse button is pressed over the card, start dragging
+                        int sourceX = GetMouseX();
+                        int sourceY = GetMouseY();
+                        for (int i = 0; i < 7; ++i) {
+                            if (GetMouseX() > 15 + i * 86 && GetMouseX() < 15 + i * 86 + cardWidth) {
+                                sourceIndex = i;
+                                printf("Source index: %d\n", sourceIndex);
+                                break;
+                            }
+                        }
                         isDragging = true;
                         draggedCard = card;
                         dragOffset.x = GetMouseX() - x;
                         dragOffset.y = GetMouseY() - y;
                     }
-                    if(isDragging && draggedCard != NULL) {
+                    if (isDragging && draggedCard != NULL) {
                         bool isTopCard = true;
                         for (int i = 0; i < 7; ++i) {
-                            if(tableau[i]->top != draggedCard) {
+                            if (tableau[i]->top != draggedCard) {
                                 isTopCard = false;
                                 break;
                             }
                         }
-                        if(isTopCard) {
+                        if (isTopCard) {
                             float offsetX = GetMouseX() - dragOffset.x;
                             float offsetY = GetMouseY() - dragOffset.y;
 
@@ -140,21 +154,38 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, gamePh
                                     currentCard = currentCard->next;
                                 }
                             }
-                        }else {
+                        } else {
                             draggedCard->x = GetMouseX() - dragOffset.x;
                             draggedCard->y = GetMouseY() - dragOffset.y;
                         }
                     }
-                    if(IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
-                        if(isDragging) {
+                    if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
+                        if (isDragging) {
                             isDragging = false;
-                            draggedCard = NULL;
+                            int destinationTableau = -1;
+                            for (int i = 0; i < 7; ++i) {
+                                if (GetMouseX() > 15 + i * 86 && GetMouseX() < 15 + i * 86 + cardWidth) {
+                                    destinationTableau = i;
+                                    printf("Destination index: %d\n", destinationTableau);
+                                    break;
+                                }
+                            }
+                            if (destinationTableau != -1) {
+                                if (tableau[destinationTableau]->top == NULL ||
+                                    canBePlacedBottom(*draggedCard, *tableau[destinationTableau]->top)) {
+                                    char destination[3];
+                                    printf("Source: %d, Destination: %d\n", sourceIndex, destinationTableau);
+                                    moveBottomCardToTableau(sourceIndex, tableau, destination,
+                                                            (char **) "Moved card to tableau");
+                                    draggedCard = NULL;
+                                }
+                            }
                         }
                     }
 
                     if (card->isFaceUp) {
                         Texture2D texture = cardToTexture(*card, textures);
-                        if(isDragging && draggedCard == card) {
+                        if (isDragging && draggedCard == card) {
                             DrawTexture(texture, GetMouseX() - dragOffset.x, GetMouseY() - dragOffset.y, WHITE);
                         } else {
                             DrawTexture(texture, x, y, WHITE);
@@ -278,7 +309,7 @@ Texture2D cardToTexture(Card card, Texture2D *textures[13][4]) {
         printf("Error: Suit not found\n");
         return LoadTexture("../PNG-cards-1.3/unshown.png");
     } else {
-        Texture2D textureToReturn = *textures[rankFromASCII(card.rank)-1][suitNumber];
+        Texture2D textureToReturn = *textures[rankFromASCII(card.rank) - 1][suitNumber];
         textureToReturn.height = cardHeight;
         textureToReturn.width = cardWidth;
         return textureToReturn;
