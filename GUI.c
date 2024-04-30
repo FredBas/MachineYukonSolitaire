@@ -11,7 +11,7 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, gamePh
     InitWindow(screenWidth, screenHeight, "Yukon Solitaire");
     SetTargetFPS(60);
 
-    Texture2D* textures[13][4];
+    Texture2D *textures[13][4];
     for (int i = 0; i < 13; i++) {
         for (int k = 0; k < 4; k++) {
             textures[i][k] = malloc(sizeof(Texture2D));
@@ -23,7 +23,7 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, gamePh
     faceDownCard.width = faceDownCard.height * 0.7159090909;
 
     int amountOfButtons = 9;
-    Button* buttons[amountOfButtons];
+    Button *buttons[amountOfButtons];
     createButtons(buttons, amountOfButtons);
 
     while (!WindowShouldClose()) {
@@ -38,7 +38,7 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, gamePh
         if (*phase != welcome) {
             for (int i = 0; i < 7; ++i) {
                 //DrawRectangleLines(100 + i * 100, 100, 100, 200, BLACK);
-                DrawText(TextFormat("C%d", i+1), x, y, 15, BLACK);
+                DrawText(TextFormat("C%d", i + 1), x, y, 15, BLACK);
                 x += 86;
             }
             x = 15;
@@ -69,22 +69,24 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, gamePh
             y = 100;
             for (int i = 0; i < 4; ++i) {
                 DrawRectangleLines(x, y, faceDownCard.width, faceDownCard.height, BLACK);
-                DrawText(TextFormat("F%d", i+1), x + faceDownCard.width + 15, y, 15, BLACK);
+                DrawText(TextFormat("F%d", i + 1), x + faceDownCard.width + 15, y, 15, BLACK);
                 y += faceDownCard.height + 15;
 
             }
         }
 
         for (int i = 0; i < amountOfButtons; i++) {
-            if (buttons[i]->phase != *phase) {continue;}
-            DrawRectangle(buttons[i]->x,buttons[i]->y,buttons[i]->width,buttons[i]->height, BLACK);
+            if (buttons[i]->phase != *phase) { continue; }
+            DrawRectangle(buttons[i]->x, buttons[i]->y, buttons[i]->width, buttons[i]->height, BLACK);
             int textWidth = MeasureText(buttons[i]->text, 20);
             int textX = buttons[i]->x + (buttons[i]->width - textWidth) / 2;
             int textY = buttons[i]->y + (buttons[i]->height - 20) / 2;
 
 
-            DrawText(buttons[i]->text, textX,textY,20,GREEN);
-            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && buttons[i]->x < GetMouseX() && buttons[i]->x + buttons[i]->width > GetMouseX() && buttons[i]->y < GetMouseY() && buttons[i]->y + buttons[i]->height > GetMouseY()) {
+            DrawText(buttons[i]->text, textX, textY, 20, GREEN);
+            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && buttons[i]->x < GetMouseX() &&
+                buttons[i]->x + buttons[i]->width > GetMouseX() && buttons[i]->y < GetMouseY() &&
+                buttons[i]->y + buttons[i]->height > GetMouseY()) {
                 commandHandler(buttons[i]->commandToExecute, tableau, foundation, deck, phase);
             }
         }
@@ -94,48 +96,48 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, gamePh
     CloseWindow();
 }
 
-void initializeTextures (Texture2D* textures[13][4]) {
+void initializeTextures(Texture2D *textures[13][4]) {
     char fileToLoad[50];
     for (int i = 0; i < 13; i++) {
         for (int k = 0; k < 4; k++) {
-            printf("%d,%d\n",i,k);
-            strcpy(fileToLoad,"../PNG-cards-1.3/");
+            printf("%d,%d\n", i, k);
+            strcpy(fileToLoad, "../PNG-cards-1.3/");
 
             switch (i) {
                 case 0:
-                    strcat(fileToLoad,"ace");
+                    strcat(fileToLoad, "ace");
                     break;
                 case 9:
-                    strcat(fileToLoad,"10");
+                    strcat(fileToLoad, "10");
                     break;
                 case 10:
-                    strcat(fileToLoad,"jack");
+                    strcat(fileToLoad, "jack");
                     break;
                 case 11:
-                    strcat(fileToLoad,"queen");
+                    strcat(fileToLoad, "queen");
                     break;
                 case 12:
-                    strcat(fileToLoad,"king");
+                    strcat(fileToLoad, "king");
                     break;
                 default:
-                    strcat(fileToLoad, TextFormat("%d",i+1));
+                    strcat(fileToLoad, TextFormat("%d", i + 1));
             }
-            strcat(fileToLoad,"_of_");
+            strcat(fileToLoad, "_of_");
             switch (k) {
                 case 0:
-                    strcat(fileToLoad,"clubs");
+                    strcat(fileToLoad, "clubs");
                     break;
                 case 1:
-                    strcat(fileToLoad,"diamonds");
+                    strcat(fileToLoad, "diamonds");
                     break;
                 case 2:
-                    strcat(fileToLoad,"hearts");
+                    strcat(fileToLoad, "hearts");
                     break;
                 case 3:
-                    strcat(fileToLoad,"spades");
+                    strcat(fileToLoad, "spades");
                     break;
             }
-            strcat(fileToLoad,".png");
+            strcat(fileToLoad, ".png");
             Texture2D texture = LoadTexture(fileToLoad);
             *textures[i][k] = texture;
             if (texture.id == 0) k--;
@@ -143,9 +145,9 @@ void initializeTextures (Texture2D* textures[13][4]) {
     }
 }
 
-Texture2D cardToTexture (Card card, Texture2D* textures[13][4]) {
+Texture2D cardToTexture(Card card, Texture2D *textures[13][4]) {
     int suitNumber = -1;
-    switch(card.suit) {
+    switch (card.suit) {
         case C:
             suitNumber = 0;
             break;
@@ -159,15 +161,22 @@ Texture2D cardToTexture (Card card, Texture2D* textures[13][4]) {
             suitNumber = 3;
             break;
     }
-    Texture2D textureToReturn = *textures[card.rank - 1][suitNumber];
-    textureToReturn.height = 100;
-    textureToReturn.width = textureToReturn.height * 0.71;
-    return textureToReturn;
+
+    if (suitNumber == -1) {
+        printf("Error: Suit not found\n");
+        return LoadTexture("../PNG-cards-1.3/unshown.png");
+    } else {
+        Texture2D textureToReturn = *textures[card.rank - 1][suitNumber];
+        textureToReturn.height = 100;
+        textureToReturn.width = textureToReturn.height * 0.71;
+        return textureToReturn;
+    }
+
 }
 
-void createButtons (Button *buttons[], int amountOfButtons) {
+void createButtons(Button *buttons[], int amountOfButtons) {
     for (int i = 0; i < amountOfButtons; i++) {
-        buttons[i] = malloc(sizeof (Button));
+        buttons[i] = malloc(sizeof(Button));
     }
     int x = 25;
     int y = 700;
