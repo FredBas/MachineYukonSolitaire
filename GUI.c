@@ -95,7 +95,7 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, gamePh
             for (int i = 0; i < DECK_SIZE; i++) {
                 Card *card = getCardAt(tableau[i % 7], row);
                 if (card == NULL) {
-                    x += 100;
+                    x += 86;
                 } else {
                     if (card->isFaceUp) {
                         Texture2D texture = cardToTexture(*card, textures);
