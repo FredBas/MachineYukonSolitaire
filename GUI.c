@@ -150,7 +150,7 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, gamePh
                                 Card *currentCard = draggedCard->next;
                                 while (currentCard != NULL) {
                                     currentCard->x = offsetX;
-                                    currentCard->y = offsetY + (currentCard->y * 20);
+                                    currentCard->y = offsetY + (currentCard->y + 20);
                                     currentCard = currentCard->next;
                                 }
                             }
@@ -175,8 +175,7 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, gamePh
                                     canBePlacedBottom(*draggedCard, *tableau[destinationTableau]->top)) {
                                     char destination[3];
                                     printf("Source: %d, Destination: %d\n", sourceIndex, destinationTableau);
-                                    moveBottomCardToTableau(sourceIndex, tableau, destination,
-                                                            (char **) "Moved card to tableau");
+                                    moveCard(tableau[sourceIndex], tableau[destinationTableau], draggedCard);
                                     draggedCard = NULL;
                                 }
                             }
