@@ -103,7 +103,7 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, gamePh
             int iterator = 52;
             int nullCardCounter = 0;
 
-            int sourceIndex = -1;
+
             for (int i = 0; i < iterator; i++) {
                 Card *card = getCardAt(tableau[i % 7], row);
                 if (card == NULL) {
@@ -115,7 +115,7 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, gamePh
                     int destinationIndex = -1;
                     Rectangle cardRect = {x, y, cardWidth, cardHeight};
                     bool isMouseOverCard = CheckCollisionPointRec(GetMousePosition(), cardRect);
-                    if (isMouseOverCard && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+                    if (isMouseOverCard && IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && *phase == play) {
                         // If the left mouse button is pressed over the card, start dragging
                         int sourceX = GetMouseX();
                         int sourceY = GetMouseY();
@@ -159,7 +159,7 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, gamePh
                             draggedCard->y = GetMouseY() - dragOffset.y;
                         }
                     }
-                    if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
+                    if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT) && *phase == play) {
                         if (isDragging) {
                             isDragging = false;
                             int destinationTableau = -1;
