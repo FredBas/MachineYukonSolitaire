@@ -114,17 +114,19 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         if (splitStr != NULL && isValidSplitInput(splitStr) == true) {
             int split = atoi(splitStr); // Convert the split string to an integer
             shuffleDeckSplit(deck, split);
+            message[0] = "Deck shuffled with specified split.";
         } else if (splitStr == NULL) {
-            message[0] = "No split input provided. Shuffling deck with split 0.";
+            message[0] = "No split input provided. Shuffling deck with random split.";
             shuffleDeckSplit(deck, 0);
         } else if (isValidSplitInput(splitStr) == false) {
             message[0] = "Error: Invalid split input. Please enter a number between 1 and 52.";
         } else {
             shuffleDeckSplit(deck, 0);
+            message[0] = "Shuffling deck with random split.";
         }
         startupPopulateTableau(tableau, copyDeck(deck->top));
         printUI(tableau, foundation);
-        message[0] = "Deck shuffled successfully";
+        //message[0] = "Deck shuffled successfully";
         printUIMessages(lastCommand, message);
     } else if (strcmp(cmd, "SR") == 0) {
         if (*currentPhase == play || *currentPhase == welcome) {
