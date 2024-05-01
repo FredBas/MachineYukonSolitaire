@@ -163,20 +163,41 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, gamePh
                         if (isDragging) {
                             isDragging = false;
                             int destinationTableau = -1;
-                            for (int i = 0; i < 7; ++i) {
-                                if (GetMouseX() > 15 + i * 86 && GetMouseX() < 15 + i * 86 + cardWidth) {
-                                    destinationTableau = i;
-                                    printf("Destination index: %d\n", destinationTableau);
-                                    break;
+                            int foundationIndex = -1;
+                            if (GetMouseX() > 800 && GetMouseX() < 800 + cardWidth && GetMouseY() > 100 &&
+                                GetMouseY() < 100 + cardHeight * 4 + 4 * 15) {
+                                for (int i = 0; i < 4; ++i) {
+                                    if (GetMouseY() > 100 + i * 115 && GetMouseY() < 100 + i * 115 + cardHeight) {
+                                        foundationIndex = i;
+                                        printf("Foundation index: %d\n", foundationIndex);
+                                        break;
+                                    }
                                 }
-                            }
-                            if (destinationTableau != -1) {
-                                if (tableau[destinationTableau]->top == NULL ||
-                                    canBePlacedBottom(*draggedCard, *tableau[destinationTableau]->top)) {
-                                    char destination[3];
-                                    printf("Source: %d, Destination: %d\n", sourceIndex, destinationTableau);
-                                    moveCard(tableau[sourceIndex], tableau[destinationTableau], draggedCard);
-                                    draggedCard = NULL;
+                                if (foundationIndex != -1) {
+                                    if (foundation[foundationIndex]->top == NULL && rankFromASCII(draggedCard->rank)==1) {
+                                        moveCard(tableau[sourceIndex], foundation[foundationIndex], draggedCard);
+                                        draggedCard = NULL;
+                                    } else if (canBePlacedFoundation(*foundation[foundationIndex]->top, *draggedCard)) {
+                                        moveCard(tableau[sourceIndex], foundation[foundationIndex], draggedCard);
+                                        draggedCard = NULL;
+                                    }
+                                }
+                            } else {
+                                for (int i = 0; i < 7; ++i) {
+                                    if (GetMouseX() > 15 + i * 86 && GetMouseX() < 15 + i * 86 + cardWidth) {
+                                        destinationTableau = i;
+                                        printf("Destination index: %d\n", destinationTableau);
+                                        break;
+                                    }
+                                }
+                                if (destinationTableau != -1) {
+                                    if (tableau[destinationTableau]->top == NULL ||
+                                        canBePlacedBottom(*draggedCard, *tableau[destinationTableau]->top)) {
+                                        char destination[3];
+                                        printf("Source: %d, Destination: %d\n", sourceIndex, destinationTableau);
+                                        moveCard(tableau[sourceIndex], tableau[destinationTableau], draggedCard);
+                                        draggedCard = NULL;
+                                    }
                                 }
                             }
                         }
