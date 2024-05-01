@@ -258,7 +258,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
             printUIMessages(lastCommand, message);
             return;
         } else if (*currentPhase == startup) {
-            message[0] = "Unavailable command: You are already in the startup phase For a list of available commands, type HELP";
+            message[0] = "Unavailable command: You are in the startup phase For a list of available commands, type HELP";
             printUIMessages(lastCommand, message);
             return;
         }
