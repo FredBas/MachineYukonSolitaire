@@ -3,8 +3,8 @@
 #include "raylib.h"
 #include "GameInitialization.h"
 
-const double cardHeight = 100;
-const double cardWidth = cardHeight * 0.7159090909;
+const float cardHeight = 100;
+const float cardWidth = cardHeight * 0.7159090909f;
 
 bool isDragging = false;
 Vector2 dragOffset = {0}; // Offset to maintain relative position while dragging
@@ -74,8 +74,8 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, gamePh
     }
     initializeTextures(textures);
     Texture2D faceDownCard = LoadTexture("../PNG-cards-1.3/unshown.png");
-    faceDownCard.height = cardHeight;
-    faceDownCard.width = cardWidth;
+    faceDownCard.height = (int) cardHeight;
+    faceDownCard.width = (int) cardWidth;
 
     int amountOfButtons = 9;
     Button *buttons[amountOfButtons];
@@ -193,7 +193,6 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, gamePh
                                 if (destinationTableau != -1) {
                                     if (tableau[destinationTableau]->top == NULL ||
                                         canBePlacedBottom(*draggedCard, *tableau[destinationTableau]->top)) {
-                                        char destination[3];
                                         printf("Source: %d, Destination: %d\n", sourceIndex, destinationTableau);
                                         moveCard(tableau[sourceIndex], tableau[destinationTableau], draggedCard);
                                         draggedCard = NULL;
