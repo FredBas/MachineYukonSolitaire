@@ -469,9 +469,16 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
                     message[0] = "Error: Move not valid";
                 }
             } else if (destination[0] == 'C') {
-                if (tableau[destination[1] - '1']->top == NULL ||
-                    canBePlacedBottom(*foundation[sourceIndex]->top, *tableau[destination[1] - '1']->top)) {
-                    moveBottomCardToTableau(sourceIndex, foundation, destination, message);
+                if (tableau[destination[1] - '1']->top == NULL) {
+                    if (foundation[sourceIndex]->top->rank == 'K') {
+                        moveCard(foundation[sourceIndex], tableau[destination[1] - '1'], foundation[sourceIndex]->top);
+                        message[0] = "Card moved";
+                    } else {
+                        message[0] = "Error: Move not valid";
+                    }
+                } else if (canBePlacedBottom(*foundation[sourceIndex]->top, *tableau[destination[1] - '1']->top)) {
+                    moveCard(foundation[sourceIndex], tableau[destination[1] - '1'], foundation[sourceIndex]->top);
+                    message[0] = "Card moved";
                 } else {
                     message[0] = "Error: Move not valid";
                 }
