@@ -119,9 +119,9 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, gamePh
                         // If the left mouse button is pressed over the card, start dragging
                         int sourceX = GetMouseX();
                         int sourceY = GetMouseY();
-                        for (int i = 0; i < 7; ++i) {
-                            if (GetMouseX() > 15 + i * 86 && GetMouseX() < 15 + i * 86 + cardWidth) {
-                                sourceIndex = i;
+                        for (int j = 0; j < 7; ++j) {
+                            if (GetMouseX() > 15 + j * 86 && GetMouseX() < 15 + j * 86 + cardWidth) {
+                                sourceIndex = j;
                                 printf("Source index: %d\n", sourceIndex);
                                 break;
                             }
@@ -133,8 +133,8 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, gamePh
                     }
                     if (isDragging && draggedCard != NULL) {
                         bool isTopCard = true;
-                        for (int i = 0; i < 7; ++i) {
-                            if (tableau[i]->top != draggedCard) {
+                        for (int j = 0; j < 7; ++j) {
+                            if (tableau[j]->top != draggedCard) {
                                 isTopCard = false;
                                 break;
                             }
@@ -146,7 +146,7 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, gamePh
                             draggedCard->x = offsetX;
                             draggedCard->y = offsetY;
 
-                            for (int i = 0; i < 7; ++i) {
+                            for (int j = 0; j < 7; ++j) {
                                 Card *currentCard = draggedCard->next;
                                 while (currentCard != NULL) {
                                     currentCard->x = offsetX;
@@ -166,9 +166,9 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, gamePh
                             int foundationIndex = -1;
                             if (GetMouseX() > 800 && GetMouseX() < 800 + cardWidth && GetMouseY() > 100 &&
                                 GetMouseY() < 100 + cardHeight * 4 + 4 * 15) {
-                                for (int i = 0; i < 4; ++i) {
-                                    if (GetMouseY() > 100 + i * 115 && GetMouseY() < 100 + i * 115 + cardHeight) {
-                                        foundationIndex = i;
+                                for (int j = 0; j < 4; ++j) {
+                                    if (GetMouseY() > 100 + j * 115 && GetMouseY() < 100 + j * 115 + cardHeight) {
+                                        foundationIndex = j;
                                         printf("Foundation index: %d\n", foundationIndex);
                                         break;
                                     }
@@ -183,9 +183,9 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, gamePh
                                     }
                                 }
                             } else {
-                                for (int i = 0; i < 7; ++i) {
-                                    if (GetMouseX() > 15 + i * 86 && GetMouseX() < 15 + i * 86 + cardWidth) {
-                                        destinationTableau = i;
+                                for (int j = 0; j < 7; ++j) {
+                                    if (GetMouseX() > 15 + j * 86 && GetMouseX() < 15 + j * 86 + cardWidth) {
+                                        destinationTableau = j;
                                         printf("Destination index: %d\n", destinationTableau);
                                         break;
                                     }
