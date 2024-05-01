@@ -231,7 +231,12 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, gamePh
             x = 800;
             y = 100;
             for (int i = 0; i < 4; ++i) {
-                DrawRectangleLines(x, y, faceDownCard.width, faceDownCard.height, BLACK);
+                if (foundation[i]->top == NULL) {
+                    DrawRectangle(x, y, faceDownCard.width, faceDownCard.height, BLACK);
+                } else {
+                    Texture2D texture = cardToTexture(*foundation[i]->top, textures);
+                    DrawTexture(texture, x, y, WHITE);
+                }
                 DrawText(TextFormat("F%d", i + 1), x + faceDownCard.width + 15, y, 15, BLACK);
                 y += faceDownCard.height + 15;
 
