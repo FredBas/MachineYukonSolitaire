@@ -72,7 +72,7 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, gamePh
             textures[i][k] = malloc(sizeof(Texture2D));
         }
     }
-    initializeTextures(textures);
+    createTextures(textures);
     Texture2D faceDownCard = LoadTexture("../PNG-cards-1.3/unshown.png");
     faceDownCard.height = (int) cardHeight;
     faceDownCard.width = (int) cardWidth;
@@ -200,7 +200,7 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, gamePh
                     }
 
                     if (card->isFaceUp) {
-                        Texture2D texture = cardToTexture(*card, textures);
+                        Texture2D texture = createCardTexture(*card, textures);
                         if (isDragging && draggedCard == card) {
                             DrawTexture(texture, GetMouseX() - dragOffset.x, GetMouseY() - dragOffset.y, WHITE);
                         } else {
@@ -255,7 +255,7 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, gamePh
     CloseWindow();
 }
 
-void initializeTextures(Texture2D *textures[13][4]) {
+void createTextures(Texture2D *textures[13][4]) {
     char fileToLoad[50];
     for (int i = 0; i < 13; i++) {
         for (int k = 0; k < 4; k++) {
@@ -304,7 +304,7 @@ void initializeTextures(Texture2D *textures[13][4]) {
     }
 }
 
-Texture2D cardToTexture(Card card, Texture2D *textures[13][4]) {
+Texture2D createCardTexture(Card card, Texture2D *textures[13][4]) {
     int suitNumber = -1;
     switch (suitFromASCII(card.suit)) {
         case C:

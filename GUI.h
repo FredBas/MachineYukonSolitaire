@@ -19,8 +19,8 @@ typedef struct {
     gamePhase phase;
 } Button;
 void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, gamePhase *phase);
-void initializeTextures(Texture2D* textures[13][4]);
-Texture2D cardToTexture(Card card, Texture2D* textures[13][4]);
+void createTextures(Texture2D* textures[13][4]);
+Texture2D createCardTexture(Card card, Texture2D* textures[13][4]);
 void createButtons(Button* buttons[], int amountOfButtons);
 Suit suitFromASCII(int ascii);
 int rankFromASCII(int ascii);
