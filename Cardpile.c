@@ -366,7 +366,6 @@ void moveCard(Cardpile *from, Cardpile *to, Card *card) {
     } else {
         from->bottom = NULL;
         from->top = NULL;
-        from->top = from->bottom;
     }
     from->size--;
 
