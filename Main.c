@@ -35,8 +35,8 @@ int main() {
 
     gamePhase currentPhase = welcome;
 
-    /*char *empty = "";
-    char *message[50] ={"Welcome to Yukon Solitaire! Type 'LD' to start. For a list of commands, type 'HELP'."};
+    char *empty = "";
+    char *message[50] ={"Welcome to Yukon Solitaire! For GUI type 'GUI' else type 'LD' to start. For a list of commands, type 'HELP'."};
     initialTableauPrinter();
     printUIMessages(empty,message);
 
@@ -54,8 +54,7 @@ int main() {
             printf("\n\nCongratulations! You have won the game!\n");
             break;
         }
-    }*/
-    drawGUI(tableau, foundation, deck, &currentPhase);
+    }
     // Cleanup
     cleanup(&deck);
 

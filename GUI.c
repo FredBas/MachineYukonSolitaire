@@ -227,7 +227,7 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, gamePh
             x = 800;
             y = 100;
             for (int i = 0; i < 4; ++i) {
-                DrawRectangle(x, y, faceDownCard.width, faceDownCard.height, BLACK);
+                DrawRectangleLines(x, y, faceDownCard.width, faceDownCard.height, BLACK);
                 DrawText(TextFormat("F%d", i + 1), x + faceDownCard.width + 15, y, 15, BLACK);
                 y += faceDownCard.height + 15;
 
