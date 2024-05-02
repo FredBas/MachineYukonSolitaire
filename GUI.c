@@ -1,11 +1,64 @@
-//#include <printf.h>
+#include <stdio.h>
 #include "GUI.h"
 #include "raylib.h"
 #include "GameInitialization.h"
-#include <stdio.h>
 
-void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Card *deck, gamePhase *phase) {
-    startupPopulateTableau(tableau, deck);
+const float cardHeight = 100;
+const float cardWidth = cardHeight * 0.7159090909f;
+
+bool isDragging = false;
+Vector2 dragOffset = {0}; // Offset to maintain relative position while dragging
+Card *draggedCard = NULL;
+
+Suit suitFromASCII(int ascii) {
+    switch (ascii) {
+        case 67:
+            return C;
+        case 68:
+            return D;
+        case 72:
+            return H;
+        case 83:
+            return S;
+        default:
+            return -1;
+    }
+}
+
+int rankFromASCII(int ascii) {
+    switch (ascii) {
+        case 65:
+            return 1;
+        case 50:
+            return 2;
+        case 51:
+            return 3;
+        case 52:
+            return 4;
+        case 53:
+            return 5;
+        case 54:
+            return 6;
+        case 55:
+            return 7;
+        case 56:
+            return 8;
+        case 57:
+            return 9;
+        case 84:
+            return 10;
+        case 74:
+            return 11;
+        case 81:
+            return 12;
+        case 75:
+            return 13;
+        default:
+            return -1;
+    }
+}
+
+void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, gamePhase *phase) {
     const int screenWidth = 1200;
     const int screenHeight = 800;
     const Color custGreen = {0, 128, 43, 255};
@@ -13,7 +66,7 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Card *deck, gamePhase 
     InitWindow(screenWidth, screenHeight, "Yukon Solitaire");
     SetTargetFPS(60);
 
-    Texture2D* textures[13][4];
+    Texture2D *textures[13][4];
     for (int i = 0; i < 13; i++) {
         for (int k = 0; k < 4; k++) {
             textures[i][k] = malloc(sizeof(Texture2D));
@@ -21,11 +74,11 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Card *deck, gamePhase 
     }
     initializeTextures(textures);
     Texture2D faceDownCard = LoadTexture("../PNG-cards-1.3/unshown.png");
-    faceDownCard.height = 100;
-    faceDownCard.width = faceDownCard.height * 0.7159090909;
+    faceDownCard.height = (int) cardHeight;
+    faceDownCard.width = (int) cardWidth;
 
     int amountOfButtons = 9;
-    Button* buttons[amountOfButtons];
+    Button *buttons[amountOfButtons];
     createButtons(buttons, amountOfButtons);
 
     while (!WindowShouldClose()) {
@@ -36,48 +89,164 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Card *deck, gamePhase 
         DrawRectangleGradientV(x, y, screenWidth, screenHeight, custGreen, custLime);
         x = 15;
         y = 15;
-        for (int i = 0; i < 7; ++i) {
-            //DrawRectangleLines(100 + i * 100, 100, 100, 200, BLACK);
-            DrawText(TextFormat("C%d", i+1), x, y, 15, BLACK);
-            x += 100;
-        }
 
-        for (int i = 0; i < DECK_SIZE; i++) {
-            for (int j = 0; j < 7; j++) {
-                Card *card = deck;
+        if (*phase != welcome) {
+            for (int i = 0; i < 7; ++i) {
+                //DrawRectangleLines(100 + i * 100, 100, 100, 200, BLACK);
+                DrawText(TextFormat("C%d", i + 1), x, y, 15, BLACK);
+                x += 86;
+            }
+            x = 15;
+            y = 40;
 
-                if (j != 0) {x += 100;}
-                if (tableau[j]->size <= i) {continue;}
-                for (int k = 0; k < i; k++) {
-                    if (card->next == NULL) {break;}
-                    card = card->next;
-                }
-                card->isFaceUp = false;
-                if (card->isFaceUp) {
-                    DrawTexture(cardToTexture(*card, textures), x, y, WHITE);
+            int row = 0;
+            int iterator = 52;
+            int nullCardCounter = 0;
+
+
+            for (int i = 0; i < iterator; i++) {
+                Card *card = getCardAt(tableau[i % 7], row);
+                if (card == NULL) {
+                    x += 86;
+                    iterator++;
+                    nullCardCounter++;
                 } else {
-                    DrawTexture(faceDownCard, x, y, WHITE);
+                    int sourceIndex = -1;
+                    Rectangle cardRect = {x, y, cardWidth, cardHeight};
+                    bool isMouseOverCard = CheckCollisionPointRec(GetMousePosition(), cardRect);
+                    if (isMouseOverCard && IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && *phase == play) {
+                        // If the left mouse button is pressed over the card, start dragging
+                        for (int j = 0; j < 7; ++j) {
+                            if (GetMouseX() > 15 + j * 86 && GetMouseX() < 15 + j * 86 + cardWidth) {
+                                sourceIndex = j;
+                                printf("Source index: %d\n", sourceIndex);
+                                break;
+                            }
+                        }
+                        isDragging = true;
+                        draggedCard = card;
+                        dragOffset.x = GetMouseX() - x;
+                        dragOffset.y = GetMouseY() - y;
+                    }
+                    if (isDragging && draggedCard != NULL) {
+                        bool isTopCard = true;
+                        for (int j = 0; j < 7; ++j) {
+                            if (tableau[j]->top != draggedCard) {
+                                isTopCard = false;
+                                break;
+                            }
+                        }
+                        if (isTopCard) {
+                            float offsetX = GetMouseX() - dragOffset.x;
+                            float offsetY = GetMouseY() - dragOffset.y;
+
+                            draggedCard->x = offsetX;
+                            draggedCard->y = offsetY;
+
+                            for (int j = 0; j < 7; ++j) {
+                                Card *currentCard = draggedCard->next;
+                                while (currentCard != NULL) {
+                                    currentCard->x = offsetX;
+                                    currentCard->y = offsetY + (currentCard->y + 20);
+                                    currentCard = currentCard->next;
+                                }
+                            }
+                        } else {
+                            draggedCard->x = GetMouseX() - dragOffset.x;
+                            draggedCard->y = GetMouseY() - dragOffset.y;
+                        }
+                    }
+                    if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT) && *phase == play) {
+                        if (isDragging) {
+                            isDragging = false;
+                            int destinationTableau = -1;
+                            int foundationIndex = -1;
+                            if (GetMouseX() > 800 && GetMouseX() < 800 + cardWidth && GetMouseY() > 100 &&
+                                GetMouseY() < 100 + cardHeight * 4 + 4 * 15) {
+                                for (int j = 0; j < 4; ++j) {
+                                    if (GetMouseY() > 100 + j * 115 && GetMouseY() < 100 + j * 115 + cardHeight) {
+                                        foundationIndex = j;
+                                        printf("Foundation index: %d\n", foundationIndex);
+                                        break;
+                                    }
+                                }
+                                if (foundationIndex != -1) {
+                                    if (foundation[foundationIndex]->top == NULL && rankFromASCII(draggedCard->rank)==1) {
+                                        moveCard(tableau[sourceIndex], foundation[foundationIndex], draggedCard);
+                                        draggedCard = NULL;
+                                    } else if (canBePlacedFoundation(*foundation[foundationIndex]->top, *draggedCard)) {
+                                        moveCard(tableau[sourceIndex], foundation[foundationIndex], draggedCard);
+                                        draggedCard = NULL;
+                                    }
+                                }
+                            } else {
+                                for (int j = 0; j < 7; ++j) {
+                                    if (GetMouseX() > 15 + j * 86 && GetMouseX() < 15 + j * 86 + cardWidth) {
+                                        destinationTableau = j;
+                                        printf("Destination index: %d\n", destinationTableau);
+                                        break;
+                                    }
+                                }
+                                if (destinationTableau != -1) {
+                                    if (tableau[destinationTableau]->top == NULL ||
+                                        canBePlacedBottom(*draggedCard, *tableau[destinationTableau]->top)) {
+                                        printf("Source: %d, Destination: %d\n", sourceIndex, destinationTableau);
+                                        moveCard(tableau[sourceIndex], tableau[destinationTableau], draggedCard);
+                                        draggedCard = NULL;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    if (card->isFaceUp) {
+                        Texture2D texture = cardToTexture(*card, textures);
+                        if (isDragging && draggedCard == card) {
+                            DrawTexture(texture, GetMouseX() - dragOffset.x, GetMouseY() - dragOffset.y, WHITE);
+                        } else {
+                            DrawTexture(texture, x, y, WHITE);
+                        }
+                        x += texture.width + 15;
+
+                    } else {
+                        DrawTexture(faceDownCard, x, y, WHITE);
+                        x += faceDownCard.width + 15;
+                    }
                 }
+                if (i % 7 == 6) {
+                    if (nullCardCounter == 7) {
+                        break;
+                    } else {
+                        nullCardCounter = 0;
+                    }
+                    x = 15;
+                    y += 20;
+                    row++;
+                }
+            }
+            x = 800;
+            y = 100;
+            for (int i = 0; i < 4; ++i) {
+                DrawRectangle(x, y, faceDownCard.width, faceDownCard.height, BLACK);
+                DrawText(TextFormat("F%d", i + 1), x + faceDownCard.width + 15, y, 15, BLACK);
+                y += faceDownCard.height + 15;
 
             }
         }
-        x = 800;
-        y = 100;
-        for (int i = 0; i < 4; ++i) {
-            DrawRectangleLines(x, y, faceDownCard.width, faceDownCard.height, BLACK);
-            DrawText(TextFormat("F%d", i+1), x + faceDownCard.width + 15, y, 15, BLACK);
-            y += faceDownCard.height + 15;
 
-        }
         for (int i = 0; i < amountOfButtons; i++) {
-            DrawRectangle(buttons[i]->x,buttons[i]->y,buttons[i]->width,buttons[i]->height, BLACK);
+            if (buttons[i]->phase != *phase) { continue; }
+            DrawRectangle(buttons[i]->x, buttons[i]->y, buttons[i]->width, buttons[i]->height, BLACK);
             int textWidth = MeasureText(buttons[i]->text, 20);
             int textX = buttons[i]->x + (buttons[i]->width - textWidth) / 2;
             int textY = buttons[i]->y + (buttons[i]->height - 20) / 2;
 
-            DrawText(buttons[i]->text, textX,textY,20,GREEN);
-            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && buttons[i]->x < GetMouseX() && buttons[i]->x + buttons[i]->width > GetMouseX() && buttons[i]->y < GetMouseY() && buttons[i]->y + buttons[i]->height > GetMouseY()) {
-                commandHandler(buttons[i]->commandToExecute, tableau, foundation, &deck, phase);
+
+            DrawText(buttons[i]->text, textX, textY, 20, GREEN);
+            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && buttons[i]->x < GetMouseX() &&
+                buttons[i]->x + buttons[i]->width > GetMouseX() && buttons[i]->y < GetMouseY() &&
+                buttons[i]->y + buttons[i]->height > GetMouseY()) {
+                commandHandler(buttons[i]->commandToExecute, tableau, foundation, deck, phase);
             }
         }
         EndDrawing();
@@ -86,48 +255,48 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Card *deck, gamePhase 
     CloseWindow();
 }
 
-void initializeTextures (Texture2D* textures[13][4]) {
+void initializeTextures(Texture2D *textures[13][4]) {
     char fileToLoad[50];
     for (int i = 0; i < 13; i++) {
         for (int k = 0; k < 4; k++) {
-            printf("%d,%d\n",i,k);
-            strcpy(fileToLoad,"../PNG-cards-1.3/");
+            printf("%d,%d\n", i, k);
+            strcpy(fileToLoad, "../PNG-cards-1.3/");
 
             switch (i) {
                 case 0:
-                    strcat(fileToLoad,"ace");
+                    strcat(fileToLoad, "ace");
                     break;
                 case 9:
-                    strcat(fileToLoad,"10");
+                    strcat(fileToLoad, "10");
                     break;
                 case 10:
-                    strcat(fileToLoad,"jack");
+                    strcat(fileToLoad, "jack");
                     break;
                 case 11:
-                    strcat(fileToLoad,"queen");
+                    strcat(fileToLoad, "queen");
                     break;
                 case 12:
-                    strcat(fileToLoad,"king");
+                    strcat(fileToLoad, "king");
                     break;
                 default:
-                    strcat(fileToLoad, TextFormat("%d",i+1));
+                    strcat(fileToLoad, TextFormat("%d", i + 1));
             }
-            strcat(fileToLoad,"_of_");
+            strcat(fileToLoad, "_of_");
             switch (k) {
                 case 0:
-                    strcat(fileToLoad,"clubs");
+                    strcat(fileToLoad, "clubs");
                     break;
                 case 1:
-                    strcat(fileToLoad,"diamonds");
+                    strcat(fileToLoad, "diamonds");
                     break;
                 case 2:
-                    strcat(fileToLoad,"hearts");
+                    strcat(fileToLoad, "hearts");
                     break;
                 case 3:
-                    strcat(fileToLoad,"spades");
+                    strcat(fileToLoad, "spades");
                     break;
             }
-            strcat(fileToLoad,".png");
+            strcat(fileToLoad, ".png");
             Texture2D texture = LoadTexture(fileToLoad);
             *textures[i][k] = texture;
             if (texture.id == 0) k--;
@@ -135,33 +304,40 @@ void initializeTextures (Texture2D* textures[13][4]) {
     }
 }
 
-Texture2D cardToTexture (Card card, Texture2D* textures[13][4]) {
+Texture2D cardToTexture(Card card, Texture2D *textures[13][4]) {
     int suitNumber = -1;
-    switch(card.suit) {
-        case 'C':
+    switch (suitFromASCII(card.suit)) {
+        case C:
             suitNumber = 0;
             break;
-        case 'D':
+        case D:
             suitNumber = 1;
             break;
-        case 'H':
+        case H:
             suitNumber = 2;
             break;
-        case 'S':
+        case S:
             suitNumber = 3;
             break;
     }
-    Texture2D textureToReturn = *textures[card.rank - 1][suitNumber];
-    textureToReturn.height = 100;
-    textureToReturn.width = textureToReturn.height * 0.71;
-    return textureToReturn;
+
+    if (suitNumber == -1) {
+        printf("Error: Suit not found\n");
+        return LoadTexture("../PNG-cards-1.3/unshown.png");
+    } else {
+        Texture2D textureToReturn = *textures[rankFromASCII(card.rank) - 1][suitNumber];
+        textureToReturn.height = cardHeight;
+        textureToReturn.width = cardWidth;
+        return textureToReturn;
+    }
+
 }
 
-void createButtons (Button *buttons[], int amountOfButtons) {
+void createButtons(Button *buttons[], int amountOfButtons) {
     for (int i = 0; i < amountOfButtons; i++) {
-        buttons[i] = malloc(sizeof (Button));
+        buttons[i] = malloc(sizeof(Button));
     }
-    int x = 0;
+    int x = 25;
     int y = 700;
     int buttonHeight = 100;
     int buttonWidth = 150;
@@ -170,11 +346,9 @@ void createButtons (Button *buttons[], int amountOfButtons) {
     buttons[0]->width = buttonWidth;
     buttons[0]->text = "Load";
     buttons[0]->commandToExecute = "LD";
-    buttons[0]->x = x;
-    buttons[0]->y = y;
+    buttons[0]->x = 350;
+    buttons[0]->y = 350;
     buttons[0]->phase = welcome;
-
-    x += buttonWidth + 50;
 
     buttons[1]->height = buttonHeight;
     buttons[1]->width = buttonWidth;
@@ -218,7 +392,7 @@ void createButtons (Button *buttons[], int amountOfButtons) {
 
     buttons[5]->height = buttonHeight;
     buttons[5]->width = buttonWidth;
-    buttons[5]->text = "Start";
+    buttons[5]->text = "Play";
     buttons[5]->commandToExecute = "P";
     buttons[5]->x = x;
     buttons[5]->y = y;
@@ -230,8 +404,8 @@ void createButtons (Button *buttons[], int amountOfButtons) {
     buttons[6]->width = buttonWidth;
     buttons[6]->text = "Quit";
     buttons[6]->commandToExecute = "QQ";
-    buttons[6]->x = x;
-    buttons[6]->y = y;
+    buttons[6]->x = 700;
+    buttons[6]->y = 350;
     buttons[6]->phase = welcome;
 
     buttons[7]->height = buttonHeight;

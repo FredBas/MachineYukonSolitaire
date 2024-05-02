@@ -55,10 +55,6 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
     char *cmd = strtok(commandCopy, " ");
     char *movecmd = strtok(movecmdCopy, " -> ");
 
-    if(strcmp(cmd, "GUI") == 0) {
-        drawGUI(tableau, foundation, deck->top, currentPhase);
-    }
-
     if (strcmp(cmd, "LD") == 0) {
         if (*currentPhase == play) {
             message[0] = "Command not available during a game. For a list of available commands, type HELP";
@@ -78,9 +74,9 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         }
         clearTableau(tableau);
         startupPopulateTableau(tableau, copyDeck(deck->top));
-        printUI(tableau, foundation);
-        message[0] = "Deck loaded successfully";
-        printUIMessages(lastCommand, message);
+        //printUI(tableau, foundation);
+        //message[0] = "Deck loaded successfully";
+        //printUIMessages(lastCommand, message);
     } else if (strcmp(cmd, "SW") == 0) {
         if (deck->top == NULL) {
             message[0] = "Error: No deck loaded. Please load a deck using the LD command.";
@@ -97,9 +93,9 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         }
 
         showTableauCardsStartup(tableau);
-        printUI(tableau, foundation);
-        message[0] = "Cards shown successfully";
-        printUIMessages(lastCommand, message);
+        //printUI(tableau, foundation);
+        //message[0] = "Cards shown successfully";
+        //printUIMessages(lastCommand, message);
         // Show cards during startup phase
     } else if (strcmp(cmd, "SI") == 0) {
         if (*currentPhase == play || *currentPhase == welcome) {
