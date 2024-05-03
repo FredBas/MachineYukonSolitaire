@@ -14,7 +14,6 @@ typedef struct Card {
     Rank rank;
     Suit suit;
     bool isFaceUp;
-    char symbol;
     struct Card *next;
     struct Card *prev;
     int x;
