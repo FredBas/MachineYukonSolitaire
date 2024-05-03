@@ -230,8 +230,6 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         }
     }
 
-        //TODO: Add gamemove commands here
-
         // Game move commands
         // Follow the format: <from> -> <to>
         // <from>: The source card or pile:

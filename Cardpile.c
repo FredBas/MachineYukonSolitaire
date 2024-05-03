@@ -161,27 +161,6 @@ void shuffleRandom(Cardpile *deck) {
     current->next = NULL; // Make sure the last card points to NULL
 }
 
-
-int checkDuplicate(Card *deck, int numCards) {
-    for (int i = 0; i < numCards - 1; i++) {
-        for (int j = i + 1; j < numCards; j++) {
-            if (deck[i].rank == deck[j].rank && deck[i].suit == deck[j].suit) {
-                printf("Error: Duplicate card found (%d%c) on line %d.\n", deck[i].rank, deck[i].suit, j + 1);
-                return 1;
-            }
-        }
-    }
-    return 0;
-}
-
-void printCardList(Card *head) {
-    while (head != NULL) {
-        printf("%c%c ", head->rank, head->suit);
-        head = head->next;
-    }
-    printf("\n");
-}
-
 void freeCardList(Card *head) {
     Card *temp;
     while (head != NULL) {
