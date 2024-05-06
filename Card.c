@@ -22,7 +22,7 @@ bool canBePlacedFoundation(Card card1, Card card2) {
     return sameSuit && inSequence;
 }
 
-void printCard(Card *card) { // Add this function
+void printCard(Card *card) {
     if (card->isFaceUp) {
         printf("%c%c\t", card->rank, card->suit);
     } else {

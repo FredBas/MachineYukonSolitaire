@@ -17,15 +17,6 @@ Card *getCardAt(Cardpile *pile, int cardPosition) {
     return card;
 }
 
-Card *getCardAtFoundation(Cardpile *pile) {
-    Card *card = pile->top;
-    return card;
-}
-
-Card *getCardAtTableauBottom(Cardpile *pile) {
-    Card *card = pile->top;
-    return card;
-}
 Card *getCardAtTableau(Cardpile *tableau, Rank rank, Suit suit) {
     Card *currentCard = tableau->top;
     while (currentCard != NULL) {
@@ -56,8 +47,8 @@ Card *getCardAtTableau(Cardpile *tableau, Rank rank, Suit suit) {
 void shuffleDeckSplit(Cardpile *deck, int split) {
     // If split is not provided (i.e., split is 0), generate a random split
     if (split == 0) {
-        srand(time(NULL)); // Seed for random number generation
-        split = rand() % (DECK_SIZE - 1) + 1; // Generate a random number between 1 and DECK_SIZE - 1
+        srand(time(NULL));
+        split = rand() % (DECK_SIZE - 1) + 1;
     }
 
     // Split the deck into two piles
@@ -80,12 +71,10 @@ void shuffleDeckSplit(Cardpile *deck, int split) {
         return;
     }
 
-    // Shuffle the piles
     Cardpile shuffled;
     shuffled.top = NULL;
     shuffled.size = 0;
 
-    // Alternately take the top card from each pile until one pile is exhausted
     while (pile1 != NULL && pile2 != NULL) {
         Card *temp;
         temp = pile1;
@@ -108,7 +97,6 @@ void shuffleDeckSplit(Cardpile *deck, int split) {
         shuffled.top = temp;
     }
 
-    // Reverse the shuffled pile to place remaining cards at the bottom
     Card *prev = NULL, *curr = shuffled.top, *next;
     while (curr != NULL) {
         next = curr->next;
@@ -133,32 +121,29 @@ void shuffleRandom(Cardpile *deck) {
         return;
     }
 
-    srand(time(NULL)); // Seed for random number generation
+    srand(time(NULL));
 
-    // Create an array to hold the cards for easy random access
     Card *cards[DECK_SIZE];
     Card *current = deck->top;
     for (int i = 0; i < DECK_SIZE; ++i) {
         cards[i] = current;
         current = current->next;
     }
-    // Fisher-Yates shuffle
-    for (int i = DECK_SIZE - 1; i > 0; --i) {
-        int j = rand() % (DECK_SIZE); // Generate a random index
 
-        // Swap cards[i] and cards[j]
+    for (int i = DECK_SIZE - 1; i > 0; --i) {
+        int j = rand() % (DECK_SIZE);
+
         Card *temp = cards[j];
         cards[j] = cards[i];
         cards[i] = temp;
     }
-    // Reconstruct the deck from the shuffled array
     deck->top = cards[0];
     current = deck->top;
     for (int i = 1; i < DECK_SIZE; ++i) {
         current->next = cards[i];
         current = current->next;
     }
-    current->next = NULL; // Make sure the last card points to NULL
+    current->next = NULL;
 }
 
 void freeCardList(Card *head) {
@@ -182,10 +167,10 @@ Card *createDeckFromFile(char *filename) {
     char line[CARD_SIZE];
     int i = 0;
 
-    int suitCount[4] = {0}; // Hearts, Diamonds, Clubs, Spades
-    int rankCount[13] = {0}; // Ace through King
+    int suitCount[4] = {0};
+    int rankCount[13] = {0};
 
-    Card *cards[52] = {NULL}; // Array to store the cards that have been read
+    Card *cards[52] = {NULL};
 
     while (fgets(line, sizeof(line), file)) {
         if (strlen(line) >= 2) {
@@ -257,7 +242,6 @@ Card *createDeckFromFile(char *filename) {
         return NULL;
     }
 
-    // Check that each suit has exactly 13 cards
     for (int i = 0; i < 4; i++) {
         if (suitCount[i] != 13) {
             printf("Error: Incorrect number of suit cards.\n");
@@ -265,7 +249,6 @@ Card *createDeckFromFile(char *filename) {
         }
     }
 
-    // Check that each rank appears exactly 4 times
     for (int i = 0; i < 13; i++) {
         if (rankCount[i] != 4) {
             printf("Error: Incorrect number of rank cards.\n");
@@ -365,7 +348,7 @@ void moveCard(Cardpile *from, Cardpile *to, Card *card) {
 }
 
 void moveToFoundation(int sourceIndex, Cardpile **tableau, Cardpile **foundation, const char *destination, char *message[]) {
-    int foundationIndex = destination[1] - '1'; // Convert from char to int (0-based)
+    int foundationIndex = destination[1] - '1';
     if (foundationIndex >= 0 && foundationIndex < NUMBER_OF_FOUNDATIONS) {
         Card *tableauCard = tableau[sourceIndex]->top;
         Card *foundationCard = foundation[foundationIndex]->top;
@@ -390,7 +373,7 @@ void moveToFoundation(int sourceIndex, Cardpile **tableau, Cardpile **foundation
 }
 
 void moveBottomCardToTableau(int sourceIndex, Cardpile **tableau, const char *destination, char *message[]) {
-    int destinationIndex = destination[1] - '1'; // Convert from char to int (0-based)
+    int destinationIndex = destination[1] - '1';
     if (destinationIndex >= 0 && destinationIndex < NUMBER_OF_TABLEAUS) {
         Card *tableauCard = tableau[sourceIndex]->top;
         Card *tableauCard2 = tableau[destinationIndex]->top;
@@ -415,7 +398,7 @@ void moveBottomCardToTableau(int sourceIndex, Cardpile **tableau, const char *de
 }
 
 void moveMultipleCardsToTableau(int sourceIndex, Cardpile **tableau, const char *destination, Card *card, char *message[]) {
-    int destinationIndex = destination[1] - '1'; // Convert from char to int (0-based)
+    int destinationIndex = destination[1] - '1';
     if (destinationIndex >= 0 && destinationIndex < NUMBER_OF_TABLEAUS) {
         Card *tableauCard = tableau[sourceIndex]->top;
         Card *tableauCard2 = tableau[destinationIndex]->top;

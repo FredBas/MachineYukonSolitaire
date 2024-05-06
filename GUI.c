@@ -7,7 +7,7 @@ const float cardHeight = 100;
 const float cardWidth = cardHeight * 0.7159090909f;
 
 bool isDragging = false;
-Vector2 dragOffset = {0}; // Offset to maintain relative position while dragging
+Vector2 dragOffset = {0};
 Card *draggedCard = NULL;
 
 Suit suitFromASCII(int ascii) {
@@ -92,7 +92,7 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, gamePh
 
         if (*phase != welcome) {
             for (int i = 0; i < 7; ++i) {
-                //DrawRectangleLines(100 + i * 100, 100, 100, 200, BLACK);
+
                 DrawText(TextFormat("C%d", i + 1), x, y, 15, BLACK);
                 x += 86;
             }

@@ -10,17 +10,9 @@ typedef struct Cardpile {
     int size;
 } Cardpile;
 
-Card * getCardAtTableauBottom(Cardpile *pile);
-
-Card * getCardAtFoundation(Cardpile *pile);
-
 void shuffleDeckSplit(Cardpile *deck, int split);
 
 void shuffleRandom(Cardpile *deck);
-
-int checkDuplicate(Card *deck, int numCards);
-
-void printCardList(Card *head);
 
 void freeCardList(Card *head);
 

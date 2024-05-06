@@ -51,7 +51,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
     char *commandCopy = strdup(command);
     lastCommand = commandCopy;
     char *movecmdCopy = strdup(command);
-    // Get the first token (the command)
+
     char *cmd = strtok(commandCopy, " ");
     char *movecmd = strtok(movecmdCopy, " -> ");
 
@@ -101,7 +101,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         printUI(tableau, foundation);
         message[0] = "Cards shown successfully";
         printUIMessages(lastCommand, message);
-        //Show cards during startup phase
+
     } else if (strcmp(cmd, "SI") == 0) {
         if (*currentPhase == play || *currentPhase == welcome) {
             message[0] = (*currentPhase == play)
@@ -127,7 +127,6 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         }
         startupPopulateTableau(tableau, copyDeck(deck->top));
         printUI(tableau, foundation);
-        //message[0] = "Deck shuffled successfully";
         printUIMessages(lastCommand, message);
     } else if (strcmp(cmd, "SR") == 0) {
         if (*currentPhase == play || *currentPhase == welcome) {
@@ -229,27 +228,6 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
                    "HELP - Display this help message\n");
         }
     }
-
-        // Game move commands
-        // Follow the format: <from> -> <to>
-        // <from>: The source card or pile:
-        // A specific card in a column: <column>:<card> (e.g., 'C6:4H' for the 4 of Hearts in column 6).
-        // The bottom card in a column: <column> alone indicates the bottom card (e.g., 'C6').
-        // The top card from a foundation: Simply use the foundation number (e.g., 'F3').
-
-        // <to>: The destination:
-        // To a column's bottom: <column> (e.g., 'C4').
-        // To the top of a foundation: <foundation> (e.g., 'F2').
-
-        // Validity Rules:
-        // The card moved must exist at the specified location.
-        // Moving a card to a column is only valid if the bottom card of that column is one rank higher and
-        // of a different suit. A card can only be added to a foundation from the bottom of a column and must follow suit and
-        // one rank higher than the top card of the foundation.
-        // Only the top card from a foundation can be moved to a column, and it must follow the rank and
-        // suit restrictions for columns.
-        // If a move is valid, the system returns OK. Otherwise, an error message states that the move is not valid.
-
 
     else if (strcmp(movecmd, "C1") == 0) {
         if (*currentPhase == welcome) {
@@ -451,7 +429,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
             printUIMessages(lastCommand, message);
             return;
         }
-        int sourceIndex = movecmd[1] - '1'; // Convert from char to int (0-based)
+        int sourceIndex = movecmd[1] - '1';
         if (foundation[sourceIndex]->top == NULL) {
             message[0] = "Error: No card in foundation";
             printUIMessages(lastCommand, message);
@@ -460,7 +438,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         char *destination = strtok(NULL, " -> ");
         if (destination != NULL) {
             if (destination[0] == 'F') {
-                int destinationIndex = destination[1] - '1'; // Convert from char to int (0-based)
+                int destinationIndex = destination[1] - '1';
                 if (foundation[destinationIndex]->top == NULL ||
                     canBePlacedBottom(*foundation[sourceIndex]->top, *foundation[destinationIndex]->top)) {
                     moveToFoundation(sourceIndex, foundation, foundation, destination, message);
@@ -499,7 +477,7 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
             printUIMessages(lastCommand, message);
             return;
         }
-        int sourceIndex = movecmd[1] - '1'; // Convert from char to int (0-based)
+        int sourceIndex = movecmd[1] - '1';
         if (tableau[sourceIndex]->top == NULL) {
             message[0] = "Error: No card in tableau";
             printUIMessages(lastCommand, message);
@@ -533,10 +511,10 @@ void commandHandler(const char *command, Cardpile **tableau, Cardpile **foundati
         }
         printUI(tableau, foundation);
         printUIMessages(lastCommand, message);
-        free(cardStrCopy); // Free the card string copy
+        free(cardStrCopy);
     } else {
         message[0] = "Error: Invalid command";
         printUIMessages(lastCommand, message);
     }
-    free(commandCopy); // Free the command copy
+    free(commandCopy);
 }

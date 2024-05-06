@@ -43,7 +43,7 @@ int main() {
     // Main game loop
     while (true) {
         fgets(command, 20, stdin);
-        command[strcspn(command, "\n")] = 0; // Remove the newline character
+        command[strcspn(command, "\n")] = 0;
         commandHandler(command, tableau, foundation, deck, &currentPhase);
 
         int cardsInFoundations = 0;
