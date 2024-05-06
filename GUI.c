@@ -77,9 +77,9 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, gamePh
     faceDownCard.height = (int) cardHeight;
     faceDownCard.width = (int) cardWidth;
 
-    int amountOfButtons = 9;
-    Button *buttons[amountOfButtons];
-    createButtons(buttons, amountOfButtons);
+    int numberOfButtons = 9;
+    Button *buttons[numberOfButtons];
+    createButtons(buttons, numberOfButtons);
 
     while (!WindowShouldClose()) {
         BeginDrawing();
@@ -234,7 +234,7 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, gamePh
             }
         }
 
-        for (int i = 0; i < amountOfButtons; i++) {
+        for (int i = 0; i < numberOfButtons; i++) {
             if (buttons[i]->phase != *phase) { continue; }
             DrawRectangle(buttons[i]->x, buttons[i]->y, buttons[i]->width, buttons[i]->height, BLACK);
             int textWidth = MeasureText(buttons[i]->text, 20);
@@ -256,48 +256,48 @@ void drawGUI(Cardpile *tableau[], Cardpile *foundation[], Cardpile *deck, gamePh
 }
 
 void createTextures(Texture2D *textures[13][4]) {
-    char fileToLoad[50];
+    char cardFile[50];
     for (int i = 0; i < 13; i++) {
         for (int k = 0; k < 4; k++) {
             printf("%d,%d\n", i, k);
-            strcpy(fileToLoad, "../PNG-cards-1.3/");
+            strcpy(cardFile, "../PNG-cards-1.3/");
 
             switch (i) {
                 case 0:
-                    strcat(fileToLoad, "ace");
+                    strcat(cardFile, "ace");
                     break;
                 case 9:
-                    strcat(fileToLoad, "10");
+                    strcat(cardFile, "10");
                     break;
                 case 10:
-                    strcat(fileToLoad, "jack");
+                    strcat(cardFile, "jack");
                     break;
                 case 11:
-                    strcat(fileToLoad, "queen");
+                    strcat(cardFile, "queen");
                     break;
                 case 12:
-                    strcat(fileToLoad, "king");
+                    strcat(cardFile, "king");
                     break;
                 default:
-                    strcat(fileToLoad, TextFormat("%d", i + 1));
+                    strcat(cardFile, TextFormat("%d", i + 1));
             }
-            strcat(fileToLoad, "_of_");
+            strcat(cardFile, "_of_");
             switch (k) {
                 case 0:
-                    strcat(fileToLoad, "clubs");
+                    strcat(cardFile, "clubs");
                     break;
                 case 1:
-                    strcat(fileToLoad, "diamonds");
+                    strcat(cardFile, "diamonds");
                     break;
                 case 2:
-                    strcat(fileToLoad, "hearts");
+                    strcat(cardFile, "hearts");
                     break;
                 case 3:
-                    strcat(fileToLoad, "spades");
+                    strcat(cardFile, "spades");
                     break;
             }
-            strcat(fileToLoad, ".png");
-            Texture2D texture = LoadTexture(fileToLoad);
+            strcat(cardFile, ".png");
+            Texture2D texture = LoadTexture(cardFile);
             *textures[i][k] = texture;
             if (texture.id == 0) k--;
         }
@@ -305,36 +305,36 @@ void createTextures(Texture2D *textures[13][4]) {
 }
 
 Texture2D createCardTexture(Card card, Texture2D *textures[13][4]) {
-    int suitNumber = -1;
+    int suit = -1;
     switch (suitFromASCII(card.suit)) {
         case C:
-            suitNumber = 0;
+            suit = 0;
             break;
         case D:
-            suitNumber = 1;
+            suit = 1;
             break;
         case H:
-            suitNumber = 2;
+            suit = 2;
             break;
         case S:
-            suitNumber = 3;
+            suit = 3;
             break;
     }
 
-    if (suitNumber == -1) {
+    if (suit == -1) {
         printf("Error: Suit not found\n");
         return LoadTexture("../PNG-cards-1.3/unshown.png");
     } else {
-        Texture2D textureToReturn = *textures[rankFromASCII(card.rank) - 1][suitNumber];
-        textureToReturn.height = cardHeight;
-        textureToReturn.width = cardWidth;
-        return textureToReturn;
+        Texture2D returnTexture = *textures[rankFromASCII(card.rank) - 1][suit];
+        returnTexture.height = cardHeight;
+        returnTexture.width = cardWidth;
+        return returnTexture;
     }
 
 }
 
-void createButtons(Button *buttons[], int amountOfButtons) {
-    for (int i = 0; i < amountOfButtons; i++) {
+void createButtons(Button *buttons[], int numberOfButtons) {
+    for (int i = 0; i < numberOfButtons; i++) {
         buttons[i] = malloc(sizeof(Button));
     }
     int x = 25;
